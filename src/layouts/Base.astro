@@ -61,6 +61,14 @@ const orgLd = {
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
 
+    <script is:inline>
+      // Animations activées seulement si le visiteur ne demande pas à les réduire.
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('motion');
+        // Sécurité : si le script d'animation ne se charge pas, on affiche tout.
+        setTimeout(() => document.documentElement.classList.add('motion-ready'), 2500);
+      }
+    </script>
     <script type="application/ld+json" set:html={JSON.stringify(orgLd)} />
     <slot name="head" />
   </head>
@@ -71,5 +79,9 @@ const orgLd = {
       <slot />
     </main>
     <Footer />
+    <script>
+      import { initMotion } from '../scripts/motion';
+      initMotion();
+    </script>
   </body>
 </html>

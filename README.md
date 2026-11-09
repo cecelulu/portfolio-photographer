@@ -50,6 +50,17 @@ Le site est statique : il faut indiquer où envoyer les demandes. Dans `src/data
 
 Les formulaires comprennent une validation des champs, un champ anti-spam invisible et une case de consentement RGPD.
 
+## Animations
+
+Les animations utilisent [GSAP](https://gsap.com) et son module ScrollTrigger (`src/scripts/motion.ts`). On peut tout régler depuis ce seul fichier :
+
+- **Accueil** : la photo se recadre doucement, puis titre, texte et boutons arrivent en cascade, et la photo prend un léger effet de profondeur au défilement.
+- **Défilement** : titres de section, cartes, étapes, avis et questions apparaissent avec un fondu et une petite montée.
+- **Chiffres clés** : ils comptent jusqu'à leur valeur (20 ans, 450 dates, 8,6/10…).
+- **Survols** : les boutons et les cartes réagissent au survol et au clic.
+
+Toutes les animations sont désactivées pour les visiteurs qui ont demandé à réduire les animations sur leur appareil : le contenu s'affiche alors directement.
+
 ## Tarifs
 
 Les prix affichés sont les prix **« à partir de », hors promotion**, relevés sur le site actuel en novembre 2026. Ils varient selon le circuit et le nombre de tours. Ce sont des indications, et le tarif exact est confirmé par le service client.

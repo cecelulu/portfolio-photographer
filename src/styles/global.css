@@ -640,3 +640,61 @@ fieldset.field {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- Mouvement ----------
+   `html.motion` est posé dans <head> si le visiteur accepte les animations.
+   Tant que le script n'a pas pris la main (`motion-ready`), on masque ce qui va
+   être animé pour éviter un flash. Le script GSAP gère ensuite chaque élément. */
+
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-quick: 0.18s;
+}
+
+html.motion:not(.motion-ready)
+  :is(.section-head, .grid > *, .steps__item, .stat, .review, .reviews__summary, .faq__item, .timeline > li, [data-reveal]),
+html.motion:not(.motion-ready) :is(.hero, .page-hero) :is(.breadcrumb, .eyebrow, h1, p, .hero__ctas, .hero-specs, .hero-ctas, .facts, .ctas, .finder) {
+  opacity: 0;
+}
+
+.btn {
+  transition:
+    transform var(--dur-quick) var(--ease-out),
+    background var(--dur-quick) var(--ease-out),
+    box-shadow var(--dur-quick) var(--ease-out),
+    border-color var(--dur-quick) var(--ease-out);
+}
+.btn:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: none;
+  transition-duration: 0.08s;
+}
+.btn :is(svg) {
+  transition: transform var(--dur-quick) var(--ease-out);
+}
+.btn:hover svg {
+  transform: translateX(3px);
+}
+
+.card {
+  transition:
+    transform 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out),
+    border-color 0.25s var(--ease-out);
+}
+
+/* Couche d'ambiance : le fond des chiffres clés dérive très lentement. */
+@keyframes ambient-drift {
+  0%,
+  100% {
+    background-position: 0% 0%, 100% 100%, 0 0;
+  }
+  50% {
+    background-position: 30% 20%, 70% 80%, 0 0;
+  }
+}
+.stat__value,
+.reasons__value,
+.reviews__score {
+  font-variant-numeric: tabular-nums;
+}
