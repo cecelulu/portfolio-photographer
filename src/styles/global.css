@@ -254,6 +254,14 @@ p {
   border-color: var(--ink);
   box-shadow: none;
 }
+.btn--white {
+  --btn-bg: #fff;
+  --btn-fg: var(--magenta-600);
+}
+.btn--white:hover {
+  --btn-bg: #fff;
+  box-shadow: 0 10px 24px rgba(60, 6, 36, 0.3);
+}
 .btn--light {
   --btn-fg: #fff;
   background: transparent;
@@ -684,7 +692,7 @@ fieldset.field {
 
 html.motion:not(.motion-ready)
   :is(.section-head, .grid > *, .steps__item, .stat, .review, .reviews__summary, .faq__item, .timeline > li, [data-reveal]),
-html.motion:not(.motion-ready) :is(.hero, .page-hero) :is(.breadcrumb, .eyebrow, h1, p, .hero__ctas, .hero-specs, .hero-ctas, .facts, .ctas, .finder) {
+html.motion:not(.motion-ready) :is(.hero, .page-hero) :is(.breadcrumb, .eyebrow, h1, h2, p, .hero__ctas, .hero-specs, .hero-ctas, .facts, .ctas, .finder, .poster__car, .poster__shadow, .poster__card) {
   opacity: 0;
 }
 

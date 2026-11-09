@@ -23,6 +23,18 @@ const regions = Object.entries(circuitsData.regions).map(([key, label]) => ({
   circuits: circuitsData.circuits.filter((c) => c.regionKey === key),
 }));
 
+// Voiture détourée du grand titre, et carte « à la une ».
+const HERO_CAR = { name: 'Aston Martin V8 Vantage', image: '/images/detoure/aston-martin-vantage.webp', width: 959, height: 336 };
+const temerario = cars.find((c) => c.slug === 'lamborghini-temerario')!;
+const FEATURED = {
+  slug: temerario.slug,
+  kicker: 'La plus puissante',
+  name: temerario.name,
+  text: `${temerario.power} ch hybride, à piloter sur 26 circuits`,
+  price: temerario.priceFrom,
+  thumb: '/images/detoure/lamborghini-temerario.webp',
+};
+
 const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].includes(i));
 ---
 
@@ -30,60 +42,79 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
   title="Sprint Racing – Stage de pilotage sur circuit en Ferrari, Lamborghini, Porsche"
   description="Stages de pilotage sur circuit en Ferrari, Lamborghini, Porsche, McLaren et monoplace sur 25 circuits en France et en Belgique. Dès 16 ans. Idée cadeau inoubliable."
 >
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero__media">
-      <img class="hero__img" src="/images/voitures/multigt2.webp" alt="Porsche 911 GT3, Ferrari 296 GTB et Porsche 991 GT3 RS sur circuit" width="1920" height="500" fetchpriority="high" />
-    </div>
-    <div class="container hero__inner">
-      <div class="hero__text">
-        <p class="eyebrow">Stages de pilotage depuis 2002</p>
-        <h1>Prenez le volant des plus belles sportives du monde</h1>
-        <p class="hero__lead">
-          Ferrari, Lamborghini, Porsche, McLaren ou monoplace : vivez une expérience inoubliable sur l’un de nos 25 circuits en France et en Belgique. Débutant ou confirmé, dès 16 ans.
-        </p>
-        <div class="hero__ctas">
-          <a class="btn" href="/commande/">Réserver mon stage</a>
-          <a class="btn btn--light" href="/stages/">Voir les voitures</a>
-        </div>
+  <!-- HERO « affiche » : titre géant + voiture détourée -->
+  <section class="hero poster">
+    <div class="container poster__inner">
+      <p class="poster__eyebrow">Stages de pilotage sur circuit depuis 2002</p>
+      <div class="poster__stage">
+        <h1 class="poster__title">Sprint Racing<span class="sr-only"> – stages de pilotage sur circuit</span></h1>
+        <img
+          class="poster__car hero__img"
+          src={HERO_CAR.image}
+          alt={`${HERO_CAR.name} détourée`}
+          width={HERO_CAR.width}
+          height={HERO_CAR.height}
+          fetchpriority="high"
+        />
+        <span class="poster__shadow" aria-hidden="true"></span>
       </div>
-
-      <form class="finder card" action="/commande/" method="get">
-        <p class="finder__title">Trouvez votre stage</p>
-        <label>
-          <span>Voiture</span>
-          <select name="voiture">
-            <option value="">Toutes les voitures</option>
-            <optgroup label="GT">
-              {cars.filter((c) => c.category === 'gt').map((c) => <option value={c.slug}>{c.name} – {c.power} ch</option>)}
-            </optgroup>
-            <optgroup label="Monoplace">
-              {cars.filter((c) => c.category === 'monoplace').map((c) => <option value={c.slug}>{c.name} – {c.power} ch</option>)}
-            </optgroup>
-          </select>
-        </label>
-        <label>
-          <span>Circuit</span>
-          <select name="circuit">
-            <option value="">Tous les circuits</option>
-            {
-              regions.map((r) => (
-                <optgroup label={r.label}>
-                  {r.circuits.map((c) => (
-                    <option value={c.slug}>
-                      {c.name} ({c.department})
-                    </option>
-                  ))}
-                </optgroup>
-              ))
-            }
-          </select>
-        </label>
-        <button class="btn btn--block" type="submit">Continuer <Icon name="arrow" size={18} /></button>
-        <p class="finder__note">Sans engagement. Réponse rapide de notre équipe.</p>
-      </form>
+      <div class="poster__bottom">
+        <div class="poster__pitch">
+          <h2>Prenez le volant des plus belles sportives du monde</h2>
+          <p>Ferrari, Lamborghini, Porsche, McLaren ou monoplace, sur 25 circuits en France et en Belgique. Débutant ou confirmé, dès 16 ans.</p>
+          <div class="hero__ctas">
+            <a class="btn btn--white" href="/commande/">Réserver mon stage</a>
+            <a class="btn btn--light" href="/stages/">Voir les voitures</a>
+          </div>
+        </div>
+        <a class="poster__card" href={`/stages/${FEATURED.slug}/`}>
+          <img src={FEATURED.thumb} alt="" width="894" height="306" loading="eager" />
+          <span class="poster__card-body">
+            <small>{FEATURED.kicker}</small>
+            <strong>{FEATURED.name}</strong>
+            <span>{FEATURED.text}</span>
+            <em>dès {formatPrice(FEATURED.price)}</em>
+          </span>
+        </a>
+      </div>
     </div>
   </section>
+
+  <!-- Recherche rapide -->
+  <div class="container finder-wrap">
+    <form class="finder card" action="/commande/" method="get" aria-label="Trouvez votre stage">
+      <p class="finder__title">Trouvez votre stage</p>
+      <label>
+        <span>Voiture</span>
+        <select name="voiture">
+          <optgroup label="GT">
+            {cars.filter((c) => c.category === 'gt').map((c) => <option value={c.slug}>{c.name} – {c.power} ch</option>)}
+          </optgroup>
+          <optgroup label="Monoplace">
+            {cars.filter((c) => c.category === 'monoplace').map((c) => <option value={c.slug}>{c.name} – {c.power} ch</option>)}
+          </optgroup>
+        </select>
+      </label>
+      <label>
+        <span>Circuit</span>
+        <select name="circuit">
+          <option value="">Tous les circuits</option>
+          {
+            regions.map((r) => (
+              <optgroup label={r.label}>
+                {r.circuits.map((c) => (
+                  <option value={c.slug}>
+                    {c.name} ({c.department})
+                  </option>
+                ))}
+              </optgroup>
+            ))
+          }
+        </select>
+      </label>
+      <button class="btn" type="submit">Voir les prix <Icon name="arrow" size={18} /></button>
+    </form>
+  </div>
 
   <Reassurance />
 
@@ -240,82 +271,187 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
 </Base>
 
 <style>
-  .hero {
+  /* ---------- Hero « affiche » ---------- */
+  .poster {
+    --t: min(17.2vw, 236px); /* taille du titre géant */
     position: relative;
     isolation: isolate;
-    min-height: min(86vh, 760px);
-    display: flex;
-    align-items: center;
+    overflow: hidden;
     color: #fff;
-    background: var(--graphite);
-    overflow: hidden;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 58%, #e2559f 0%, rgba(226, 85, 159, 0) 70%),
+      linear-gradient(115deg, rgba(255, 255, 255, 0.07) 0 22%, transparent 22% 100%),
+      linear-gradient(245deg, rgba(255, 255, 255, 0.06) 0 18%, transparent 18% 100%),
+      var(--magenta);
   }
-  .hero__media {
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    overflow: hidden;
-  }
-  .hero__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 60% 50%;
-  }
-  .hero::before {
+  /* sol légèrement plus sombre */
+  .poster::after {
     content: '';
     position: absolute;
-    inset: 0;
+    inset: auto 0 0 0;
+    height: 34%;
     z-index: -1;
-    background:
-      linear-gradient(90deg, rgba(14, 14, 20, 0.9) 0%, rgba(14, 14, 20, 0.62) 50%, rgba(14, 14, 20, 0.2) 100%),
-      linear-gradient(0deg, rgba(14, 14, 20, 0.45) 0%, transparent 40%);
+    background: linear-gradient(0deg, rgba(90, 14, 56, 0.35), transparent);
   }
-  .hero__inner {
+  .poster__inner {
+    padding-block: 28px 44px;
+  }
+  .poster__eyebrow {
+    margin: 0 0 6px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .poster__stage {
+    position: relative;
     display: grid;
-    grid-template-columns: 1.35fr 0.85fr;
-    gap: 48px;
-    align-items: center;
-    padding-block: 64px;
+    justify-items: center;
   }
-  .hero h1 {
+  .poster__stage > * {
+    grid-area: 1 / 1;
+  }
+  .poster__title {
+    margin: 0;
+    width: 100%;
+    font-size: var(--t);
+    line-height: 0.86;
+    letter-spacing: -0.005em;
+    text-align: center;
+    white-space: nowrap;
+    color: #fff7fb;
+    text-transform: uppercase;
+  }
+  .poster__car {
+    position: relative;
+    z-index: 2;
+    width: min(68%, 900px);
+    height: auto;
+    margin-top: calc(var(--t) * 0.52);
+    filter: drop-shadow(0 18px 22px rgba(60, 6, 36, 0.35));
+  }
+  .poster__shadow {
+    align-self: end;
+    z-index: 1;
+    width: min(62%, 820px);
+    height: 34px;
+    margin-bottom: -6px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(40, 4, 24, 0.55), rgba(40, 4, 24, 0) 70%);
+  }
+  .poster__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 32px;
+    margin-top: 18px;
+  }
+  .poster__pitch {
+    max-width: 520px;
+  }
+  .poster__pitch h2 {
+    font-family: var(--font-body);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    font-weight: 600;
+    line-height: 1.2;
+    text-transform: none;
+    letter-spacing: -0.01em;
     color: #fff;
-    max-width: 14ch;
+    margin-bottom: 10px;
   }
-  .hero .eyebrow {
-    color: #f6a9d1;
-  }
-  .hero__lead {
-    font-size: 1.15rem;
-    max-width: 56ch;
-    color: #e6e6ec;
+  .poster__pitch p {
+    color: rgba(255, 255, 255, 0.86);
+    margin-bottom: 0;
   }
   .hero__ctas {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin-top: 28px;
+    margin-top: 22px;
+  }
+  .poster__card {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 360px;
+    padding: 10px;
+    border-radius: 14px;
+    background: #fff;
+    color: var(--ink);
+    text-decoration: none;
+    box-shadow: 0 18px 40px rgba(60, 6, 36, 0.28);
+    transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+  }
+  .poster__card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 24px 48px rgba(60, 6, 36, 0.34);
+  }
+  .poster__card img {
+    width: 130px;
+    height: 96px;
+    padding: 10px 8px;
+    object-fit: contain;
+    border-radius: 10px;
+    background: radial-gradient(ellipse at 50% 70%, #ffffff, #efeff3);
+  }
+  .poster__card-body {
+    display: grid;
+    gap: 2px;
+    line-height: 1.3;
+  }
+  .poster__card-body small {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal-700);
+  }
+  .poster__card-body strong {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    text-transform: uppercase;
+  }
+  .poster__card-body span {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .poster__card-body em {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--magenta-600);
   }
 
+  /* Recherche rapide, à cheval sur le bas du hero */
+  .finder-wrap {
+    position: relative;
+    z-index: 3;
+    margin-top: -1px;
+  }
   .finder {
-    padding: 28px;
-    color: var(--text);
     display: grid;
-    gap: 14px;
+    grid-template-columns: auto 1fr 1fr auto;
+    align-items: end;
+    gap: 16px;
+    padding: 18px 22px;
+    margin-top: 24px;
     box-shadow: var(--shadow-lg);
   }
   .finder__title {
+    margin: 0 8px 10px 0;
     font-family: var(--font-display);
-    font-size: 1.7rem;
+    font-size: 1.35rem;
     font-weight: 700;
     text-transform: uppercase;
     color: var(--ink);
-    margin: 0;
+    white-space: nowrap;
   }
   .finder label {
     display: grid;
     gap: 6px;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 600;
     color: var(--muted);
   }
@@ -330,13 +466,50 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
     font-size: 1rem;
     color: var(--ink);
   }
-  .finder__note {
-    margin: 0;
-    text-align: center;
-    font-size: 0.82rem;
-    color: var(--muted);
-  }
 
+  @media (max-width: 1000px) {
+    .poster__bottom {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .poster__card {
+      width: 100%;
+      max-width: 460px;
+    }
+    .finder {
+      grid-template-columns: 1fr 1fr;
+    }
+    .finder__title {
+      grid-column: 1 / -1;
+      margin-bottom: 0;
+    }
+  }
+  @media (max-width: 640px) {
+    .poster {
+      --t: 16vw;
+    }
+    .poster__inner {
+      padding-block: 22px 32px;
+    }
+    .poster__eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+    }
+    .poster__car {
+      width: 96%;
+      margin-top: calc(var(--t) * 0.6);
+    }
+    .poster__shadow {
+      width: 90%;
+      height: 20px;
+    }
+    .hero__ctas .btn {
+      flex: 1 1 100%;
+    }
+    .finder {
+      grid-template-columns: 1fr;
+    }
+  }
   .split {
     max-width: none;
     display: flex;
@@ -506,12 +679,6 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
   }
 
   @media (max-width: 1000px) {
-    .hero__inner {
-      grid-template-columns: 1fr;
-    }
-    .finder {
-      max-width: 520px;
-    }
     .stats {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -529,39 +696,6 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
     .region-list {
       grid-template-columns: 1fr;
     }
-    .hero__ctas .btn {
-      flex: 1 1 100%;
-    }
   }
 
-  /* Téléphone : la photo (très panoramique) devient une bande nette en haut,
-     le texte passe dessous sur fond graphite. */
-  @media (max-width: 700px) {
-    .hero {
-      display: block;
-      min-height: 0;
-    }
-    .hero::before {
-      display: none;
-    }
-    .hero__media {
-      position: relative;
-      inset: auto;
-      z-index: auto;
-      aspect-ratio: 16 / 7;
-    }
-    .hero__media::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(0deg, var(--graphite) 0%, rgba(36, 36, 43, 0) 45%);
-    }
-    .hero__img {
-      object-position: 50% 50%;
-    }
-    .hero__inner {
-      padding-block: 20px 40px;
-      gap: 32px;
-    }
-  }
 </style>

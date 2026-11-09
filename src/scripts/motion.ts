@@ -30,9 +30,30 @@ export const REVEAL_SELECTOR = [
   '[data-reveal]',
 ].join(',');
 
+function posterIntro(hero: HTMLElement) {
+  const title = hero.querySelector('.poster__title');
+  const car = hero.querySelector('.poster__car');
+  const shadow = hero.querySelector('.poster__shadow');
+  const rest = hero.querySelectorAll('.poster__eyebrow, .poster__pitch > *, .poster__card');
+
+  const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+  if (title) tl.fromTo(title, { autoAlpha: 0, yPercent: 35 }, { autoAlpha: 1, yPercent: 0, duration: 1.2 }, 0);
+  if (car) tl.fromTo(car, { autoAlpha: 0, xPercent: 28 }, { autoAlpha: 1, xPercent: 0, duration: 1.4, ease: 'power4.out' }, 0.25);
+  if (shadow) tl.fromTo(shadow, { autoAlpha: 0, scaleX: 0.4 }, { autoAlpha: 1, scaleX: 1, duration: 1.2 }, 0.45);
+  if (rest.length) tl.fromTo(rest, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.08 }, 0.7);
+
+  // Au défilement (grands écrans) : la voiture « avance » vers la gauche, le titre glisse en sens inverse.
+  if (window.matchMedia('(min-width: 701px)').matches) {
+    const st = { trigger: hero, start: 'top top', end: 'bottom top', scrub: true };
+    if (car) gsap.to(car, { x: -90, ease: 'none', scrollTrigger: { ...st } });
+    if (title) gsap.to(title, { x: 40, ease: 'none', scrollTrigger: { ...st } });
+  }
+}
+
 function heroIntro() {
   const hero = document.querySelector<HTMLElement>('.hero, .page-hero');
   if (!hero) return;
+  if (hero.classList.contains('poster')) return posterIntro(hero);
   const img = hero.querySelector<HTMLElement>('.hero__img, .page-hero__img');
   const text = hero.querySelectorAll<HTMLElement>(
     '.breadcrumb, .eyebrow, h1, .hero__lead, .page-hero .container > p:not(.eyebrow), .hero__ctas, .hero-specs, .hero-ctas, .facts, .ctas'
