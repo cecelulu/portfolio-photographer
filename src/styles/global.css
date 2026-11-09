@@ -692,7 +692,7 @@ fieldset.field {
 
 html.motion:not(.motion-ready)
   :is(.section-head, .grid > *, .steps__item, .stat, .review, .reviews__summary, .faq__item, .timeline > li, [data-reveal]),
-html.motion:not(.motion-ready) :is(.hero, .page-hero) :is(.breadcrumb, .eyebrow, h1, h2, p, .hero__ctas, .hero-specs, .hero-ctas, .facts, .ctas, .finder, .poster__car, .poster__shadow, .poster__card) {
+html.motion:not(.motion-ready) :is(.hero, .page-hero) :is(.breadcrumb, .eyebrow, h1, h2, p, .hero__ctas, .hero-specs, .hero-ctas, .facts, .ctas, .finder, .poster__car, .poster__reflection, .poster__card) {
   opacity: 0;
 }
 

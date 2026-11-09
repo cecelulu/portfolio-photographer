@@ -14,16 +14,6 @@ const path = Astro.url.pathname;
 const isActive = (href: string) => path === href || path.startsWith(href);
 ---
 
-<div class="topbar">
-  <div class="container topbar__inner">
-    <span class="topbar__hours"><Icon name="clock" size={15} /> {site.hours}</span>
-    <span class="topbar__phones">
-      <a href={site.phoneFrHref}><span aria-hidden="true">🇫🇷</span> {site.phoneFr}</a>
-      <a href={site.phoneBeHref}><span aria-hidden="true">🇧🇪</span> {site.phoneBe}</a>
-    </span>
-  </div>
-</div>
-
 <header class="header" data-header>
   <div class="container header__inner">
     <a href="/" class="header__logo" aria-label="Sprint Racing – accueil">
@@ -50,6 +40,7 @@ const isActive = (href: string) => path === href || path.startsWith(href);
     </nav>
 
     <div class="header__actions">
+      <a class="header__phone" href={site.phoneFrHref}><Icon name="phone" size={16} /> {site.phoneFr}</a>
       <a class="header__call" href={site.phoneFrHref} aria-label={`Appeler le ${site.phoneFr}`}>
         <Icon name="phone" size={20} />
       </a>
@@ -88,36 +79,6 @@ const isActive = (href: string) => path === href || path.startsWith(href);
 </script>
 
 <style>
-  .topbar {
-    background: var(--graphite);
-    color: #c9c9d3;
-    font-size: 0.82rem;
-  }
-  .topbar__inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    min-height: 36px;
-  }
-  .topbar__hours {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .topbar__phones {
-    display: flex;
-    gap: 20px;
-  }
-  .topbar a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 600;
-  }
-  .topbar a:hover {
-    color: #f6a9d1;
-  }
-
   .header {
     position: sticky;
     top: 0;
@@ -154,6 +115,7 @@ const isActive = (href: string) => path === href || path.startsWith(href);
   }
   .nav ul a {
     display: block;
+    white-space: nowrap;
     padding: 8px 12px;
     border-radius: 8px;
     color: var(--ink);
@@ -186,6 +148,28 @@ const isActive = (href: string) => path === href || path.startsWith(href);
     display: flex;
     align-items: center;
     gap: 10px;
+  }
+  .header__phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 6px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .header__phone:hover {
+    color: var(--magenta-600);
+  }
+  .header__phone :global(svg) {
+    color: var(--magenta);
+  }
+  @media (max-width: 1480px) {
+    .header__phone {
+      display: none;
+    }
   }
   .header__call {
     display: none;
@@ -227,12 +211,6 @@ const isActive = (href: string) => path === href || path.startsWith(href);
   }
 
   @media (max-width: 980px) {
-    .topbar__hours {
-      display: none;
-    }
-    .topbar__inner {
-      justify-content: center;
-    }
     .header__burger,
     .header__call {
       display: inline-flex;
