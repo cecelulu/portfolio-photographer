@@ -1,0 +1,171 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import { site } from '../../data/site';
+---
+
+<Base title="Commande confirmée (démonstration)" description="Confirmation de commande de démonstration." noindex>
+  <section class="section section--soft">
+    <div class="container confirm">
+      <div class="confirm__card card" data-order hidden>
+        <span class="confirm__icon"><Icon name="check" size={34} /></span>
+        <p class="eyebrow">Commande confirmée</p>
+        <h1>Merci <span data-buyer></span> !</h1>
+        <p class="confirm__lead">Votre commande <strong data-number></strong> est enregistrée. Un e-mail de confirmation serait envoyé à <strong data-email></strong>.</p>
+
+        <div class="confirm__demo">
+          <Icon name="shield" size={20} />
+          <p><strong>Démonstration :</strong> aucun paiement n’a été encaissé et aucun e-mail n’est envoyé.</p>
+        </div>
+
+        <ul class="confirm__lines" data-lines></ul>
+        <div class="confirm__total"><span>Total payé (<span data-payment></span>)</span><strong data-total></strong></div>
+
+        <h2>Et maintenant ?</h2>
+        <ol class="next">
+          <li><strong>Votre bon de commande</strong> arrive par e-mail en quelques minutes, avec le planning de l’année.</li>
+          <li><strong>Choisissez votre date</strong> dans votre espace « Mon compte » ou par téléphone au {site.phoneFr}.</li>
+          <li><strong>Une semaine avant</strong>, vous recevez l’heure de rendez-vous et la vidéo de briefing.</li>
+        </ol>
+        <div class="actions">
+          <a class="btn" href="/">Retour à l’accueil</a>
+          <a class="btn btn--ghost" href="/le-stage/">Préparer mon stage</a>
+        </div>
+      </div>
+
+      <div class="confirm__card card" data-empty hidden>
+        <h1>Aucune commande en cours</h1>
+        <p class="confirm__lead">Choisissez votre voiture et votre circuit pour réserver votre stage.</p>
+        <div class="actions"><a class="btn" href="/commande/">Réserver un stage</a></div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const euro = (n: number) =>
+    n.toLocaleString('fr-FR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }) + ' €';
+  let order: any = null;
+  try {
+    order = JSON.parse(sessionStorage.getItem('sr-demo-order') || 'null');
+  } catch {}
+  const q = (s: string) => document.querySelector<HTMLElement>(s)!;
+  if (!order) {
+    q('[data-empty]').hidden = false;
+  } else {
+    q('[data-order]').hidden = false;
+    q('[data-buyer]').textContent = (order.buyer || '').split(' ')[0];
+    q('[data-number]').textContent = order.number;
+    q('[data-email]').textContent = order.email;
+    q('[data-payment]').textContent = order.payment;
+    q('[data-total]').textContent = euro(order.total);
+    const ul = q('[data-lines]');
+    for (const l of order.lines) {
+      const li = document.createElement('li');
+      li.innerHTML = '<div><strong></strong><small></small></div><span></span>';
+      li.querySelector('strong')!.textContent = l.label;
+      li.querySelector('small')!.textContent = l.detail ?? '';
+      li.querySelector('span')!.textContent = l.amount ? euro(l.amount) : 'Offert';
+      ul.append(li);
+    }
+  }
+</script>
+
+<style>
+  .confirm {
+    max-width: 760px;
+  }
+  .confirm__card {
+    padding: clamp(24px, 5vw, 48px);
+  }
+  .confirm__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--teal-50);
+    color: var(--teal-700);
+    margin-bottom: 16px;
+  }
+  .confirm h1 {
+    font-size: clamp(2.2rem, 5vw, 3rem);
+  }
+  .confirm__lead {
+    font-size: 1.08rem;
+    color: var(--muted);
+  }
+  .confirm__demo {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    background: #fff4c2;
+    color: #4a3b00;
+    font-size: 0.92rem;
+    margin: 20px 0 24px;
+  }
+  .confirm__demo p {
+    margin: 0;
+  }
+  .confirm__demo :global(svg) {
+    flex: none;
+  }
+  .confirm__lines {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 12px;
+  }
+  .confirm__lines :global(li) {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .confirm__lines :global(strong) {
+    display: block;
+    color: var(--ink);
+  }
+  .confirm__lines :global(small) {
+    color: var(--muted);
+  }
+  .confirm__lines :global(span) {
+    flex: none;
+    font-weight: 600;
+  }
+  .confirm__total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    font-weight: 600;
+  }
+  .confirm__total strong {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--magenta);
+  }
+  .confirm h2 {
+    font-size: 1.6rem;
+    margin-top: 36px;
+  }
+  .next {
+    padding-left: 22px;
+    display: grid;
+    gap: 10px;
+  }
+  .next li::marker {
+    color: var(--magenta);
+    font-weight: 700;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+</style>

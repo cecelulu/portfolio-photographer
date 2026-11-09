@@ -26,7 +26,8 @@ npm run preview   # prévisualise la version finale
 | Entreprises | `/entreprises/` | Occasions, programme type, formulaire de devis |
 | Le déroulement | `/le-stage/` | Étapes, journée type, conditions, options, présentation de l’école |
 | FAQ | `/faq/` | Questions fréquentes par rubrique |
-| Demande de stage | `/reservation/` | Formulaire en 4 étapes avec récapitulatif et prix indicatif |
+| Réservation en ligne | `/commande/` | Tunnel d’achat **de démonstration** en 3 étapes (stage, coffret ou chèque cadeau → informations → paiement), prix réels par circuit et nombre de tours, page de confirmation |
+| Demande sans engagement | `/reservation/` | Formulaire en 4 étapes avec récapitulatif et prix indicatif (drift, coaching, multi GT, questions) |
 | Contact, Merci, Mentions légales, 404 | | |
 
 ## Modifier le contenu
@@ -59,6 +60,12 @@ Le site est statique : il faut indiquer où envoyer les demandes. Dans `src/data
 - **une URL** (par exemple un formulaire [Formspree](https://formspree.io), Getform, Basin ou une API maison) : la demande est envoyée directement en arrière-plan, puis le visiteur arrive sur la page `/merci`.
 
 Les formulaires comprennent une validation des champs, un champ anti-spam invisible et une case de consentement RGPD.
+
+## Réservation en ligne (démonstration)
+
+`/commande/` montre un parcours d’achat complet : choix de la voiture, du circuit et de la formule (prix réels hors promotion, dans `src/data/pricing.json`), coffret ou chèque cadeau, option cadeau et envoi par courrier, coordonnées, choix du moyen de paiement, puis confirmation.
+
+**Aucun paiement n’est encaissé et aucun numéro de carte n’est demandé.** La commande de démonstration est seulement gardée dans le navigateur du visiteur pour afficher la confirmation. Pour un vrai paiement, il faudra relier l’étape 3 au système de réservation du client ou à un prestataire de paiement (Stripe, PayPal…), avec un compte marchand et des CGV à son nom.
 
 ## Animations
 

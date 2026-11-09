@@ -67,6 +67,9 @@ export const reassurance = [
   { icon: 'shield', title: 'Aucune caution', text: 'Sur tous les stages GT' },
 ];
 
+/** Motif de validation des numéros de téléphone (chiffres, espaces, +, ., parenthèses, tirets). */
+export const TEL_PATTERN = '[0-9 +.\\(\\)\\-]{8,}';
+
 export function formatPrice(value: number | null | undefined): string {
   if (value == null) return '';
   const hasCents = Math.round(value * 100) % 100 !== 0;

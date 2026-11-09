@@ -109,7 +109,7 @@ const includes = isMono
                 <ul>
                   {r.list.map((c) => (
                     <li>
-                      <a href={`/reservation/?voiture=${car.slug}&circuit=${c.slug}`}>
+                      <a href={`/commande/?voiture=${car.slug}&circuit=${c.slug}`}>
                         {c.name} <span>({c.department})</span>
                       </a>
                     </li>
@@ -125,8 +125,9 @@ const includes = isMono
         <div class="booking card">
           <p class="price"><small>à partir de</small><strong>{formatPrice(car.priceFrom)}</strong></p>
           <p class="booking__note">Tarif indicatif hors promotion pour la formule la plus courte. Le prix varie selon le circuit et le nombre de tours.</p>
-          <a class="btn btn--block" href={`/reservation/?voiture=${car.slug}`}>Demander ce stage</a>
-          <a class="btn btn--ghost btn--block" href={`/reservation/?voiture=${car.slug}&type=cadeau`}><Icon name="gift" size={18} /> L’offrir en cadeau</a>
+          <a class="btn btn--block" href={`/commande/?voiture=${car.slug}`}>Réserver ce stage</a>
+          <a class="btn btn--ghost btn--block" href={`/commande/?voiture=${car.slug}&cadeau=1`}><Icon name="gift" size={18} /> L’offrir en cadeau</a>
+          <a class="booking__ask" href={`/reservation/?voiture=${car.slug}`}>Une question ? Demande sans engagement</a>
           <ul class="booking__perks">
             <li><Icon name="check" size={16} /> Paiement en 3× sans frais</li>
             <li><Icon name="check" size={16} /> Bon cadeau par e-mail en 5 min</li>
@@ -256,6 +257,12 @@ const includes = isMono
     font-size: 0.85rem;
     color: var(--muted);
     margin: 0;
+  }
+  .booking__ask {
+    text-align: center;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--teal-700);
   }
   .booking__perks {
     list-style: none;

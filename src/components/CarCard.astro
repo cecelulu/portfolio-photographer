@@ -35,7 +35,7 @@ const { car } = Astro.props;
     </ul>
     <div class="car-card__foot">
       <p class="price"><small>à partir de</small><strong>{formatPrice(car.priceFrom)}</strong></p>
-      <a class="btn btn--sm" href={`/reservation/?voiture=${car.slug}`}>Réserver</a>
+      <a class="btn btn--sm" href={`/commande/?voiture=${car.slug}`}>Réserver</a>
     </div>
   </div>
 </article>

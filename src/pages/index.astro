@@ -43,12 +43,12 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
           Ferrari, Lamborghini, Porsche, McLaren ou monoplace : vivez une expérience inoubliable sur l’un de nos 25 circuits en France et en Belgique. Débutant ou confirmé, dès 16 ans.
         </p>
         <div class="hero__ctas">
-          <a class="btn" href="/reservation/">Demander mon stage</a>
+          <a class="btn" href="/commande/">Réserver mon stage</a>
           <a class="btn btn--light" href="/stages/">Voir les voitures</a>
         </div>
       </div>
 
-      <form class="finder card" action="/reservation/" method="get">
+      <form class="finder card" action="/commande/" method="get">
         <p class="finder__title">Trouvez votre stage</p>
         <label>
           <span>Voiture</span>
@@ -165,7 +165,7 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
         </ul>
         <div class="gift__ctas">
           <a class="btn" href="/offrir/">Offrir un stage</a>
-          <a class="btn btn--ghost" href="/reservation/?type=cadeau">Commander un cadeau</a>
+          <a class="btn btn--ghost" href="/commande/?produit=coffret&cadeau=1">Commander un cadeau</a>
         </div>
       </div>
     </div>

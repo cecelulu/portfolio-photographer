@@ -43,7 +43,7 @@ const isActive = (href: string) => path === href || path.startsWith(href);
         }
       </ul>
       <div class="nav__mobile-extra">
-        <a class="btn btn--block" href="/reservation/">Demander mon stage</a>
+        <a class="btn btn--block" href="/commande/">Réserver mon stage</a>
         <a class="nav__phone" href={site.phoneFrHref}><Icon name="phone" size={18} /> {site.phoneFr}</a>
         <a class="nav__phone" href={site.phoneBeHref}><Icon name="phone" size={18} /> {site.phoneBe} (Belgique)</a>
       </div>
@@ -53,7 +53,7 @@ const isActive = (href: string) => path === href || path.startsWith(href);
       <a class="header__call" href={site.phoneFrHref} aria-label={`Appeler le ${site.phoneFr}`}>
         <Icon name="phone" size={20} />
       </a>
-      <a class="btn btn--sm header__cta" href="/reservation/">Demander mon stage</a>
+      <a class="btn btn--sm header__cta" href="/commande/">Réserver mon stage</a>
       <button class="header__burger" type="button" aria-controls="menu" aria-expanded="false" data-burger>
         <span class="sr-only">Ouvrir le menu</span>
         <Icon name="menu" size={26} class="icon-open" />

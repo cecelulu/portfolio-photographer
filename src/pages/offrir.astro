@@ -21,7 +21,7 @@ const giftFaq = faq.find((g) => g.group === 'Offrir un stage')!.items;
     crumbs={[{ href: '/offrir/', label: 'Offrir' }]}
   >
     <div class="hero-ctas">
-      <a class="btn" href="/reservation/?type=cadeau">Commander un cadeau</a>
+      <a class="btn" href="/commande/?produit=coffret&cadeau=1">Commander un cadeau</a>
     </div>
   </PageHero>
 
@@ -49,7 +49,7 @@ const giftFaq = faq.find((g) => g.group === 'Offrir un stage')!.items;
           <span class="way__icon"><Icon name="card" size={26} /></span>
           <h3>Un chèque cadeau</h3>
           <p>Choisissez librement le montant, dès 50 €. Le bénéficiaire l’utilise sur le site en saisissant son code au moment du paiement.</p>
-          <a class="link-arrow" href="/reservation/?type=cadeau">Offrir un chèque cadeau</a>
+          <a class="link-arrow" href="/commande/?produit=cheque&cadeau=1">Offrir un chèque cadeau</a>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@ const giftFaq = faq.find((g) => g.group === 'Offrir un stage')!.items;
                 <strong>{formatPrice(g.price)}</strong>
               </p>
               <p class="box__text">{g.text}</p>
-              <a class={`btn btn--sm btn--block${i === 2 ? '' : ' btn--ghost'}`} href={`/reservation/?type=cadeau`}>
+              <a class={`btn btn--sm btn--block${i === 2 ? '' : ' btn--ghost'}`} href={`/commande/?produit=coffret&coffret=${encodeURIComponent(g.name)}&cadeau=1`}>
                 Choisir
               </a>
             </article>

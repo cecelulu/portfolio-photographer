@@ -42,7 +42,7 @@ const nearby = circuitsData.circuits.filter((c) => c.regionKey === circuit.regio
       <li><Icon name="helmet" size={18} /> {available.length} voitures</li>
     </ul>
     <div class="ctas">
-      <a class="btn" href={`/reservation/?circuit=${circuit.slug}`}>Réserver sur ce circuit</a>
+      <a class="btn" href={`/commande/?circuit=${circuit.slug}`}>Réserver sur ce circuit</a>
       <a class="btn btn--light" href="#voitures">Voir les voitures</a>
     </div>
   </PageHero>

@@ -4,7 +4,7 @@ import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import cars from '../data/cars.json';
 import circuitsData from '../data/circuits.json';
-import { site, formatPrice } from '../data/site';
+import { site, formatPrice, TEL_PATTERN } from '../data/site';
 import { giftBoxes, options } from '../data/content';
 
 const types = [
@@ -246,7 +246,7 @@ const laps = ['2', '3', '4', '5', '6', '8', '10'];
             </label>
             <label class="field">
               <span>Téléphone <span class="req">*</span></span>
-              <input type="tel" name="telephone" autocomplete="tel" required pattern="[0-9+ .()-]{8,}" data-label="Téléphone" />
+              <input type="tel" name="telephone" autocomplete="tel" required pattern={TEL_PATTERN} data-label="Téléphone" />
             </label>
             <label class="field">
               <span>Code postal</span>

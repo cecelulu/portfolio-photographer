@@ -102,6 +102,11 @@ p {
   border-radius: 4px;
 }
 
+/* Un élément masqué reste masqué, même si une règle lui donne un affichage (grid, flex…). */
+[hidden] {
+  display: none !important;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
