@@ -10,7 +10,9 @@ const { title, eyebrow, lead, image = '/images/voitures/multigt2.webp', crumbs =
 ---
 
 <section class="page-hero">
-  <img class="page-hero__img" src={image} alt="" width="1920" height="500" fetchpriority="high" />
+  <div class="page-hero__media">
+    <img class="page-hero__img" src={image} alt="" width="1920" height="500" fetchpriority="high" />
+  </div>
   <div class="container">
     {
       crumbs.length > 0 && (

@@ -44,8 +44,9 @@ function heroIntro() {
   if (text.length) tl.fromTo(text, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 1.2, stagger: 0.08 }, 0.1);
   if (finder) tl.fromTo(finder, { autoAlpha: 0, x: 40 }, { autoAlpha: 1, x: 0, duration: 1.2 }, 0.35);
 
-  // Couche d'ambiance : légère profondeur de la photo au défilement.
-  if (img) {
+  // Couche d'ambiance : légère profondeur de la photo au défilement (grands écrans seulement :
+  // sur téléphone la photo est une bande au-dessus du texte).
+  if (img && window.matchMedia('(min-width: 701px)').matches) {
     gsap.to(img, {
       yPercent: 12,
       ease: 'none',

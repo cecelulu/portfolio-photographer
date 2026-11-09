@@ -32,10 +32,9 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
 >
   <!-- HERO -->
   <section class="hero">
-    <picture>
-      <source media="(max-width: 700px)" srcset="/images/voitures/multigt2-800.webp" />
+    <div class="hero__media">
       <img class="hero__img" src="/images/voitures/multigt2.webp" alt="Porsche 911 GT3, Ferrari 296 GTB et Porsche 991 GT3 RS sur circuit" width="1920" height="500" fetchpriority="high" />
-    </picture>
+    </div>
     <div class="container hero__inner">
       <div class="hero__text">
         <p class="eyebrow">Stages de pilotage depuis 2002</p>
@@ -251,10 +250,13 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
     background: var(--graphite);
     overflow: hidden;
   }
-  .hero__img {
+  .hero__media {
     position: absolute;
     inset: 0;
     z-index: -2;
+    overflow: hidden;
+  }
+  .hero__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -529,6 +531,37 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
     }
     .hero__ctas .btn {
       flex: 1 1 100%;
+    }
+  }
+
+  /* Téléphone : la photo (très panoramique) devient une bande nette en haut,
+     le texte passe dessous sur fond graphite. */
+  @media (max-width: 700px) {
+    .hero {
+      display: block;
+      min-height: 0;
+    }
+    .hero::before {
+      display: none;
+    }
+    .hero__media {
+      position: relative;
+      inset: auto;
+      z-index: auto;
+      aspect-ratio: 16 / 7;
+    }
+    .hero__media::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, var(--graphite) 0%, rgba(36, 36, 43, 0) 45%);
+    }
+    .hero__img {
+      object-position: 50% 50%;
+    }
+    .hero__inner {
+      padding-block: 20px 40px;
+      gap: 32px;
     }
   }
 </style>
