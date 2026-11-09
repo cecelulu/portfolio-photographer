@@ -9,9 +9,8 @@ import circuitsData from '../data/circuits.json';
 
 const gt = cars.filter((c) => c.category === 'gt');
 const mono = cars.filter((c) => c.category === 'monoplace');
-const featured = ['ferrari-f8-tributo', 'porsche-991-gt3-rs', 'mclaren-600lt']
-  .map((slug) => cars.find((c) => c.slug === slug)!)
-  .filter(Boolean);
+// Carrousel « collection » : toutes les voitures, les plus puissantes d'abord, puis les monoplaces.
+const collection = [...gt].sort((a, b) => b.power - a.power).concat(mono);
 const mainStage = cars.find((c) => c.slug === 'porsche-992-gt3')!;
 const closing = cars.find((c) => c.slug === 'aston-martin-vantage')!;
 
@@ -43,10 +42,10 @@ const reasons = [
   <!-- HERO -->
   <section class="hero hero--studio">
     <div class="container">
-      <h1 class="hero__title">Pilotez les plus belles<br />sportives sur circuit</h1>
+      <h1 class="hero__title">Pilotez les plus belles<br /><em>sportives</em> sur circuit</h1>
 
       <div class="hero__stage">
-        <picture>
+        <picture class="hero__car-wrap">
           <source media="(max-width: 700px)" srcset="/images/hd/temerario-1000.webp" />
           <img
             class="hero__car"
@@ -148,11 +147,17 @@ const reasons = [
         <h2>Découvrez notre<br />collection</h2>
         <div>
           <p>Des voitures d’exception choisies pour le circuit, toutes entretenues dans nos propres ateliers par des mécaniciens formés chez les constructeurs.</p>
-          <a class="underline-link" href="/stages/">Voir les 17 voitures</a>
+          <div class="collection-nav">
+            <a class="underline-link" href="/stages/">Voir les {collection.length} voitures</a>
+            <span class="collection-nav__arrows">
+              <button type="button" class="round-btn" data-carousel-prev aria-label="Voitures précédentes"><Icon name="arrow" size={18} /></button>
+              <button type="button" class="round-btn" data-carousel-next aria-label="Voitures suivantes"><Icon name="arrow" size={18} /></button>
+            </span>
+          </div>
         </div>
       </div>
-      <div class="grid grid--3">
-        {featured.map((car) => <CarCard car={car} />)}
+      <div class="carousel" data-carousel tabindex="0" aria-label="Nos voitures, faites défiler">
+        {collection.map((car) => <div class="carousel__item"><CarCard car={car} /></div>)}
       </div>
     </div>
   </section>
@@ -215,7 +220,7 @@ const reasons = [
         <h2>Réservez votre stage ou offrez-le, en quelques clics.</h2>
         <div class="closing__ctas">
           <a class="btn" href="/commande/">Réserver mon stage</a>
-          <a class="btn btn--ghost" href="/offrir/">Offrir un stage</a>
+          <a class="btn btn--dark" href="/offrir/">Offrir un stage</a>
         </div>
       </div>
       <img class="closing__car" src={closing.cutout} alt={closing.name} width={closing.cutoutW} height={closing.cutoutH} loading="lazy" />
@@ -254,6 +259,23 @@ const reasons = [
     // Le choix « _kind » sert seulement à l’affichage : on ne l’envoie pas.
     form.addEventListener('submit', () => form.querySelectorAll<HTMLInputElement>('[name="_kind"]').forEach((r) => (r.disabled = true)));
   }
+
+  // Carrousel de la collection : flèches précédent / suivant.
+  const track = document.querySelector<HTMLElement>('[data-carousel]');
+  const prev = document.querySelector<HTMLButtonElement>('[data-carousel-prev]');
+  const next = document.querySelector<HTMLButtonElement>('[data-carousel-next]');
+  if (track && prev && next) {
+    const step = () => (track.querySelector<HTMLElement>('.carousel__item')?.offsetWidth ?? 300) + 16;
+    const update = () => {
+      prev.disabled = track.scrollLeft < 8;
+      next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 8;
+    };
+    prev.addEventListener('click', () => track.scrollBy({ left: -step() * 2, behavior: 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left: step() * 2, behavior: 'smooth' }));
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
 </script>
 
 <style>
@@ -268,6 +290,10 @@ const reasons = [
   .hero {
     padding-block: clamp(28px, 4vw, 48px) clamp(40px, 5vw, 64px);
   }
+  .hero__title em {
+    font-style: normal;
+    color: var(--magenta);
+  }
   .hero__title {
     margin: 0;
     font-size: clamp(2.3rem, 4.6vw, 3.6rem);
@@ -277,6 +303,10 @@ const reasons = [
   }
   .hero__stage {
     position: relative;
+  }
+  .hero__car-wrap {
+    display: block;
+    will-change: transform;
   }
   .hero__car {
     display: block;
@@ -490,6 +520,68 @@ const reasons = [
     color: var(--muted);
     margin-bottom: 8px;
   }
+  .collection-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .collection-nav__arrows {
+    display: flex;
+    gap: 8px;
+  }
+  .round-btn {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #d6d6da;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+  }
+  .round-btn:hover {
+    background: var(--magenta);
+    border-color: var(--magenta);
+    color: #fff;
+  }
+  .round-btn[data-carousel-prev] :global(svg) {
+    transform: rotate(180deg);
+  }
+  .round-btn:disabled {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  .carousel {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 3 * 16px) / 4);
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 8px 2px 24px;
+    margin: -8px -2px 0;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .carousel::-webkit-scrollbar {
+    display: none;
+  }
+  .carousel:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 4px;
+    border-radius: var(--radius);
+  }
+  .carousel__item {
+    scroll-snap-align: start;
+    display: flex;
+  }
+  .carousel__item > :global(*) {
+    flex: 1;
+  }
   .underline-link {
     font-weight: 500;
     font-size: 0.92rem;
@@ -525,8 +617,8 @@ const reasons = [
     height: 22px;
     padding: 4px;
     border-radius: 50%;
-    background: #dcdcdf;
-    color: var(--ink);
+    background: var(--magenta-50);
+    color: var(--magenta);
   }
   .why__media {
     position: relative;
@@ -609,10 +701,10 @@ const reasons = [
   .testimonial__stars {
     display: flex;
     gap: 3px;
-    color: #fff;
+    color: var(--magenta);
   }
   .testimonial__stars :global(svg) {
-    fill: #fff;
+    fill: var(--magenta);
   }
   .testimonial blockquote {
     margin: 0;
@@ -656,6 +748,11 @@ const reasons = [
   }
 
   /* ---------- Responsive ---------- */
+  @media (max-width: 1100px) {
+    .carousel {
+      grid-auto-columns: calc((100% - 2 * 16px) / 3);
+    }
+  }
   @media (max-width: 1000px) {
     .hero__car {
       width: 100%;
@@ -701,6 +798,13 @@ const reasons = [
     }
     .testimonials__grid {
       grid-template-columns: 1fr;
+    }
+    .carousel {
+      grid-auto-columns: 78%;
+    }
+    .collection-head > div {
+      max-width: none;
+      width: 100%;
     }
   }
   @media (max-width: 520px) {

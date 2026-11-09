@@ -41,6 +41,20 @@ function studioIntro(hero: HTMLElement) {
   if (car) tl.fromTo(car, { autoAlpha: 0, x: 80 }, { autoAlpha: 1, x: 0, duration: 1.5, ease: 'power3.out' }, 0.15);
   if (panel) tl.fromTo(panel, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.9 }, 0.6); // fondu seul : le panneau est centré en CSS (translateY)
   if (rest.length) tl.fromTo(rest, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.08 }, 0.75);
+
+  // Au défilement : la voiture « avance » vers la gauche et grossit légèrement.
+  // (On anime le conteneur, pour ne pas interférer avec l'entrée de la voiture.)
+  const wrap = hero.querySelector('.hero__car-wrap');
+  if (wrap) {
+    const small = window.matchMedia('(max-width: 700px)').matches;
+    gsap.to(wrap, {
+      x: small ? -36 : -110,
+      y: small ? 10 : 30,
+      scale: small ? 1.05 : 1.1,
+      ease: 'none',
+      scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.6 },
+    });
+  }
 }
 
 function heroIntro() {

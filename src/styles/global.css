@@ -1,16 +1,15 @@
 /* ==========================================================================
    Sprint Racing — charte graphique
-   Style « studio » monochrome : fond gris très clair, cartes blanches, texte
-   noir, boutons noirs arrondis. Le magenta de la marque reste dans le logo et
-   quelques détails.
+   Style « studio » : fond gris très clair, cartes blanches, texte noir, avec
+   des touches de rose de la marque (boutons principaux, flèches, détails).
    ========================================================================== */
 
 :root {
-  /* Couleur de la marque : réservée au logo et à de petits repères. */
+  /* Couleur de la marque : boutons principaux et petites touches de rose. */
   --magenta: #cd398a;
-  /* Anciennes teintes d'accent, ramenées au noir et aux gris (style monochrome). */
-  --magenta-600: #111113;
-  --magenta-50: #f0f0f2;
+  --magenta-600: #b52c77;
+  --magenta-50: #fbeef5;
+  /* L'ancien bleu-vert est ramené aux gris. */
   --teal: #b8b8be;
   --teal-700: #111113;
   --teal-50: #f0f0f2;
@@ -215,7 +214,7 @@ p {
 /* ---------- Boutons ---------- */
 
 .btn {
-  --btn-bg: var(--ink);
+  --btn-bg: var(--magenta);
   --btn-fg: #fff;
   display: inline-flex;
   align-items: center;
@@ -237,6 +236,12 @@ p {
   white-space: nowrap;
 }
 .btn:hover {
+  --btn-bg: var(--magenta-600);
+}
+.btn--dark {
+  --btn-bg: var(--ink);
+}
+.btn--dark:hover {
   --btn-bg: #2b2b30;
 }
 .btn--teal {
