@@ -53,7 +53,7 @@ export const site = {
 
 export const stats = [
   { value: '20 ans', label: 'd’expérience' },
-  { value: '+1 million', label: 'de stagiaires accueillis' },
+  { value: '+1 M', label: 'de stagiaires accueillis' },
   { value: '180', label: 'GT et monoplaces' },
   { value: '25', label: 'circuits en France et Belgique' },
   { value: '450', label: 'dates de stage par an' },

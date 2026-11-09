@@ -232,7 +232,7 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
             ))
           }
         </ul>
-        <a class="btn btn--teal" href="/circuits/">Voir tous les circuits</a>
+        <a class="btn btn--ghost" href="/circuits/">Voir tous les circuits</a>
       </div>
       <img class="circuits-teaser__map" src="/images/circuits/carte-france-belgique.png" alt="Carte des circuits Sprint Racing en France, Belgique et Luxembourg" loading="lazy" />
     </div>
@@ -273,8 +273,8 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
 <style>
   /* ---------- Hero « studio » : titre géant + voiture détourée ---------- */
   .poster {
-    /* taille du titre géant : « SPRINT RACING » fait ~5,45 fois sa hauteur de police en largeur */
-    --t: min(calc((100vw - 2 * var(--gutter)) / 5.6), 202px);
+    /* taille du titre géant : en trait fin et espacé, « SPRINT RACING » fait ~5,85 fois sa taille de police en largeur */
+    --t: min(calc((100vw - 2 * var(--gutter)) / 5.95), 190px);
     position: relative;
     isolation: isolate;
     overflow: hidden;
@@ -323,8 +323,10 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
     margin: 0;
     width: 100%;
     font-size: var(--t);
+    font-weight: 300;
     line-height: 0.86;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.06em;
+    text-indent: 0.06em; /* compense l'espacement de la dernière lettre */
     text-align: center;
     white-space: nowrap;
     text-transform: uppercase;
@@ -337,16 +339,16 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
   .poster__car {
     position: relative;
     z-index: 2;
-    width: min(66%, 860px);
+    width: min(48%, 620px);
     height: auto;
-    margin-top: calc(var(--t) * 0.5);
-    filter: drop-shadow(0 26px 24px rgba(0, 0, 0, 0.55));
+    margin-top: calc(var(--t) * 0.58);
+    filter: drop-shadow(0 22px 20px rgba(0, 0, 0, 0.55));
   }
   /* reflet de la voiture sur le sol */
   .poster__reflection {
     align-self: end;
     z-index: 1;
-    width: min(66%, 860px);
+    width: min(48%, 620px);
     height: auto;
     transform: scaleY(-1) translateY(-96%);
     opacity: 0.14;
@@ -366,9 +368,9 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
   }
   .poster__pitch h2 {
     font-family: var(--font-body);
-    font-size: clamp(1.5rem, 2.3vw, 1.95rem);
-    font-weight: 600;
-    line-height: 1.2;
+    font-size: clamp(1.4rem, 2.1vw, 1.8rem);
+    font-weight: 500;
+    line-height: 1.25;
     text-transform: none;
     letter-spacing: -0.015em;
     color: #fff;
@@ -511,7 +513,7 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
     }
     .poster__car,
     .poster__reflection {
-      width: 100%;
+      width: 86%;
     }
     .poster__car {
       margin-top: calc(var(--t) * 0.62);
@@ -537,32 +539,35 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
   }
 
   .stats-section {
-    padding-block: 56px;
-    background:
-      radial-gradient(circle at 10% 0%, rgba(205, 57, 138, 0.35), transparent 45%),
-      radial-gradient(circle at 90% 100%, rgba(81, 160, 181, 0.35), transparent 45%),
-      var(--graphite);
-    background-size: 140% 140%, 140% 140%, auto;
-    animation: ambient-drift 18s ease-in-out infinite;
+    padding-block: 64px;
+    background: #16161c;
   }
   .stats {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 24px;
+    gap: 0;
     text-align: center;
+  }
+  .stat {
+    padding: 8px 18px;
+  }
+  .stat + .stat {
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
   }
   .stat__value {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 3.4vw, 2.8rem);
-    font-weight: 700;
+    font-size: clamp(2.2rem, 3.6vw, 3rem);
+    font-weight: 300;
     line-height: 1;
     color: #fff;
-    margin: 0 0 6px;
+    margin: 0 0 10px;
   }
   .stat__label {
     margin: 0;
-    font-size: 0.9rem;
-    color: #c9c9d3;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #9d9daa;
   }
 
   .center-cta {
@@ -695,6 +700,10 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
   @media (max-width: 1000px) {
     .stats {
       grid-template-columns: repeat(3, 1fr);
+      row-gap: 28px;
+    }
+    .stat:nth-child(3n + 1) {
+      border-left: 0;
     }
     .gift,
     .circuits-teaser,
@@ -706,6 +715,12 @@ const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].incl
   @media (max-width: 560px) {
     .stats {
       grid-template-columns: repeat(2, 1fr);
+    }
+    .stat:nth-child(3n + 1) {
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .stat:nth-child(2n + 1) {
+      border-left: 0;
     }
     .region-list {
       grid-template-columns: 1fr;
