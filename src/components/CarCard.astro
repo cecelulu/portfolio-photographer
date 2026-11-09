@@ -1,0 +1,134 @@
+---
+import { formatPrice } from '../data/site';
+
+interface Props {
+  car: {
+    slug: string;
+    brand: string;
+    model: string;
+    name: string;
+    power: number;
+    gearbox: string;
+    engine: string;
+    imageSmall: string;
+    priceFrom: number;
+    youngDrivers: boolean;
+    category: string;
+  };
+}
+const { car } = Astro.props;
+---
+
+<article class="car-card card">
+  <a href={`/stages/${car.slug}/`} class="car-card__media" tabindex="-1" aria-hidden="true">
+    <img src={car.imageSmall} alt="" width="800" height="208" loading="lazy" decoding="async" />
+    {car.youngDrivers && <span class="tag tag--magenta car-card__badge">Dès 16 ans</span>}
+  </a>
+  <div class="car-card__body">
+    <p class="car-card__brand">{car.brand}</p>
+    <h3 class="car-card__title">
+      <a href={`/stages/${car.slug}/`}>{car.category === 'gt' ? car.model : car.brand}</a>
+    </h3>
+    <ul class="car-card__specs">
+      <li><strong>{car.power} ch</strong></li>
+      <li>{car.engine}</li>
+    </ul>
+    <div class="car-card__foot">
+      <p class="price"><small>à partir de</small><strong>{formatPrice(car.priceFrom)}</strong></p>
+      <a class="btn btn--sm" href={`/reservation/?voiture=${car.slug}`}>Réserver</a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .car-card {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .car-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+  .car-card__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 7;
+    overflow: hidden;
+    background: var(--bg-soft);
+  }
+  .car-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.35);
+    transition: transform 0.4s ease;
+  }
+  .car-card:hover .car-card__media img {
+    transform: scale(1.45);
+  }
+  .car-card__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #fff;
+  }
+  .car-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 18px 20px 20px;
+  }
+  .car-card__brand {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal-700);
+  }
+  .car-card__title {
+    font-size: 1.7rem;
+    margin: 2px 0 8px;
+    text-transform: uppercase;
+  }
+  .car-card__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .car-card__title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .car-card {
+    position: relative;
+  }
+  .car-card__specs {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+  .car-card__specs strong {
+    color: var(--ink);
+  }
+  .car-card__foot {
+    margin-top: auto;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .car-card__foot .price {
+    margin: 0;
+  }
+  .car-card__foot .btn {
+    position: relative;
+    z-index: 1;
+  }
+</style>

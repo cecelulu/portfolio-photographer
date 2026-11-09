@@ -1,0 +1,108 @@
+---
+import Icon from './Icon.astro';
+import { reviews, reviewsSummary } from '../data/content';
+
+interface Props {
+  limit?: number;
+}
+const { limit = 6 } = Astro.props;
+---
+
+<div class="reviews">
+  <div class="reviews__summary">
+    <p class="reviews__score">{reviewsSummary.score}</p>
+    <div class="reviews__stars" aria-hidden="true">
+      {Array.from({ length: 5 }).map(() => <Icon name="star" size={20} />)}
+    </div>
+    <p>Note moyenne sur <strong>{reviewsSummary.votes}</strong> {reviewsSummary.period}</p>
+  </div>
+  <div class="reviews__list">
+    {
+      reviews.slice(0, limit).map((r) => (
+        <figure class="review">
+          <blockquote>« {r.text} »</blockquote>
+          <figcaption>
+            <strong>{r.name}</strong>
+            <span>
+              {r.place}
+              {r.car && ` · ${r.car}`}
+            </span>
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .reviews {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .reviews__summary {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+    padding: 32px 28px;
+    border-radius: var(--radius);
+    background: linear-gradient(150deg, var(--magenta) 0%, #8f2a63 100%);
+    color: #fff;
+  }
+  .reviews__score {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0 0 8px;
+  }
+  .reviews__stars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+  .reviews__stars :global(svg) {
+    fill: #ffd171;
+    stroke: #ffd171;
+  }
+  .reviews__summary p:last-child {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.88);
+  }
+  .reviews__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+    gap: 20px;
+  }
+  .review {
+    margin: 0;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .review blockquote {
+    margin: 0;
+    color: var(--text);
+  }
+  .review figcaption {
+    margin-top: auto;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  .review figcaption strong {
+    display: block;
+    color: var(--ink);
+  }
+  @media (max-width: 860px) {
+    .reviews {
+      grid-template-columns: 1fr;
+    }
+    .reviews__summary {
+      position: static;
+    }
+  }
+</style>

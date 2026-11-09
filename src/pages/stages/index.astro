@@ -1,0 +1,143 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CarCard from '../../components/CarCard.astro';
+import ExperienceCard from '../../components/ExperienceCard.astro';
+import Reassurance from '../../components/Reassurance.astro';
+import cars from '../../data/cars.json';
+import { experiences } from '../../data/experiences';
+
+const brands = [...new Set(cars.filter((c) => c.category === 'gt').map((c) => c.brand))];
+const gt = cars.filter((c) => c.category === 'gt');
+const mono = cars.filter((c) => c.category === 'monoplace');
+const specials = experiences.filter((e) => ['multi', 'drift', 'jeunes', 'coaching'].includes(e.key));
+---
+
+<Base
+  title="Nos stages de pilotage : 17 voitures d’exception"
+  description="Ferrari 296 GTB, F8 Tributo, Lamborghini Temerario, Porsche GT3 RS, McLaren 600LT, Formule 4… Découvrez toutes les voitures à piloter et leurs tarifs."
+>
+  <PageHero
+    eyebrow="Nos stages"
+    title="Choisissez votre voiture"
+    lead="15 GT d’exception et 2 monoplaces, de 130 à 920 ch. Tous nos stages sont encadrés par des moniteurs diplômés d’État."
+    image="/images/voitures/F8.webp"
+    crumbs={[{ href: '/stages/', label: 'Nos stages' }]}
+  />
+  <Reassurance />
+
+  <section class="section" id="gt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Stages GT</p>
+        <h2>Les supercars</h2>
+        <p>Un moniteur est assis à vos côtés pour vous guider et vous faire progresser tour après tour.</p>
+      </div>
+
+      <div class="filters" role="group" aria-label="Filtrer par marque">
+        <button type="button" class="filter is-active" data-filter="all" aria-pressed="true">Toutes</button>
+        {brands.map((b) => <button type="button" class="filter" data-filter={b} aria-pressed="false">{b}</button>)}
+        <button type="button" class="filter" data-filter="jeunes" aria-pressed="false">Dès 16 ans</button>
+      </div>
+
+      <div class="grid grid--3" data-cars>
+        {
+          gt.map((car) => (
+            <div data-brand={car.brand} data-young={car.youngDrivers ? 'true' : 'false'}>
+              <CarCard car={car} />
+            </div>
+          ))
+        }
+      </div>
+      <p class="note">Tarifs indicatifs hors promotion pour la formule la plus courte, variables selon le circuit et le nombre de tours choisis.</p>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="monoplace">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Stages monoplace</p>
+        <h2>Les sensations de la course</h2>
+        <p>Seul à bord, position allongée, le vent contre le casque. Dès 17 ans, permis B obligatoire.</p>
+      </div>
+      <div class="grid grid--2">
+        {mono.map((car) => <CarCard car={car} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="autres">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Autres expériences</p>
+        <h2>Encore plus de sensations</h2>
+      </div>
+      <div class="grid grid--4 specials">
+        {specials.map((exp) => <ExperienceCard exp={exp} />)}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const items = document.querySelectorAll<HTMLElement>('[data-cars] > [data-brand]');
+  buttons.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter;
+      buttons.forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+      items.forEach((el) => {
+        const show = f === 'all' || (f === 'jeunes' ? el.dataset.young === 'true' : el.dataset.brand === f);
+        el.hidden = !show;
+      });
+    })
+  );
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .filter {
+    min-height: 40px;
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .filter:hover {
+    border-color: var(--ink);
+  }
+  .filter.is-active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+  }
+  [data-cars] > div {
+    display: flex;
+  }
+  [data-cars] > div > :global(*) {
+    flex: 1;
+  }
+  [data-cars] > div[hidden] {
+    display: none;
+  }
+  .note {
+    margin-top: 24px;
+  }
+  .specials :global(.exp h3) {
+    font-size: 1.45rem;
+  }
+</style>

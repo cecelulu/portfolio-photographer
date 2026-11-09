@@ -1,0 +1,532 @@
+---
+import Base from '../layouts/Base.astro';
+import Reassurance from '../components/Reassurance.astro';
+import ExperienceCard from '../components/ExperienceCard.astro';
+import CarCard from '../components/CarCard.astro';
+import Steps from '../components/Steps.astro';
+import Reviews from '../components/Reviews.astro';
+import FaqList from '../components/FaqList.astro';
+import Icon from '../components/Icon.astro';
+import { experiences } from '../data/experiences';
+import { stats, formatPrice } from '../data/site';
+import { faq, about } from '../data/content';
+import cars from '../data/cars.json';
+import circuitsData from '../data/circuits.json';
+
+const featured = ['lamborghini-temerario', 'ferrari-f8-tributo', 'porsche-991-gt3-rs', 'mclaren-600lt', 'lamborghini-huracan', 'audi-r8-v10']
+  .map((slug) => cars.find((c) => c.slug === slug)!)
+  .filter(Boolean);
+
+const regions = Object.entries(circuitsData.regions).map(([key, label]) => ({
+  key,
+  label,
+  circuits: circuitsData.circuits.filter((c) => c.regionKey === key),
+}));
+
+const topFaq = faq.flatMap((g) => g.items).filter((_, i) => [0, 1, 3, 5, 9].includes(i));
+---
+
+<Base
+  title="Sprint Racing – Stage de pilotage sur circuit en Ferrari, Lamborghini, Porsche"
+  description="Stages de pilotage sur circuit en Ferrari, Lamborghini, Porsche, McLaren et monoplace sur 25 circuits en France et en Belgique. Dès 16 ans. Idée cadeau inoubliable."
+>
+  <!-- HERO -->
+  <section class="hero">
+    <picture>
+      <source media="(max-width: 700px)" srcset="/images/voitures/multigt2-800.webp" />
+      <img class="hero__img" src="/images/voitures/multigt2.webp" alt="Porsche 911 GT3, Ferrari 296 GTB et Porsche 991 GT3 RS sur circuit" width="1920" height="500" fetchpriority="high" />
+    </picture>
+    <div class="container hero__inner">
+      <div class="hero__text">
+        <p class="eyebrow">Stages de pilotage depuis 2002</p>
+        <h1>Prenez le volant des plus belles sportives du monde</h1>
+        <p class="hero__lead">
+          Ferrari, Lamborghini, Porsche, McLaren ou monoplace : vivez une expérience inoubliable sur l’un de nos 25 circuits en France et en Belgique. Débutant ou confirmé, dès 16 ans.
+        </p>
+        <div class="hero__ctas">
+          <a class="btn" href="/reservation/">Demander mon stage</a>
+          <a class="btn btn--light" href="/stages/">Voir les voitures</a>
+        </div>
+      </div>
+
+      <form class="finder card" action="/reservation/" method="get">
+        <p class="finder__title">Trouvez votre stage</p>
+        <label>
+          <span>Voiture</span>
+          <select name="voiture">
+            <option value="">Toutes les voitures</option>
+            <optgroup label="GT">
+              {cars.filter((c) => c.category === 'gt').map((c) => <option value={c.slug}>{c.name} – {c.power} ch</option>)}
+            </optgroup>
+            <optgroup label="Monoplace">
+              {cars.filter((c) => c.category === 'monoplace').map((c) => <option value={c.slug}>{c.name} – {c.power} ch</option>)}
+            </optgroup>
+          </select>
+        </label>
+        <label>
+          <span>Circuit</span>
+          <select name="circuit">
+            <option value="">Tous les circuits</option>
+            {
+              regions.map((r) => (
+                <optgroup label={r.label}>
+                  {r.circuits.map((c) => (
+                    <option value={c.slug}>
+                      {c.name} ({c.department})
+                    </option>
+                  ))}
+                </optgroup>
+              ))
+            }
+          </select>
+        </label>
+        <button class="btn btn--block" type="submit">Continuer <Icon name="arrow" size={18} /></button>
+        <p class="finder__note">Sans engagement. Réponse rapide de notre équipe.</p>
+      </form>
+    </div>
+  </section>
+
+  <Reassurance />
+
+  <!-- EXPÉRIENCES -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Nos stages</p>
+        <h2>Choisissez votre expérience</h2>
+        <p>Supercar, monoplace, drift, coaching… Quel que soit votre niveau, il y a un stage fait pour vous ou pour la personne à qui vous l’offrez.</p>
+      </div>
+      <div class="grid grid--3">
+        {experiences.map((exp) => <ExperienceCard exp={exp} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- VOITURES -->
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head split">
+        <div>
+          <p class="eyebrow">La flotte</p>
+          <h2>17 modèles d’exception à piloter</h2>
+          <p>Toutes nos voitures nous appartiennent et sont entretenues dans nos propres ateliers par des mécaniciens formés chez les constructeurs.</p>
+        </div>
+        <a class="btn btn--ghost" href="/stages/">Voir toutes les voitures</a>
+      </div>
+      <div class="grid grid--3">
+        {featured.map((car) => <CarCard car={car} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- CHIFFRES -->
+  <section class="section section--dark stats-section">
+    <div class="container">
+      <div class="stats">
+        {
+          stats.map((s) => (
+            <div class="stat">
+              <p class="stat__value">{s.value}</p>
+              <p class="stat__label">{s.label}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow">Simple et rapide</p>
+        <h2>Comment ça marche ?</h2>
+        <p>De votre demande jusqu’au drapeau à damier, on s’occupe de tout.</p>
+      </div>
+      <Steps />
+      <p class="center-cta"><a class="link-arrow" href="/le-stage/">Tout savoir sur le déroulement d’un stage</a></p>
+    </div>
+  </section>
+
+  <!-- CADEAU -->
+  <section class="section section--soft">
+    <div class="container gift">
+      <div class="gift__media">
+        <img src="/images/categories/COFFRETcadeau.webp" alt="Coffret cadeau stage de pilotage Sprint Racing" width="800" height="440" loading="lazy" />
+      </div>
+      <div class="gift__text">
+        <p class="eyebrow">Idée cadeau</p>
+        <h2>Offrez des sensations inoubliables</h2>
+        <p>Anniversaire, Noël, fête des pères, départ en retraite… Le stage de pilotage est le cadeau qui marque les esprits.</p>
+        <ul class="check-list">
+          <li>Bon cadeau personnalisé envoyé par e-mail en 5 minutes</li>
+          <li>Coffret physique livré par courrier en option</li>
+          <li>Valable un an, le bénéficiaire choisit sa date</li>
+          <li>Coffrets dès {formatPrice(144)}, chèques cadeaux dès {formatPrice(50)}</li>
+        </ul>
+        <div class="gift__ctas">
+          <a class="btn" href="/offrir/">Offrir un stage</a>
+          <a class="btn btn--ghost" href="/reservation/?type=cadeau">Commander un cadeau</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AVIS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Ils ont piloté</p>
+        <h2>Ce que disent nos stagiaires</h2>
+      </div>
+      <Reviews limit={6} />
+    </div>
+  </section>
+
+  <!-- CIRCUITS -->
+  <section class="section section--soft">
+    <div class="container circuits-teaser">
+      <div>
+        <p class="eyebrow">Près de chez vous</p>
+        <h2>25 circuits en France et en Belgique</h2>
+        <p class="muted">Environ deux tiers de nos stages ont lieu sur des circuits où Sprint Racing est la seule école GT et monoplace, en tant que propriétaire ou grâce à un contrat d’exclusivité.</p>
+        <ul class="region-list">
+          {
+            regions.map((r) => (
+              <li>
+                <a href={`/circuits/#${r.key}`}>
+                  <span>{r.label}</span>
+                  <span class="region-list__count">{r.circuits.length}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <a class="btn btn--teal" href="/circuits/">Voir tous les circuits</a>
+      </div>
+      <img class="circuits-teaser__map" src="/images/circuits/carte-france-belgique.png" alt="Carte des circuits Sprint Racing en France, Belgique et Luxembourg" loading="lazy" />
+    </div>
+  </section>
+
+  <!-- ENTREPRISES -->
+  <section class="section">
+    <div class="container">
+      <div class="corporate">
+        <img src="/images/voitures/R8V10-800.webp" alt="" loading="lazy" width="800" height="208" />
+        <div class="corporate__text">
+          <p class="eyebrow">Groupes et entreprises</p>
+          <h2>Un événement qui fait vibrer vos équipes</h2>
+          <p>Team-building, séminaire, CSE, incentive commercial ou relations clients : nous organisons votre journée sur mesure, de 8 à 300 personnes, en Île-de-France ou en région.</p>
+          <a class="btn" href="/entreprises/">Demander un devis</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- À PROPOS + FAQ -->
+  <section class="section section--soft">
+    <div class="container about-faq">
+      <div>
+        <p class="eyebrow">Qui sommes-nous</p>
+        <h2>{about.title}</h2>
+        {about.paragraphs.map((p) => <p class="muted">{p}</p>)}
+      </div>
+      <div>
+        <h3 class="faq-title">Questions fréquentes</h3>
+        <FaqList items={topFaq} />
+        <p class="center-cta left"><a class="link-arrow" href="/faq/">Toutes les questions</a></p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    min-height: min(86vh, 760px);
+    display: flex;
+    align-items: center;
+    color: #fff;
+    background: var(--graphite);
+    overflow: hidden;
+  }
+  .hero__img {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 60% 50%;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(14, 14, 20, 0.9) 0%, rgba(14, 14, 20, 0.62) 50%, rgba(14, 14, 20, 0.2) 100%),
+      linear-gradient(0deg, rgba(14, 14, 20, 0.45) 0%, transparent 40%);
+  }
+  .hero__inner {
+    display: grid;
+    grid-template-columns: 1.35fr 0.85fr;
+    gap: 48px;
+    align-items: center;
+    padding-block: 64px;
+  }
+  .hero h1 {
+    color: #fff;
+    max-width: 14ch;
+  }
+  .hero .eyebrow {
+    color: #f6a9d1;
+  }
+  .hero__lead {
+    font-size: 1.15rem;
+    max-width: 56ch;
+    color: #e6e6ec;
+  }
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .finder {
+    padding: 28px;
+    color: var(--text);
+    display: grid;
+    gap: 14px;
+    box-shadow: var(--shadow-lg);
+  }
+  .finder__title {
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 0;
+  }
+  .finder label {
+    display: grid;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .finder select {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--bg-soft);
+    font: inherit;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+  .finder__note {
+    margin: 0;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .split {
+    max-width: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: 20px;
+  }
+  .split > div {
+    max-width: 720px;
+  }
+
+  .stats-section {
+    padding-block: 56px;
+    background:
+      radial-gradient(circle at 10% 0%, rgba(205, 57, 138, 0.35), transparent 45%),
+      radial-gradient(circle at 90% 100%, rgba(81, 160, 181, 0.35), transparent 45%),
+      var(--graphite);
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 24px;
+    text-align: center;
+  }
+  .stat__value {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.4vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    margin: 0 0 6px;
+  }
+  .stat__label {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #c9c9d3;
+  }
+
+  .center-cta {
+    text-align: center;
+    margin: 32px 0 0;
+  }
+  .center-cta.left {
+    text-align: left;
+    margin-top: 20px;
+  }
+
+  .gift {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .gift__media img {
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+  }
+  .gift__text > p {
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+  .gift__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .circuits-teaser {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .muted {
+    color: var(--muted);
+  }
+  .region-list {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+  }
+  .region-list a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+  }
+  .region-list a:hover {
+    border-color: var(--teal);
+    color: var(--teal-700);
+  }
+  .region-list__count {
+    min-width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--teal-50);
+    color: var(--teal-700);
+    font-size: 0.8rem;
+  }
+  .circuits-teaser__map {
+    width: 100%;
+    max-width: 520px;
+    justify-self: center;
+  }
+
+  .corporate {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: calc(var(--radius) * 1.5);
+    background: var(--graphite);
+    color: #e6e6ec;
+    padding: clamp(32px, 6vw, 72px);
+  }
+  .corporate img {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 75% 50%;
+  }
+  .corporate::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(90deg, rgba(20, 20, 26, 0.95) 0%, rgba(20, 20, 26, 0.75) 55%, rgba(20, 20, 26, 0.2) 100%);
+  }
+  .corporate__text {
+    max-width: 560px;
+  }
+  .corporate h2 {
+    color: #fff;
+  }
+  .corporate .eyebrow {
+    color: #f6a9d1;
+  }
+
+  .about-faq {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .faq-title {
+    font-size: 1.8rem;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 1000px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+    }
+    .finder {
+      max-width: 520px;
+    }
+    .stats {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .gift,
+    .circuits-teaser,
+    .about-faq {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+  }
+  @media (max-width: 560px) {
+    .stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .region-list {
+      grid-template-columns: 1fr;
+    }
+    .hero__ctas .btn {
+      flex: 1 1 100%;
+    }
+  }
+</style>

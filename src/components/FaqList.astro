@@ -1,0 +1,77 @@
+---
+import type { Faq } from '../data/content';
+
+interface Props {
+  items: Faq[];
+}
+const { items } = Astro.props;
+---
+
+<div class="faq">
+  {
+    items.map((item) => (
+      <details class="faq__item">
+        <summary>{item.q}</summary>
+        <div class="faq__answer">
+          <p>{item.a}</p>
+        </div>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .faq {
+    display: grid;
+    gap: 12px;
+  }
+  .faq__item {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.2s ease;
+  }
+  .faq__item[open] {
+    border-color: var(--teal);
+  }
+  .faq__item summary {
+    list-style: none;
+    cursor: pointer;
+    position: relative;
+    padding: 18px 56px 18px 20px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq__item summary::after {
+    content: '+';
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--magenta-50);
+    color: var(--magenta);
+    font-size: 1.3rem;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+  .faq__item[open] summary::after {
+    content: '–';
+    background: var(--teal-50);
+    color: var(--teal-700);
+  }
+  .faq__answer {
+    padding: 0 20px 18px;
+    color: var(--muted);
+  }
+  .faq__answer p {
+    margin: 0;
+  }
+</style>

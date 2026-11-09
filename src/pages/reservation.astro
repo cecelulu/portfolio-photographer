@@ -1,0 +1,520 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import cars from '../data/cars.json';
+import circuitsData from '../data/circuits.json';
+import { site, formatPrice } from '../data/site';
+import { giftBoxes, options } from '../data/content';
+
+const types = [
+  { key: 'gt', label: 'Stage GT', hint: 'Une supercar au choix' },
+  { key: 'multi', label: 'Multi GT', hint: 'Duo, trio… plusieurs voitures' },
+  { key: 'monoplace', label: 'Monoplace', hint: 'Formule Renault ou F4' },
+  { key: 'drift', label: 'Drift', hint: 'Glisse sur piste arrosée' },
+  { key: 'jeunes', label: 'Stage jeunes', hint: 'Dès 16 ans (AAC)' },
+  { key: 'coaching', label: 'Coaching', hint: 'Perfectionnement' },
+  { key: 'cadeau', label: 'Coffret / chèque cadeau', hint: 'Le bénéficiaire choisit' },
+];
+
+type Vehicle = { value: string; label: string; detail: string; price: number | null; cats: string };
+const vehicles: Vehicle[] = [
+  ...cars.map((c) => ({
+    value: c.slug,
+    label: c.name,
+    detail: `${c.power} ch`,
+    price: c.priceFrom,
+    cats: c.category === 'gt' ? `gt multi${c.youngDrivers ? ' jeunes' : ''}` : 'monoplace',
+  })),
+  { value: 'audi-a1-cup-easydrift', label: 'Audi A1 Cup Easydrift', detail: '180 ch', price: 169, cats: 'drift' },
+  { value: 'toyota-gr86', label: 'Toyota GR86', detail: '234 ch', price: 199, cats: 'drift' },
+  { value: 'subaru-wrx-sti', label: 'Subaru WRX STI', detail: '300 ch', price: 224, cats: 'drift' },
+  { value: 'bmw-m2', label: 'BMW M2', detail: '410 ch', price: 259, cats: 'drift' },
+  { value: 'coaching-audi-a1-cup', label: 'Coaching Audi A1 Cup', detail: 'Pour commencer', price: 209, cats: 'coaching' },
+  { value: 'coaching-porsche-993', label: 'Coaching Porsche 993', detail: 'Pour les plus aguerris', price: 289, cats: 'coaching' },
+  { value: 'roulage-voiture-perso', label: 'Roulage voiture personnelle', detail: 'Accès piste encadré', price: 245, cats: 'coaching' },
+];
+
+const regions = Object.entries(circuitsData.regions).map(([key, label]) => ({
+  label,
+  circuits: circuitsData.circuits.filter((c) => c.regionKey === key),
+}));
+const laps = ['2', '3', '4', '5', '6', '8', '10'];
+---
+
+<Base
+  title="Demande de stage de pilotage"
+  description="Demandez votre stage de pilotage Sprint Racing en 2 minutes : choisissez votre voiture, votre circuit et vos dates. Notre équipe vous recontacte rapidement."
+>
+  <PageHero
+    eyebrow="Réservation"
+    title="Demandez votre stage"
+    lead="Remplissez ce formulaire en 2 minutes. Notre service client vous recontacte pour confirmer la date, le tarif exact et le paiement (CB en 3× sans frais ou PayPal)."
+    image="/images/voitures/HUR.webp"
+    crumbs={[{ href: '/reservation/', label: 'Demande de stage' }]}
+  />
+
+  <section class="section section--soft">
+    <div class="container layout">
+      <form
+        class="card form-card"
+        data-request-form
+        data-endpoint={site.formEndpoint}
+        data-mailto={site.email}
+        data-subject="Demande de stage de pilotage"
+        novalidate={false}
+        id="reservation"
+      >
+        <!-- 1. Type -->
+        <div class="form-section">
+          <h2 class="form-section__title"><span class="form-section__num">1</span> Votre expérience</h2>
+          <fieldset class="field" data-label="Type de stage">
+            <legend class="sr-only">Type de stage</legend>
+            <div class="choice-grid">
+              {
+                types.map((t, i) => (
+                  <label class="choice choice--card">
+                    <input type="radio" name="type" value={t.key} data-text={t.label} checked={i === 0} required />
+                    <strong>{t.label}</strong>
+                    <small>{t.hint}</small>
+                  </label>
+                ))
+              }
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- 2. Voiture -->
+        <div class="form-section" data-section="vehicles">
+          <h2 class="form-section__title"><span class="form-section__num">2</span> <span data-vehicle-title>Votre voiture</span></h2>
+          <p class="hint-line" data-vehicle-hint>Cochez une ou plusieurs voitures. Pas d’idée ? Laissez vide, nous vous conseillerons.</p>
+          <fieldset class="field" data-label="Voiture(s)">
+            <legend class="sr-only">Voiture(s) souhaitée(s)</legend>
+            <div class="choice-grid">
+              {
+                vehicles.map((v) => (
+                  <label class="choice" data-cats={v.cats}>
+                    <input type="checkbox" name="voitures" value={v.value} data-text={v.label} data-price={v.price ?? ''} />
+                    <span>
+                      {v.label}
+                      <small>
+                        {v.detail}
+                        {v.price && ` · dès ${formatPrice(v.price)}`}
+                      </small>
+                    </span>
+                  </label>
+                ))
+              }
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- 2 bis. Cadeau -->
+        <div class="form-section" data-section="gift" hidden>
+          <h2 class="form-section__title"><span class="form-section__num">2</span> Votre cadeau</h2>
+          <div class="form-grid">
+            <fieldset class="field full" data-label="Formule cadeau">
+              <legend>Formule <span class="req">*</span></legend>
+              <div class="choice-grid">
+                {
+                  giftBoxes.map((g, i) => (
+                    <label class="choice choice--card">
+                      <input type="radio" name="coffret" value={g.name} data-text={`Coffret ${g.name} (${formatPrice(g.price)})`} checked={i === 0} />
+                      <strong>{g.name}</strong>
+                      <small>Coffret à {formatPrice(g.price)}</small>
+                    </label>
+                  ))
+                }
+                <label class="choice choice--card">
+                  <input type="radio" name="coffret" value="cheque" data-text="Chèque cadeau" />
+                  <strong>Chèque cadeau</strong>
+                  <small>Montant libre, dès 50 €</small>
+                </label>
+              </div>
+            </fieldset>
+            <label class="field" data-cheque hidden>
+              <span>Montant du chèque cadeau (€) <span class="req">*</span></span>
+              <input type="number" name="montant_cheque" min="50" step="10" value="100" data-label="Montant du chèque cadeau (€)" required />
+            </label>
+            <label class="field">
+              <span>Nom du bénéficiaire</span>
+              <input type="text" name="beneficiaire" autocomplete="off" data-label="Bénéficiaire" />
+            </label>
+            <fieldset class="field full" data-label="Envoi du cadeau">
+              <legend>Envoi</legend>
+              <div class="choice-grid">
+                <label class="choice">
+                  <input type="radio" name="envoi" value="email" data-text="Par e-mail (PDF)" checked />
+                  <span>Par e-mail <small>Bon cadeau PDF en 5 minutes – gratuit</small></span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="envoi" value="courrier" data-text="Coffret par courrier (+12,90 €)" />
+                  <span>Coffret par courrier <small>+12,90 € – expédié le jour même avant 12h</small></span>
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <!-- 3. Circuit & date -->
+        <div class="form-section">
+          <h2 class="form-section__title"><span class="form-section__num">3</span> Circuit et date</h2>
+          <div class="form-grid">
+            <label class="field full">
+              <span>Circuit souhaité <span class="hint" data-gift-only hidden>(facultatif pour un cadeau)</span></span>
+              <select name="circuit" data-label="Circuit">
+                <option value="">Je ne sais pas encore / conseillez-moi</option>
+                {
+                  regions.map((r) => (
+                    <optgroup label={r.label}>
+                      {r.circuits.map((c) => (
+                        <option value={c.slug}>
+                          {c.name} – {c.city} ({c.department})
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))
+                }
+              </select>
+              <span class="hint" data-circuit-note></span>
+            </label>
+            <label class="field" data-laps>
+              <span>Nombre de tours au volant</span>
+              <select name="tours" data-label="Nombre de tours">
+                <option value="">Conseillez-moi</option>
+                {laps.map((l) => <option value={l}>{l} tours</option>)}
+              </select>
+              <span class="hint">Nous conseillons au moins 4 tours pour vraiment se faire plaisir.</span>
+            </label>
+            <label class="field">
+              <span>Nombre de pilotes</span>
+              <input type="number" name="participants" min="1" max="50" value="1" data-label="Nombre de pilotes" />
+            </label>
+            <label class="field">
+              <span>Date souhaitée</span>
+              <input type="date" name="date" data-label="Date souhaitée" />
+            </label>
+            <label class="field">
+              <span>Ou période</span>
+              <select name="periode" data-label="Période">
+                <option value="">Indifférent</option>
+                <option>Le plus tôt possible</option>
+                <option>Février – Mars</option>
+                <option>Avril – Juin</option>
+                <option>Juillet – Août</option>
+                <option>Septembre – Novembre</option>
+                <option>Week-end uniquement</option>
+                <option>En semaine</option>
+              </select>
+            </label>
+            <fieldset class="field full" data-label="Options">
+              <legend>Options <span class="hint">(confirmées avec notre équipe)</span></legend>
+              <div class="choice-grid">
+                {
+                  options
+                    .filter((o) => !o.name.startsWith('Coffret'))
+                    .map((o) => (
+                      <label class="choice">
+                        <input type="checkbox" name="options" value={o.name} />
+                        <span>
+                          {o.name}
+                          <small>{o.detail}</small>
+                        </span>
+                      </label>
+                    ))
+                }
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <!-- 4. Coordonnées -->
+        <div class="form-section">
+          <h2 class="form-section__title"><span class="form-section__num">4</span> Vos coordonnées</h2>
+          <div class="form-grid">
+            <label class="field">
+              <span>Prénom <span class="req">*</span></span>
+              <input type="text" name="prenom" autocomplete="given-name" required data-label="Prénom" />
+            </label>
+            <label class="field">
+              <span>Nom <span class="req">*</span></span>
+              <input type="text" name="nom" autocomplete="family-name" required data-label="Nom" />
+            </label>
+            <label class="field">
+              <span>E-mail <span class="req">*</span></span>
+              <input type="email" name="email" autocomplete="email" required data-label="E-mail" />
+            </label>
+            <label class="field">
+              <span>Téléphone <span class="req">*</span></span>
+              <input type="tel" name="telephone" autocomplete="tel" required pattern="[0-9+ .()-]{8,}" data-label="Téléphone" />
+            </label>
+            <label class="field">
+              <span>Code postal</span>
+              <input type="text" name="code_postal" autocomplete="postal-code" inputmode="numeric" data-label="Code postal" />
+            </label>
+            <label class="field">
+              <span>Âge du pilote</span>
+              <select name="age" data-label="Âge du pilote">
+                <option value="">—</option>
+                <option>16 ans (conduite accompagnée)</option>
+                <option>17 ans</option>
+                <option>18 ans et plus</option>
+              </select>
+            </label>
+            <label class="field full">
+              <span>Votre message</span>
+              <textarea name="message" rows="4" placeholder="Une question, une précision, une occasion particulière ?" data-label="Message"></textarea>
+            </label>
+            <label class="trap" aria-hidden="true">
+              Ne pas remplir <input type="text" name="_site_web" tabindex="-1" autocomplete="off" />
+            </label>
+            <label class="checkbox full">
+              <input type="checkbox" name="consentement" required />
+              <span>J’accepte que Sprint Racing utilise ces informations pour traiter ma demande et me recontacter. <span class="req">*</span></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-submit">
+          <button class="btn" type="submit">Envoyer ma demande <Icon name="arrow" size={18} /></button>
+          <p class="note">Sans engagement. Vous serez recontacté(e) du lundi au samedi.</p>
+        </div>
+        <p class="form-status" data-form-status hidden role="status"></p>
+      </form>
+
+      <aside class="recap-wrap">
+        <div class="recap card" aria-live="polite">
+          <p class="recap__title">Votre demande</p>
+          <dl>
+            <div><dt>Expérience</dt><dd data-recap="type">Stage GT</dd></div>
+            <div><dt>Voiture(s)</dt><dd data-recap="voitures">À définir</dd></div>
+            <div><dt>Circuit</dt><dd data-recap="circuit">À définir</dd></div>
+          </dl>
+          <p class="price recap__price" data-recap-price hidden><small>à partir de</small><strong data-recap="price"></strong></p>
+          <p class="note">Tarif indicatif hors promotion. Le prix exact vous est confirmé par notre équipe.</p>
+        </div>
+        <div class="help card">
+          <p><strong>Besoin d’aide ?</strong> Nos conseillers vous répondent {site.hours.toLowerCase()}.</p>
+          <a class="help__phone" href={site.phoneFrHref}><Icon name="phone" size={18} /> {site.phoneFr}</a>
+          <a class="help__phone" href={site.phoneBeHref}><Icon name="phone" size={18} /> {site.phoneBe} <small>(Belgique)</small></a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { initForms } from '../scripts/forms';
+  initForms();
+
+  const form = document.querySelector<HTMLFormElement>('#reservation')!;
+  const typeInputs = form.querySelectorAll<HTMLInputElement>('input[name="type"]');
+  const vehicleChoices = form.querySelectorAll<HTMLLabelElement>('[data-cats]');
+  const vehiclesSection = form.querySelector<HTMLElement>('[data-section="vehicles"]')!;
+  const giftSection = form.querySelector<HTMLElement>('[data-section="gift"]')!;
+  const lapsField = form.querySelector<HTMLElement>('[data-laps]')!;
+  const chequeField = form.querySelector<HTMLElement>('[data-cheque]')!;
+  const circuitSelect = form.querySelector<HTMLSelectElement>('select[name="circuit"]')!;
+  const circuitNote = form.querySelector<HTMLElement>('[data-circuit-note]')!;
+  const vehicleTitle = form.querySelector<HTMLElement>('[data-vehicle-title]')!;
+  const vehicleHint = form.querySelector<HTMLElement>('[data-vehicle-hint]')!;
+  const giftOnly = form.querySelectorAll<HTMLElement>('[data-gift-only]');
+  const recap = (k: string) => document.querySelector<HTMLElement>(`[data-recap="${k}"]`)!;
+  const recapPrice = document.querySelector<HTMLElement>('[data-recap-price]')!;
+
+  const hints: Record<string, [string, string]> = {
+    gt: ['Votre voiture', 'Cochez une ou plusieurs voitures. Pas d’idée ? Laissez vide, nous vous conseillerons.'],
+    multi: ['Vos voitures', 'Choisissez de 2 à 5 voitures à piloter le même jour.'],
+    monoplace: ['Votre monoplace', 'Formule Renault pour découvrir, Formule 4 pour les plus aguerris (ou les deux !).'],
+    drift: ['Votre voiture de drift', 'Débutant ? Commencez par l’Audi A1 Easydrift ou la Toyota GR86.'],
+    jeunes: ['Votre voiture', 'Les modèles sélectionnés pour les jeunes en conduite accompagnée.'],
+    coaching: ['Votre formule', 'Journées en petit groupe (5 à 6 participants) ou roulage avec votre voiture.'],
+  };
+  const fixedCircuit: Record<string, string> = { drift: 'fertegaucher1', coaching: 'trappes' };
+
+  let lastFixed = '';
+  const currentType = () => form.querySelector<HTMLInputElement>('input[name="type"]:checked')?.value ?? 'gt';
+
+  function applyType() {
+    const t = currentType();
+    const isGift = t === 'cadeau';
+    giftSection.hidden = !isGift;
+    vehiclesSection.hidden = isGift;
+    lapsField.hidden = isGift || t === 'drift' || t === 'coaching';
+    giftOnly.forEach((el) => (el.hidden = !isGift));
+
+    vehicleChoices.forEach((label) => {
+      const show = label.dataset.cats!.split(' ').includes(t);
+      label.hidden = !show;
+      if (!show) label.querySelector('input')!.checked = false;
+    });
+    if (hints[t]) {
+      vehicleTitle.textContent = hints[t][0];
+      vehicleHint.textContent = hints[t][1];
+    }
+    if (fixedCircuit[t]) {
+      circuitSelect.value = fixedCircuit[t];
+      lastFixed = fixedCircuit[t];
+      circuitNote.textContent = t === 'drift' ? 'Les stages de drift ont lieu à La Ferté-Gaucher (77).' : 'Le coaching a lieu au circuit de Trappes (78).';
+    } else {
+      if (lastFixed && circuitSelect.value === lastFixed) circuitSelect.value = '';
+      lastFixed = '';
+      circuitNote.textContent = '';
+    }
+    updateRecap();
+  }
+
+  function applyCheque() {
+    const v = form.querySelector<HTMLInputElement>('input[name="coffret"]:checked')?.value;
+    chequeField.hidden = v !== 'cheque';
+    updateRecap();
+  }
+
+  function updateRecap() {
+    const t = form.querySelector<HTMLInputElement>('input[name="type"]:checked');
+    recap('type').textContent = t?.dataset.text ?? '';
+    let price: number | null = null;
+
+    if (t?.value === 'cadeau') {
+      const g = form.querySelector<HTMLInputElement>('input[name="coffret"]:checked');
+      recap('voitures').textContent = g?.dataset.text ?? '';
+      if (g?.value === 'cheque') {
+        price = Number(form.querySelector<HTMLInputElement>('input[name="montant_cheque"]')!.value) || null;
+      } else {
+        const m = g?.dataset.text?.match(/\(([\d\s,]+)\s€\)/);
+        price = m ? Number(m[1].replace(/\s/g, '').replace(',', '.')) : null;
+      }
+    } else {
+      const checked = Array.from(form.querySelectorAll<HTMLInputElement>('input[name="voitures"]:checked'));
+      recap('voitures').textContent = checked.length ? checked.map((c) => c.dataset.text).join(', ') : 'À définir';
+      const prices = checked.map((c) => Number(c.dataset.price)).filter((p) => p > 0);
+      if (prices.length) price = t?.value === 'multi' ? null : Math.min(...prices);
+    }
+    recap('circuit').textContent = circuitSelect.value ? circuitSelect.options[circuitSelect.selectedIndex].text : 'À définir';
+    recapPrice.hidden = !price;
+    if (price) recap('price').textContent = price.toLocaleString('fr-FR', { maximumFractionDigits: 2, minimumFractionDigits: price % 1 ? 2 : 0 }) + ' €';
+  }
+
+  // Pré-remplissage depuis l’URL (?voiture=…&circuit=…&type=…)
+  const params = new URLSearchParams(window.location.search);
+  const typeParam = params.get('type');
+  const voitureParam = params.get('voiture');
+  if (typeParam) {
+    const input = form.querySelector<HTMLInputElement>(`input[name="type"][value="${CSS.escape(typeParam)}"]`);
+    if (input) input.checked = true;
+  } else if (voitureParam) {
+    const label = form.querySelector<HTMLElement>(`input[name="voitures"][value="${CSS.escape(voitureParam)}"]`)?.closest<HTMLElement>('[data-cats]');
+    const cat = label?.dataset.cats?.split(' ')[0];
+    if (cat) form.querySelector<HTMLInputElement>(`input[name="type"][value="${cat}"]`)!.checked = true;
+  }
+  applyType();
+  if (voitureParam && typeParam !== 'cadeau') {
+    const box = form.querySelector<HTMLInputElement>(`input[name="voitures"][value="${CSS.escape(voitureParam)}"]`);
+    if (box && !box.closest('[hidden]')) box.checked = true;
+  }
+  if (voitureParam && typeParam === 'cadeau') {
+    const msg = form.querySelector<HTMLTextAreaElement>('textarea[name="message"]')!;
+    const name = form.querySelector<HTMLInputElement>(`input[name="voitures"][value="${CSS.escape(voitureParam)}"]`)?.dataset.text;
+    if (name) msg.value = `Je souhaite offrir un stage en ${name}.`;
+  }
+  const circuitParam = params.get('circuit');
+  if (circuitParam && circuitSelect.querySelector(`option[value="${CSS.escape(circuitParam)}"]`)) circuitSelect.value = circuitParam;
+  updateRecap();
+
+  typeInputs.forEach((i) => i.addEventListener('change', applyType));
+  form.querySelectorAll('input[name="coffret"]').forEach((i) => i.addEventListener('change', applyCheque));
+  form.addEventListener('change', updateRecap);
+  form.addEventListener('input', updateRecap);
+</script>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 32px;
+    align-items: start;
+  }
+  .hint-line {
+    color: var(--muted);
+    margin-top: -6px;
+  }
+  .form-submit {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+  .form-submit .note {
+    margin: 0;
+  }
+  .recap-wrap {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+    display: grid;
+    gap: 16px;
+  }
+  .recap {
+    padding: 24px;
+    border-top: 4px solid var(--magenta);
+  }
+  .recap__title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .recap dl {
+    margin: 0 0 16px;
+    display: grid;
+    gap: 10px;
+  }
+  .recap dt {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .recap dd {
+    margin: 0;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .recap__price strong {
+    font-size: 2.2rem;
+  }
+  .recap .note {
+    margin: 12px 0 0;
+    font-size: 0.8rem;
+  }
+  .help {
+    padding: 20px 24px;
+    display: grid;
+    gap: 8px;
+    font-size: 0.92rem;
+  }
+  .help p {
+    margin: 0 0 4px;
+  }
+  .help__phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: var(--teal-700);
+    text-decoration: none;
+  }
+  @media (max-width: 980px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+    .recap-wrap {
+      position: static;
+    }
+  }
+</style>

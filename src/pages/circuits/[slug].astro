@@ -1,0 +1,208 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CarCard from '../../components/CarCard.astro';
+import Icon from '../../components/Icon.astro';
+import cars from '../../data/cars.json';
+import circuitsData from '../../data/circuits.json';
+import { formatPrice } from '../../data/site';
+
+export function getStaticPaths() {
+  return circuitsData.circuits.map((circuit) => ({ params: { slug: circuit.slug }, props: { circuit } }));
+}
+
+const { circuit } = Astro.props;
+const available = cars.filter((c) => circuit.cars.includes(c.slug));
+const gt = available.filter((c) => c.category === 'gt');
+const mono = available.filter((c) => c.category === 'monoplace');
+const isDrift = circuit.slug === 'fertegaucher1';
+const heroCar = available.find((c) => c.slug === 'lamborghini-huracan') ?? available[0];
+const heroImage = isDrift ? '/images/voitures/drift.webp' : (heroCar?.image ?? '/images/voitures/multigt2.webp');
+const nearby = circuitsData.circuits.filter((c) => c.regionKey === circuit.regionKey && c.slug !== circuit.slug);
+---
+
+<Base
+  title={`Stage de pilotage – ${circuit.name} (${circuit.department})`}
+  description={`Stage de pilotage sur le ${circuit.name} à ${circuit.city} (${circuit.department}) : ${available.length} voitures à piloter, piste de ${circuit.length}. À partir de ${formatPrice(circuit.priceFrom)}.`}
+  image={heroImage}
+>
+  <PageHero
+    eyebrow={circuit.region}
+    title={circuit.name}
+    lead={circuit.summary}
+    image={heroImage}
+    crumbs={[
+      { href: '/circuits/', label: 'Circuits' },
+      { href: `/circuits/${circuit.slug}/`, label: circuit.name },
+    ]}
+  >
+    <ul class="facts">
+      <li><Icon name="pin" size={18} /> {circuit.city} ({circuit.department})</li>
+      <li><Icon name="track" size={18} /> Piste de {circuit.length}</li>
+      <li><Icon name="helmet" size={18} /> {available.length} voitures</li>
+    </ul>
+    <div class="ctas">
+      <a class="btn" href={`/reservation/?circuit=${circuit.slug}`}>Réserver sur ce circuit</a>
+      <a class="btn btn--light" href="#voitures">Voir les voitures</a>
+    </div>
+  </PageHero>
+
+  <section class="section" id="voitures">
+    <div class="container">
+      {
+        isDrift && (
+          <div class="drift-box card">
+            <div>
+              <p class="eyebrow">Drift et glisse</p>
+              <h2>Stages de glisse sur piste arrosée</h2>
+              <p>Ce tracé accueille nos stages de drift en BMW M2, Toyota GR86, Subaru WRX STI et Audi A1 Easydrift, ainsi que les monoplaces.</p>
+            </div>
+            <a class="btn" href="/stages/drift/">Découvrir le drift</a>
+          </div>
+        )
+      }
+
+      {
+        gt.length > 0 && (
+          <>
+            <div class="section-head">
+              <p class="eyebrow">Stages GT</p>
+              <h2>Les voitures disponibles</h2>
+              <p>Disponibilités selon les dates : notre équipe vous confirme le modèle lors de votre réservation.</p>
+            </div>
+            <div class="grid grid--3">
+              {gt.map((car) => (
+                <CarCard car={car} />
+              ))}
+            </div>
+          </>
+        )
+      }
+
+      {
+        mono.length > 0 && (
+          <div class="mono">
+            <div class="section-head">
+              <p class="eyebrow">Stages monoplace</p>
+              <h2>Formule Renault et Formule 4</h2>
+            </div>
+            <div class="grid grid--2">
+              {mono.map((car) => (
+                <CarCard car={car} />
+              ))}
+            </div>
+          </div>
+        )
+      }
+      <p class="note">Tarifs indicatifs hors promotion. Les prix sur ce circuit peuvent différer des tarifs affichés.</p>
+    </div>
+  </section>
+
+  {
+    nearby.length > 0 && (
+      <section class="section section--soft">
+        <div class="container">
+          <h2>Autres circuits : {circuit.region}</h2>
+          <ul class="nearby">
+            {nearby.map((c) => (
+              <li>
+                <a href={`/circuits/${c.slug}/`}>
+                  <img src={c.trace} alt="" width="65" height="41" loading="lazy" />
+                  <span>
+                    <strong>{c.name}</strong>
+                    <small>
+                      {c.city} ({c.department}) · {c.length}
+                    </small>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  .facts {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .facts li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .drift-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 28px;
+    margin-bottom: 56px;
+    border-left: 4px solid var(--magenta);
+  }
+  .drift-box h2 {
+    font-size: 1.9rem;
+  }
+  .drift-box p:last-child {
+    margin: 0;
+    color: var(--muted);
+  }
+  .mono {
+    margin-top: 64px;
+  }
+  .note {
+    margin-top: 28px;
+  }
+  .nearby {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: 12px;
+  }
+  .nearby a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nearby a:hover {
+    border-color: var(--teal);
+  }
+  .nearby img {
+    width: 60px;
+    height: 40px;
+    object-fit: contain;
+  }
+  .nearby strong {
+    display: block;
+  }
+  .nearby small {
+    color: var(--muted);
+  }
+</style>

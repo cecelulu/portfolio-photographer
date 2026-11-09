@@ -1,0 +1,152 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title="Contact – Service relations clients"
+  description="Contactez le service relations clients Sprint Racing par téléphone (01 30 66 63 60 / 02 747 03 24) ou par e-mail. Du lundi au samedi."
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Nous contacter"
+    lead="Une question sur un stage, un bon cadeau ou une réservation ? Notre service relations clients est à votre écoute."
+    image="/images/voitures/C8.webp"
+    crumbs={[{ href: '/contact/', label: 'Contact' }]}
+  />
+
+  <section class="section section--soft">
+    <div class="container contact">
+      <div class="contact__info">
+        <div class="info card">
+          <Icon name="phone" size={24} />
+          <div>
+            <h2>Par téléphone</h2>
+            <p><a href={site.phoneFrHref}>{site.phoneFr}</a> <span>France</span></p>
+            <p><a href={site.phoneBeHref}>{site.phoneBe}</a> <span>Belgique</span></p>
+            <p class="muted">{site.hours}</p>
+          </div>
+        </div>
+        <div class="info card">
+          <Icon name="mail" size={24} />
+          <div>
+            <h2>Par e-mail</h2>
+            <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+            <p class="muted">Entreprises : <a href={`mailto:${site.emailEvents}`}>{site.emailEvents}</a></p>
+          </div>
+        </div>
+        <div class="info card">
+          <Icon name="pin" size={24} />
+          <div>
+            <h2>Siège</h2>
+            <p>{site.address.street}<br />{site.address.zip} {site.address.city}</p>
+          </div>
+        </div>
+      </div>
+
+      <form class="card form-card" data-request-form data-endpoint={site.formEndpoint} data-mailto={site.email} data-subject="Message depuis le site">
+        <h2 class="form-title">Écrivez-nous</h2>
+        <div class="form-grid">
+          <label class="field">
+            <span>Prénom et nom <span class="req">*</span></span>
+            <input type="text" name="nom" required autocomplete="name" data-label="Nom" />
+          </label>
+          <label class="field">
+            <span>E-mail <span class="req">*</span></span>
+            <input type="email" name="email" required autocomplete="email" data-label="E-mail" />
+          </label>
+          <label class="field">
+            <span>Téléphone</span>
+            <input type="tel" name="telephone" autocomplete="tel" data-label="Téléphone" />
+          </label>
+          <label class="field">
+            <span>Sujet</span>
+            <select name="sujet" data-label="Sujet">
+              <option>Question sur un stage</option>
+              <option>Réservation d’une date</option>
+              <option>Bon ou coffret cadeau</option>
+              <option>Modification ou report</option>
+              <option>Achat chez un revendeur (Smartbox, Wonderbox…)</option>
+              <option>Autre</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>N° de bon / commande</span>
+            <input type="text" name="commande" data-label="N° de bon / commande" />
+          </label>
+          <label class="field full">
+            <span>Message <span class="req">*</span></span>
+            <textarea name="message" required rows="6" data-label="Message"></textarea>
+          </label>
+          <label class="trap" aria-hidden="true">Ne pas remplir <input type="text" name="_site_web" tabindex="-1" autocomplete="off" /></label>
+          <label class="checkbox full">
+            <input type="checkbox" name="consentement" required />
+            <span>J’accepte que Sprint Racing utilise ces informations pour traiter ma demande. <span class="req">*</span></span>
+          </label>
+        </div>
+        <div class="submit"><button class="btn" type="submit">Envoyer</button></div>
+        <p class="form-status" data-form-status hidden role="status"></p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { initForms } from '../scripts/forms';
+  initForms();
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .contact__info {
+    display: grid;
+    gap: 16px;
+  }
+  .info {
+    display: flex;
+    gap: 16px;
+    padding: 24px;
+  }
+  .info > :global(svg) {
+    flex: none;
+    color: var(--magenta);
+  }
+  .info h2 {
+    font-size: 1.35rem;
+    margin-bottom: 8px;
+  }
+  .info p {
+    margin: 0 0 4px;
+  }
+  .info a {
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .info a:hover {
+    color: var(--magenta-600);
+  }
+  .info span,
+  .muted {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .form-title {
+    font-size: 2rem;
+  }
+  .submit {
+    margin-top: 24px;
+  }
+  @media (max-width: 900px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

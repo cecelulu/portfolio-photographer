@@ -1,0 +1,291 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CarCard from '../../components/CarCard.astro';
+import Icon from '../../components/Icon.astro';
+import cars from '../../data/cars.json';
+import circuitsData from '../../data/circuits.json';
+import { formatPrice } from '../../data/site';
+import { giftIncludes } from '../../data/content';
+
+export function getStaticPaths() {
+  return cars.map((car) => ({ params: { slug: car.slug }, props: { car } }));
+}
+
+const { car } = Astro.props;
+const isMono = car.category === 'monoplace';
+const carCircuits = circuitsData.circuits.filter((c) => car.circuits.includes(c.slug));
+const byRegion = Object.entries(circuitsData.regions)
+  .map(([key, label]) => ({ key, label, list: carCircuits.filter((c) => c.regionKey === key) }))
+  .filter((r) => r.list.length);
+const similar = cars
+  .filter((c) => c.slug !== car.slug && c.category === car.category)
+  .sort((a, b) => Math.abs(a.power - car.power) - Math.abs(b.power - car.power))
+  .slice(0, 3);
+
+const includes = isMono
+  ? [
+      'Briefing vidéo envoyé une semaine avant',
+      'Tours de reconnaissance du circuit en minibus',
+      'Vos tours au volant, seul à bord',
+      'Conseils du moniteur avant et après chaque session',
+      'Diplôme personnalisé',
+    ]
+  : giftIncludes.map((g) => g.replace('de la voiture choisie', `de la ${car.name}`)).concat([
+      'Un moniteur diplômé BPJEPS assis à vos côtés',
+    ]);
+---
+
+<Base
+  title={`Stage de pilotage ${car.name} (${car.power} ch)`}
+  description={`Pilotez une ${car.name} de ${car.power} ch sur circuit avec Sprint Racing. À partir de ${formatPrice(car.priceFrom)}, sur ${carCircuits.length} circuits en France et en Belgique.`}
+  image={car.image}
+>
+  <PageHero
+    eyebrow={isMono ? 'Stage monoplace' : 'Stage GT'}
+    title={car.name}
+    image={car.image}
+    crumbs={[
+      { href: '/stages/', label: 'Nos stages' },
+      { href: `/stages/${car.slug}/`, label: car.name },
+    ]}
+  >
+    <ul class="hero-specs">
+      <li><Icon name="gauge" size={18} /> {car.power} ch</li>
+      <li><Icon name="engine" size={18} /> {car.engine}</li>
+      <li><Icon name="gear" size={18} /> {car.gearbox}</li>
+      <li><Icon name="pin" size={18} /> {carCircuits.length} circuits</li>
+    </ul>
+  </PageHero>
+
+  <section class="section">
+    <div class="container car-layout">
+      <div class="car-main">
+        <h2>Le stage en {car.name}</h2>
+        <div class="prose">
+          <p class="lead">{car.description}</p>
+          {car.specs && car.specs !== car.description && <p>{car.specs}</p>}
+        </div>
+
+        <h3 class="sub">Ce qui est inclus</h3>
+        <ul class="check-list">
+          {includes.map((i) => <li>{i}</li>)}
+        </ul>
+
+        <h3 class="sub">Les conditions</h3>
+        <ul class="conditions">
+          {
+            isMono ? (
+              <>
+                <li>
+                  <strong>Âge</strong>17 ans minimum, permis de conduire obligatoire
+                </li>
+                <li>
+                  <strong>Caution</strong>1 000 € (200 € avec l’option Sérénité), restituée le jour même
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <strong>Âge</strong>
+                  {car.youngDrivers ? 'Dès 16 ans en conduite accompagnée, ou 17 ans avec le permis B' : '17 ans minimum avec le permis B'}
+                </li>
+                <li>
+                  <strong>Caution</strong>Aucune. Franchise de 2 500 € en cas de dégât, rachetable 15 € sur place
+                </li>
+              </>
+            )
+          }
+          <li><strong>Niveau</strong>Débutant ou confirmé : le moniteur adapte ses conseils</li>
+          <li><strong>Accompagnants</strong>Bienvenus, baptême de vitesse en passager possible dès 8 ans</li>
+        </ul>
+
+        <h3 class="sub" id="circuits">Où piloter la {car.name} ?</h3>
+        <div class="circuit-groups">
+          {
+            byRegion.map((r) => (
+              <div>
+                <p class="circuit-groups__region">{r.label}</p>
+                <ul>
+                  {r.list.map((c) => (
+                    <li>
+                      <a href={`/reservation/?voiture=${car.slug}&circuit=${c.slug}`}>
+                        {c.name} <span>({c.department})</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <aside class="car-aside">
+        <div class="booking card">
+          <p class="price"><small>à partir de</small><strong>{formatPrice(car.priceFrom)}</strong></p>
+          <p class="booking__note">Tarif indicatif hors promotion pour la formule la plus courte. Le prix varie selon le circuit et le nombre de tours.</p>
+          <a class="btn btn--block" href={`/reservation/?voiture=${car.slug}`}>Demander ce stage</a>
+          <a class="btn btn--ghost btn--block" href={`/reservation/?voiture=${car.slug}&type=cadeau`}><Icon name="gift" size={18} /> L’offrir en cadeau</a>
+          <ul class="booking__perks">
+            <li><Icon name="check" size={16} /> Paiement en 3× sans frais</li>
+            <li><Icon name="check" size={16} /> Bon cadeau par e-mail en 5 min</li>
+            <li><Icon name="check" size={16} /> Date modifiable</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  {
+    similar.length > 0 && (
+      <section class="section section--soft">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow">Vous aimerez aussi</p>
+            <h2>Voitures similaires</h2>
+          </div>
+          <div class="grid grid--3">
+            {similar.map((c) => (
+              <CarCard car={c} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  .hero-specs {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .hero-specs li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(6px);
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+  .car-layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 56px;
+    align-items: start;
+  }
+  .lead {
+    font-size: 1.12rem;
+  }
+  .sub {
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    margin-top: 44px;
+  }
+  .conditions {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .conditions li {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 16px;
+    padding: 14px 18px;
+    background: #fff;
+  }
+  .conditions li + li {
+    border-top: 1px solid var(--line);
+  }
+  .conditions strong {
+    color: var(--ink);
+  }
+  .circuit-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .circuit-groups__region {
+    font-weight: 700;
+    color: var(--teal-700);
+    margin-bottom: 6px;
+  }
+  .circuit-groups ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 4px;
+  }
+  .circuit-groups a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .circuit-groups a:hover {
+    color: var(--magenta-600);
+    text-decoration: underline;
+  }
+  .circuit-groups span {
+    color: var(--muted);
+  }
+  .car-aside {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+  }
+  .booking {
+    padding: 28px;
+    display: grid;
+    gap: 14px;
+  }
+  .booking .price strong {
+    font-size: 2.6rem;
+  }
+  .booking__note {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0;
+  }
+  .booking__perks {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 0;
+    display: grid;
+    gap: 6px;
+    font-size: 0.9rem;
+  }
+  .booking__perks li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .booking__perks :global(svg) {
+    color: var(--teal-700);
+  }
+  @media (max-width: 960px) {
+    .car-layout {
+      grid-template-columns: 1fr;
+    }
+    .car-aside {
+      position: static;
+      order: -1;
+    }
+  }
+  @media (max-width: 520px) {
+    .conditions li {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+  }
+</style>

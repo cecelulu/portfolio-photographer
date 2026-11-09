@@ -1,0 +1,88 @@
+---
+import { formatPrice } from '../data/site';
+import type { Experience } from '../data/experiences';
+
+interface Props {
+  exp: Experience;
+}
+const { exp } = Astro.props;
+---
+
+<article class="exp card">
+  <div class="exp__media">
+    <img src={exp.image} alt="" width="800" height="440" loading="lazy" decoding="async" />
+  </div>
+  <div class="exp__body">
+    <h3><a href={exp.href}>{exp.title}</a></h3>
+    <p class="exp__short">{exp.short}</p>
+    <p class="exp__desc">{exp.description}</p>
+    <div class="exp__foot">
+      <p class="price"><small>à partir de</small><strong>{formatPrice(exp.priceFrom)}</strong></p>
+      <span class="link-arrow" aria-hidden="true">Découvrir</span>
+    </div>
+  </div>
+</article>
+
+<style>
+  .exp {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .exp:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+  .exp__media {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+  .exp__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .exp:hover .exp__media img {
+    transform: scale(1.05);
+  }
+  .exp__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px 22px 22px;
+  }
+  .exp h3 {
+    font-size: 1.7rem;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .exp h3 a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .exp h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .exp__short {
+    color: var(--teal-700);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .exp__desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .exp__foot {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  }
+  .exp__foot .price {
+    margin: 0;
+  }
+</style>

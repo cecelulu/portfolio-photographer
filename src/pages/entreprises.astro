@@ -1,0 +1,250 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const occasions = [
+  'Team-building et cohésion d’équipe',
+  'Séminaire ou journée CSE',
+  'Challenge ou récompense commerciale',
+  'Remerciement des salariés',
+  'Fidélisation de clients et distributeurs',
+  'Lancement de produit, motivation de prospects',
+];
+const program = [
+  'Accueil sur le circuit',
+  'Briefing : techniques de pilotage, véhicules et consignes de sécurité',
+  'Reconnaissance du circuit en passager d’un Porsche Cayenne',
+  'Pilotage d’une ou plusieurs GT d’exception, instructeur en passager',
+  'Baptême de piste avec un pilote professionnel à vitesse compétition',
+  'Cocktail de clôture',
+];
+const reasons = [
+  { value: '70 000', label: 'clients accueillis chaque année, 96 % satisfaits' },
+  { value: '360', label: 'journées de stage organisées par an' },
+  { value: '250', label: 'instructeurs diplômés d’État' },
+  { value: '180', label: 'véhicules d’exception GT et monoplace' },
+  { value: '26', label: 'circuits homologués' },
+  { value: '1', label: 'interlocuteur dédié de A à Z' },
+];
+---
+
+<Base
+  title="Groupes et entreprises : événements et séminaires sur circuit"
+  description="Team-building, séminaire, CSE, incentive : Sprint Racing organise votre événement sur circuit de 8 à 300 personnes, en Île-de-France ou en région. Devis sur mesure."
+>
+  <PageHero
+    eyebrow="Groupes et entreprises"
+    title="Votre événement sur circuit"
+    lead="De 8 à 300 personnes, en Île-de-France ou en région, en journée, demi-journée ou soirée, en semaine ou le week-end : nous construisons avec vous la formule idéale."
+    image="/images/voitures/R8V10.webp"
+    crumbs={[{ href: '/entreprises/', label: 'Entreprises' }]}
+  >
+    <div class="hero-ctas"><a class="btn" href="#devis">Demander un devis</a></div>
+  </PageHero>
+
+  <section class="section">
+    <div class="container two-cols">
+      <div>
+        <p class="eyebrow">Pour quelles occasions ?</p>
+        <h2>Fédérez, récompensez, marquez les esprits</h2>
+        <ul class="check-list occasions">
+          {occasions.map((o) => <li>{o}</li>)}
+        </ul>
+      </div>
+      <div class="program card">
+        <p class="eyebrow">Exemple de programme</p>
+        <ol>
+          {program.map((p) => <li>{p}</li>)}
+        </ol>
+        <div class="program__price">
+          <p>
+            <strong>246 € HT par personne</strong> : tarif indicatif au 01/01/2026 pour un groupe de 20 personnes, de 17h30 à 19h30, au circuit Jean-Pierre Beltoise de Trappes (78).
+          </p>
+          <p class="note">2 tours de découverte en Porsche Cayenne + 4 tours au volant d’une Porsche 718 Cayman S ou d’une Alpine A110 S + 2 tours de baptême en Focus RS + cocktail. Devis sur mesure selon le circuit, la date, le nombre de participants, les véhicules et le nombre de tours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Pourquoi Sprint Racing</p>
+        <h2>20 ans d’expérience dans l’événementiel automobile</h2>
+      </div>
+      <div class="reasons">
+        {
+          reasons.map((r) => (
+            <div>
+              <p class="reasons__value">{r.value}</p>
+              <p class="reasons__label">{r.label}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="devis">
+    <div class="container quote">
+      <div>
+        <p class="eyebrow">Devis gratuit</p>
+        <h2>Parlez-nous de votre projet</h2>
+        <p class="muted">Indiquez vos contraintes et vos envies : nous revenons vers vous avec une proposition sur mesure.</p>
+        <div class="contact-box">
+          <p><Icon name="mail" size={18} /> <a href={`mailto:${site.emailEvents}`}>{site.emailEvents}</a></p>
+          <p><Icon name="phone" size={18} /> <a href={site.phoneFrHref}>{site.phoneFr}</a></p>
+        </div>
+      </div>
+
+      <form class="card form-card" data-request-form data-endpoint={site.formEndpoint} data-mailto={site.emailEvents} data-subject="Demande de devis entreprise">
+        <div class="form-grid">
+          <label class="field">
+            <span>Entreprise <span class="req">*</span></span>
+            <input type="text" name="entreprise" required autocomplete="organization" data-label="Entreprise" />
+          </label>
+          <label class="field">
+            <span>Nom du contact <span class="req">*</span></span>
+            <input type="text" name="contact" required autocomplete="name" data-label="Contact" />
+          </label>
+          <label class="field">
+            <span>E-mail <span class="req">*</span></span>
+            <input type="email" name="email" required autocomplete="email" data-label="E-mail" />
+          </label>
+          <label class="field">
+            <span>Téléphone <span class="req">*</span></span>
+            <input type="tel" name="telephone" required autocomplete="tel" data-label="Téléphone" />
+          </label>
+          <label class="field">
+            <span>Nombre de participants</span>
+            <input type="number" name="participants" min="8" max="300" data-label="Participants" />
+          </label>
+          <label class="field">
+            <span>Période souhaitée</span>
+            <input type="text" name="periode" placeholder="Ex. : juin 2027, un jeudi" data-label="Période" />
+          </label>
+          <label class="field">
+            <span>Format</span>
+            <select name="format" data-label="Format">
+              <option value="">—</option>
+              <option>Journée</option>
+              <option>Demi-journée</option>
+              <option>Soirée</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Budget estimatif (€)</span>
+            <input type="number" name="budget" min="0" step="100" data-label="Budget (€)" />
+          </label>
+          <label class="field full">
+            <span>Votre demande <span class="req">*</span></span>
+            <textarea name="message" required rows="5" placeholder="Circuit ou région, types de véhicules, timing, exclusivité, restauration…" data-label="Demande"></textarea>
+          </label>
+          <label class="trap" aria-hidden="true">Ne pas remplir <input type="text" name="_site_web" tabindex="-1" autocomplete="off" /></label>
+          <label class="checkbox full">
+            <input type="checkbox" name="consentement" required />
+            <span>J’accepte que Sprint Racing utilise ces informations pour traiter ma demande. <span class="req">*</span></span>
+          </label>
+        </div>
+        <div class="submit">
+          <button class="btn" type="submit">Envoyer ma demande de devis</button>
+        </div>
+        <p class="form-status" data-form-status hidden role="status"></p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { initForms } from '../scripts/forms';
+  initForms();
+</script>
+
+<style>
+  .hero-ctas {
+    margin-top: 24px;
+  }
+  .two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .occasions {
+    font-size: 1.05rem;
+    margin-top: 24px;
+  }
+  .program {
+    padding: 32px;
+  }
+  .program ol {
+    margin: 0 0 24px;
+    padding-left: 22px;
+    display: grid;
+    gap: 8px;
+  }
+  .program ol li::marker {
+    color: var(--magenta);
+    font-weight: 700;
+  }
+  .program__price {
+    padding: 18px;
+    border-radius: var(--radius-sm);
+    background: var(--teal-50);
+  }
+  .program__price p {
+    margin: 0 0 8px;
+  }
+  .program__price strong {
+    color: var(--teal-700);
+  }
+  .reasons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .reasons__value {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0 0 6px;
+    color: #fff;
+  }
+  .reasons__label {
+    margin: 0;
+  }
+  .quote {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .muted {
+    color: var(--muted);
+  }
+  .contact-box p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 8px;
+    font-weight: 600;
+  }
+  .contact-box :global(svg) {
+    color: var(--teal-700);
+  }
+  .submit {
+    margin-top: 24px;
+  }
+  @media (max-width: 900px) {
+    .two-cols,
+    .quote {
+      grid-template-columns: 1fr;
+    }
+    .reasons {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

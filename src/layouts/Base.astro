@@ -1,0 +1,75 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource/barlow-condensed/600.css';
+import '@fontsource/barlow-condensed/700.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const { title, description, image = '/images/voitures/multigt2.webp', noindex = false } = Astro.props;
+const fullTitle = title.includes('Sprint Racing') ? title : `${title} | Sprint Racing`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+const ogImage = new URL(image, Astro.site ?? site.url).href;
+
+const orgLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SportsActivityLocation',
+  name: 'Sprint Racing',
+  description: site.tagline,
+  url: site.url,
+  telephone: '+33130666360',
+  email: site.email,
+  image: ogImage,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    postalCode: site.address.zip,
+    addressLocality: site.address.city,
+    addressCountry: 'FR',
+  },
+  aggregateRating: { '@type': 'AggregateRating', ratingValue: '8.6', bestRating: '10', ratingCount: '12243' },
+  sameAs: [site.social.facebook, site.social.instagram],
+};
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#cd398a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Sprint Racing" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(orgLd)} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    <Header />
+    <main id="contenu">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

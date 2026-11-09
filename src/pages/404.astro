@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Page introuvable" description="Cette page n’existe pas ou a été déplacée." noindex>
+  <section class="section">
+    <div class="container lost">
+      <p class="eyebrow">Erreur 404</p>
+      <h1>Sortie de piste !</h1>
+      <p>La page que vous cherchez n’existe pas ou a été déplacée.</p>
+      <div class="actions">
+        <a class="btn" href="/">Retour à l’accueil</a>
+        <a class="btn btn--ghost" href="/stages/">Voir les stages</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lost {
+    max-width: 640px;
+    text-align: center;
+    padding-block: 40px;
+  }
+  .lost p {
+    color: var(--muted);
+    font-size: 1.1rem;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+  }
+</style>

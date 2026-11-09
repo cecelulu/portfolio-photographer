@@ -1,0 +1,192 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+import cars from '../data/cars.json';
+
+const year = new Date().getFullYear();
+const gtCars = cars.filter((c) => c.category === 'gt').slice(0, 8);
+---
+
+<footer class="footer">
+  <div class="container footer__cta">
+    <div>
+      <h2>Prêt à prendre le volant ?</h2>
+      <p>Envoyez votre demande en 2 minutes, notre équipe vous recontacte pour confirmer votre stage.</p>
+    </div>
+    <div class="footer__cta-actions">
+      <a class="btn" href="/reservation/">Demander mon stage</a>
+      <a class="btn btn--light" href={site.phoneFrHref}><Icon name="phone" size={18} /> {site.phoneFr}</a>
+    </div>
+  </div>
+
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <img src="/images/logo/sprint-racing-blanc.png" alt="Sprint Racing" width="220" height="40" loading="lazy" />
+      <p>{site.tagline}. Stages de pilotage en GT et en monoplace sur 25 circuits en France et en Belgique depuis 2002.</p>
+      <div class="footer__social">
+        <a href={site.social.facebook} aria-label="Facebook" rel="noopener" target="_blank"><Icon name="facebook" size={20} /></a>
+        <a href={site.social.instagram} aria-label="Instagram" rel="noopener" target="_blank"><Icon name="instagram" size={20} /></a>
+        <a href={site.social.youtube} aria-label="YouTube" rel="noopener" target="_blank"><Icon name="youtube" size={20} /></a>
+      </div>
+    </div>
+
+    <div>
+      <h3>Stages</h3>
+      <ul>
+        {gtCars.map((c) => <li><a href={`/stages/${c.slug}/`}>{c.name}</a></li>)}
+        <li><a href="/stages/">Toutes les voitures</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Expériences</h3>
+      <ul>
+        <li><a href="/stages/multi-gt/">Multi GT : duo, trio</a></li>
+        <li><a href="/stages/#monoplace">Monoplace</a></li>
+        <li><a href="/stages/drift/">Drift et glisse</a></li>
+        <li><a href="/stages/jeunes/">Stage jeunes dès 16 ans</a></li>
+        <li><a href="/stages/coaching/">Coaching</a></li>
+        <li><a href="/offrir/">Coffrets et chèques cadeaux</a></li>
+        <li><a href="/entreprises/">Groupes et entreprises</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Nous contacter</h3>
+      <ul class="footer__contact">
+        <li><Icon name="phone" size={18} /><span><a href={site.phoneFrHref}>{site.phoneFr}</a> (France)<br /><a href={site.phoneBeHref}>{site.phoneBe}</a> (Belgique)</span></li>
+        <li><Icon name="mail" size={18} /><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li><Icon name="clock" size={18} /><span>{site.hours}</span></li>
+        <li><Icon name="pin" size={18} /><span>{site.address.street}<br />{site.address.zip} {site.address.city}</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+      <p>© {year} {site.name} – {site.legal.company} – {site.legal.rcs}</p>
+      <nav aria-label="Liens légaux">
+        <a href="/mentions-legales/">Mentions légales</a>
+        <a href="/contact/">Contact</a>
+        <a href="/faq/">FAQ</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--ink);
+    color: #b9b9c4;
+    font-size: 0.95rem;
+  }
+  .footer__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-block: 48px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .footer__cta h2 {
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .footer__cta p {
+    margin: 0;
+    max-width: 52ch;
+  }
+  .footer__cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.3fr;
+    gap: 40px;
+    padding-block: 56px;
+  }
+  .footer__brand img {
+    width: 200px;
+    margin-bottom: 18px;
+  }
+  .footer h3 {
+    color: #fff;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+  .footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .footer a {
+    color: #e3e3ea;
+    text-decoration: none;
+  }
+  .footer a:hover {
+    color: #f6a9d1;
+  }
+  .footer__contact li {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+  .footer__contact :global(svg) {
+    margin-top: 3px;
+    color: var(--teal);
+  }
+  .footer__social {
+    display: flex;
+    gap: 10px;
+  }
+  .footer__social a {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .footer__social a:hover {
+    background: var(--magenta);
+    color: #fff;
+  }
+  .footer__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.85rem;
+  }
+  .footer__bottom-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    padding-block: 20px;
+  }
+  .footer__bottom p {
+    margin: 0;
+  }
+  .footer__bottom nav {
+    display: flex;
+    gap: 20px;
+  }
+
+  @media (max-width: 900px) {
+    .footer__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .footer__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

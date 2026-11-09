@@ -1,0 +1,221 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Steps from '../components/Steps.astro';
+import Icon from '../components/Icon.astro';
+import { dayProgram, options, about } from '../data/content';
+import { site } from '../data/site';
+---
+
+<Base
+  title="Le déroulement d’un stage de pilotage"
+  description="Briefing vidéo, tours de reconnaissance, pilotage avec un moniteur diplômé, diplôme : découvrez comment se déroule un stage de pilotage Sprint Racing."
+>
+  <PageHero
+    eyebrow="Le déroulement"
+    title="Votre stage, étape par étape"
+    lead="Débutant ou pilote confirmé, chaque stage est pensé pour concilier plaisir, progression et sécurité."
+    image="/images/voitures/718GT4RS.webp"
+    crumbs={[{ href: '/le-stage/', label: 'Le déroulement' }]}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow">Réserver</p>
+        <h2>De la demande au jour J</h2>
+      </div>
+      <Steps />
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container timeline-wrap">
+      <div class="section-head">
+        <p class="eyebrow">Sur le circuit</p>
+        <h2>Le jour de votre stage</h2>
+        <p>Vous recevez une semaine avant l’heure exacte de rendez-vous : inutile d’arriver en avance.</p>
+      </div>
+      <ol class="timeline">
+        {
+          dayProgram.map((d) => (
+            <li>
+              <h3>{d.title}</h3>
+              <p>{d.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container two-cols">
+      <div>
+        <p class="eyebrow">À savoir</p>
+        <h2>Les conditions</h2>
+        <ul class="info-list">
+          <li><Icon name="id" size={22} /><div><strong>Stages GT et glisse</strong>Dès 16 ans en conduite accompagnée, ou avec un permis valide (18 ans pour un permis étranger).</div></li>
+          <li><Icon name="helmet" size={22} /><div><strong>Stages monoplace</strong>Dès 17 ans, permis de conduire obligatoire.</div></li>
+          <li><Icon name="shield" size={22} /><div><strong>Caution</strong>Aucune en GT et en glisse (franchise de 2 500 €, rachetable 15 €). 1 000 € en monoplace, réduite à 200 € avec l’option Sérénité.</div></li>
+          <li><Icon name="users" size={22} /><div><strong>Accompagnants</strong>Bienvenus. Baptême de vitesse en passager possible dès 8 ans. Déconseillé aux enfants de moins de 8 ans, aux femmes enceintes et aux personnes fragiles.</div></li>
+          <li><Icon name="clock" size={22} /><div><strong>Saison</strong>Stages de début février à début décembre, chaque week-end et certains jours de semaine.</div></li>
+        </ul>
+      </div>
+      <div>
+        <p class="eyebrow">Pour aller plus loin</p>
+        <h2>Les options</h2>
+        <ul class="option-list">
+          {
+            options.map((o) => (
+              <li>
+                <strong>{o.name}</strong>
+                <span>{o.detail}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="cta-box">
+          <p>Une question avant de réserver ? Appelez-nous au <a href={site.phoneFrHref}>{site.phoneFr}</a> ou consultez la <a href="/faq/">FAQ</a>.</p>
+          <a class="btn" href="/reservation/">Demander mon stage</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="container about">
+      <div>
+        <p class="eyebrow">Qui sommes-nous</p>
+        <h2>{about.title}</h2>
+      </div>
+      <div>
+        {about.paragraphs.map((p) => <p>{p}</p>)}
+        <p>
+          Envie de nous rejoindre ? Nous recrutons chaque année mécaniciens, hôtesses d’accueil et apprentis moniteurs :
+          <a href={`mailto:${site.emailJobs}`}>{site.emailJobs}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    counter-reset: t;
+    max-width: 860px;
+  }
+  .timeline li {
+    position: relative;
+    padding: 0 0 36px 64px;
+    counter-increment: t;
+  }
+  .timeline li::before {
+    content: counter(t);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--magenta);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+  .timeline li::after {
+    content: '';
+    position: absolute;
+    left: 21px;
+    top: 48px;
+    bottom: 4px;
+    width: 2px;
+    background: linear-gradient(var(--magenta), var(--teal));
+    opacity: 0.4;
+  }
+  .timeline li:last-child::after {
+    display: none;
+  }
+  .timeline h3 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    padding-top: 8px;
+  }
+  .timeline p {
+    color: var(--muted);
+    margin: 0;
+  }
+  .two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .info-list,
+  .option-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 12px;
+  }
+  .info-list li {
+    display: flex;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+  .info-list :global(svg) {
+    flex: none;
+    color: var(--magenta);
+  }
+  .info-list strong,
+  .option-list strong {
+    display: block;
+    color: var(--ink);
+  }
+  .info-list div {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .option-list li {
+    padding: 16px;
+    border-left: 3px solid var(--teal);
+    background: var(--bg-soft);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+  .option-list span {
+    color: var(--muted);
+    font-size: 0.93rem;
+  }
+  .cta-box {
+    margin-top: 28px;
+    padding: 24px;
+    border-radius: var(--radius);
+    background: var(--magenta-50);
+  }
+  .about {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 48px;
+  }
+  .about a {
+    color: #f6a9d1;
+  }
+  @media (max-width: 900px) {
+    .two-cols,
+    .about {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,69 @@
+---
+import Icon from './Icon.astro';
+import { reassurance } from '../data/site';
+---
+
+<section class="reassurance" aria-label="Nos engagements">
+  <div class="container reassurance__grid">
+    {
+      reassurance.map((r) => (
+        <div class="reassurance__item">
+          <span class="reassurance__icon"><Icon name={r.icon} size={22} /></span>
+          <p><strong>{r.title}</strong><span>{r.text}</span></p>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .reassurance {
+    border-bottom: 1px solid var(--line);
+    background: #fff;
+  }
+  .reassurance__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding-block: 22px;
+  }
+  .reassurance__item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .reassurance__icon {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--magenta-50);
+    color: var(--magenta);
+  }
+  .reassurance p {
+    margin: 0;
+    line-height: 1.3;
+  }
+  .reassurance strong {
+    display: block;
+    color: var(--ink);
+  }
+  .reassurance span:not(.reassurance__icon) {
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  @media (max-width: 900px) {
+    .reassurance__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 480px) {
+    .reassurance__grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+  }
+</style>

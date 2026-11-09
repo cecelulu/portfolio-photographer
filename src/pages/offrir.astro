@@ -1,0 +1,234 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import FaqList from '../components/FaqList.astro';
+import Icon from '../components/Icon.astro';
+import { giftBoxes, giftIncludes, faq } from '../data/content';
+import { formatPrice } from '../data/site';
+
+const giftFaq = faq.find((g) => g.group === 'Offrir un stage')!.items;
+---
+
+<Base
+  title="Offrir un stage de pilotage : coffrets et chèques cadeaux"
+  description="Offrez un stage de pilotage Sprint Racing : coffrets cadeaux de 144 à 289 €, chèques cadeaux dès 50 €, bon cadeau envoyé par e-mail en 5 minutes, valable un an."
+>
+  <PageHero
+    eyebrow="Idée cadeau"
+    title="Offrez un stage de pilotage"
+    lead="Le cadeau qui fait briller les yeux. Bon cadeau personnalisé envoyé par e-mail en 5 minutes, ou coffret livré par courrier. Le bénéficiaire choisit sa date."
+    image="/images/voitures/991GT3RS.webp"
+    crumbs={[{ href: '/offrir/', label: 'Offrir' }]}
+  >
+    <div class="hero-ctas">
+      <a class="btn" href="/reservation/?type=cadeau">Commander un cadeau</a>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow">3 façons d’offrir</p>
+        <h2>Choisissez votre formule</h2>
+      </div>
+      <div class="grid grid--3 ways">
+        <div class="way card">
+          <span class="way__icon"><Icon name="helmet" size={26} /></span>
+          <h3>Un stage précis</h3>
+          <p>Vous savez quelle voiture fera rêver ? Choisissez le modèle, le circuit et le nombre de tours. Le bénéficiaire n’a plus qu’à choisir sa date.</p>
+          <a class="link-arrow" href="/stages/">Choisir une voiture</a>
+        </div>
+        <div class="way card way--featured">
+          <span class="tag tag--magenta way__badge">Le plus offert</span>
+          <span class="way__icon"><Icon name="gift" size={26} /></span>
+          <h3>Un coffret cadeau</h3>
+          <p>Le bénéficiaire choisit lui-même sa voiture, son circuit et son nombre de tours parmi les formules de son coffret. Valable un an sur tous nos circuits.</p>
+          <a class="link-arrow" href="#coffrets">Voir les coffrets</a>
+        </div>
+        <div class="way card">
+          <span class="way__icon"><Icon name="card" size={26} /></span>
+          <h3>Un chèque cadeau</h3>
+          <p>Choisissez librement le montant, dès 50 €. Le bénéficiaire l’utilise sur le site en saisissant son code au moment du paiement.</p>
+          <a class="link-arrow" href="/reservation/?type=cadeau">Offrir un chèque cadeau</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="coffrets">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Coffrets cadeaux</p>
+        <h2>4 coffrets, valables sur tous nos circuits</h2>
+        <p>Pas sûr du modèle qui plaira le plus ? Le coffret laisse au bénéficiaire le choix de la voiture et du nombre de tours. Il peut aussi passer au coffret supérieur ou changer de circuit (avec un éventuel supplément).</p>
+      </div>
+      <div class="grid grid--4">
+        {
+          giftBoxes.map((g, i) => (
+            <article class={`box card${i === 2 ? ' box--highlight' : ''}`}>
+              <p class="box__name">{g.name}</p>
+              <p class="price">
+                <strong>{formatPrice(g.price)}</strong>
+              </p>
+              <p class="box__text">{g.text}</p>
+              <a class={`btn btn--sm btn--block${i === 2 ? '' : ' btn--ghost'}`} href={`/reservation/?type=cadeau`}>
+                Choisir
+              </a>
+            </article>
+          ))
+        }
+      </div>
+      <p class="note">Prix hors promotion. Les formules disponibles varient selon les circuits. Coffrets valables un an à partir de la date d’achat.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container two-cols">
+      <div>
+        <p class="eyebrow">Inclus dans chaque stage</p>
+        <h2>Une expérience complète</h2>
+        <ul class="check-list big-list">
+          {giftIncludes.map((g) => <li>{g}</li>)}
+        </ul>
+        <h3 class="sub">Livraison</h3>
+        <ul class="delivery">
+          <li>
+            <Icon name="mail" size={22} />
+            <div>
+              <strong>Par e-mail – gratuit</strong>
+              <span>Bon cadeau personnalisé, livrets « circuits » et « voitures » et planning de l’année en PDF imprimable, en quelques minutes.</span>
+            </div>
+          </li>
+          <li>
+            <Icon name="gift" size={22} />
+            <div>
+              <strong>Par courrier – 12,90 €</strong>
+              <span>Coffret physique (14 × 21 cm) expédié le jour même pour toute commande avant 12h, à vous ou directement au bénéficiaire. Environ 5 jours ouvrés.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <img class="two-cols__img" src="/images/categories/CHEQUEcadeau.webp" alt="Bon cadeau stage de pilotage Sprint Racing" width="800" height="440" loading="lazy" />
+        <h3 class="sub">Questions fréquentes</h3>
+        <FaqList items={giftFaq} />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero-ctas {
+    margin-top: 24px;
+  }
+  .way {
+    position: relative;
+    padding: 28px;
+  }
+  .way--featured {
+    border-color: var(--magenta);
+    box-shadow: 0 12px 40px rgba(205, 57, 138, 0.16);
+  }
+  .way__badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  .way__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--magenta-50);
+    color: var(--magenta);
+    margin-bottom: 16px;
+  }
+  .way h3 {
+    font-size: 1.6rem;
+    text-transform: uppercase;
+  }
+  .way p {
+    color: var(--muted);
+  }
+  .box {
+    padding: 26px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .box--highlight {
+    border: 2px solid var(--magenta);
+  }
+  .box__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .box .price {
+    margin: 0;
+  }
+  .box .price strong {
+    font-size: 2.4rem;
+  }
+  .box__text {
+    color: var(--muted);
+    font-size: 0.93rem;
+    flex: 1;
+  }
+  .note {
+    margin-top: 24px;
+  }
+  .two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .two-cols__img {
+    border-radius: var(--radius);
+    width: 100%;
+  }
+  .big-list {
+    font-size: 1.05rem;
+  }
+  .sub {
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    margin-top: 40px;
+  }
+  .delivery {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .delivery li {
+    display: flex;
+    gap: 14px;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+  .delivery :global(svg) {
+    flex: none;
+    color: var(--teal-700);
+  }
+  .delivery strong {
+    display: block;
+    color: var(--ink);
+  }
+  .delivery span {
+    color: var(--muted);
+    font-size: 0.93rem;
+  }
+  @media (max-width: 900px) {
+    .two-cols {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

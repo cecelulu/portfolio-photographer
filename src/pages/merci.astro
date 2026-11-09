@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base title="Merci pour votre demande" description="Votre demande a bien été envoyée à Sprint Racing." noindex>
+  <section class="section">
+    <div class="container thanks">
+      <p class="eyebrow">Demande envoyée</p>
+      <h1>Merci !</h1>
+      <p>Votre demande a bien été transmise à notre équipe. Un conseiller vous recontacte très rapidement pour confirmer votre stage.</p>
+      <p>Une urgence ? Appelez-nous au <a href={site.phoneFrHref}>{site.phoneFr}</a> ({site.hours.toLowerCase()}).</p>
+      <div class="actions">
+        <a class="btn" href="/">Retour à l’accueil</a>
+        <a class="btn btn--ghost" href="/le-stage/">Préparer mon stage</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .thanks {
+    max-width: 720px;
+    text-align: center;
+    padding-block: 40px;
+  }
+  .thanks p {
+    font-size: 1.1rem;
+    color: var(--muted);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 28px;
+  }
+</style>

@@ -1,0 +1,125 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from './PageHero.astro';
+import Reassurance from './Reassurance.astro';
+import Icon from './Icon.astro';
+import { specialStages } from '../data/experiences';
+import { formatPrice } from '../data/site';
+
+interface Props {
+  slug: keyof typeof specialStages;
+  description: string;
+}
+const { slug, description } = Astro.props;
+const stage = specialStages[slug];
+---
+
+<Base title={stage.title} description={description} image={stage.image}>
+  <PageHero
+    eyebrow="Nos stages"
+    title={stage.title}
+    lead={stage.lead}
+    image={stage.image}
+    crumbs={[
+      { href: '/stages/', label: 'Nos stages' },
+      { href: `/stages/${slug}/`, label: stage.title },
+    ]}
+  >
+    <div class="hero-ctas">
+      <a class="btn" href={`/reservation/?type=${stage.type}`}>Demander ce stage</a>
+      <a class="btn btn--light" href={`/reservation/?type=cadeau`}>L’offrir en cadeau</a>
+    </div>
+  </PageHero>
+  <Reassurance />
+
+  <section class="section">
+    <div class="container layout">
+      <div class="prose">
+        {stage.body.map((p) => <p>{p}</p>)}
+        <slot />
+      </div>
+      <div class="formulas card">
+        <h2 class="formulas__title">Formules</h2>
+        <ul>
+          {
+            stage.formulas.map((f) => (
+              <li>
+                <div>
+                  <strong>{f.name}</strong>
+                  <span>{f.detail}</span>
+                </div>
+                <p class="price">
+                  <small>à partir de</small>
+                  <strong>{formatPrice(f.price)}</strong>
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="note">Tarifs indicatifs hors promotion, variables selon le circuit et la durée choisie.</p>
+        <a class="btn btn--block" href={`/reservation/?type=${stage.type}`}>Demander ce stage <Icon name="arrow" size={18} /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 440px;
+    gap: 56px;
+    align-items: start;
+  }
+  .prose p {
+    font-size: 1.06rem;
+  }
+  .formulas {
+    padding: 28px;
+  }
+  .formulas__title {
+    font-size: 1.8rem;
+  }
+  .formulas ul {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+  }
+  .formulas li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .formulas li > div strong {
+    display: block;
+    color: var(--ink);
+  }
+  .formulas li > div span {
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  .formulas .price {
+    margin: 0;
+    text-align: right;
+    flex: none;
+  }
+  .formulas .price strong {
+    font-size: 1.5rem;
+  }
+  .formulas .note {
+    margin-bottom: 18px;
+  }
+  @media (max-width: 960px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

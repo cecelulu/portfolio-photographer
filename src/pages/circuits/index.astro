@@ -1,0 +1,189 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import circuitsData from '../../data/circuits.json';
+import { formatPrice } from '../../data/site';
+
+const regions = Object.entries(circuitsData.regions).map(([key, label]) => ({
+  key,
+  label,
+  circuits: circuitsData.circuits.filter((c) => c.regionKey === key),
+}));
+---
+
+<Base
+  title="Nos circuits de stage de pilotage en France et en Belgique"
+  description="Trappes, Montlhéry, La Ferté-Gaucher, Croix-en-Ternois, Lyon, Magny-Cours, Nogaro, Circuit du Var, Mettet… Trouvez le circuit Sprint Racing le plus proche de chez vous."
+>
+  <PageHero
+    eyebrow="Nos circuits"
+    title="Un circuit près de chez vous"
+    lead="25 circuits homologués FFSA en France et en Belgique. Sprint Racing est propriétaire de deux d’entre eux et a l’exclusivité sur la plupart des autres."
+    image="/images/voitures/992GT3.webp"
+    crumbs={[{ href: '/circuits/', label: 'Circuits' }]}
+  />
+
+  <section class="section">
+    <div class="container">
+      <nav class="region-nav" aria-label="Régions">
+        {regions.map((r) => <a href={`#${r.key}`}>{r.label}</a>)}
+      </nav>
+
+      {
+        regions.map((r) => (
+          <div class="region" id={r.key}>
+            <h2 class="region__title">{r.label}</h2>
+            <div class="grid grid--3">
+              {r.circuits.map((c) => (
+                <article class="circuit card">
+                  <div class="circuit__top">
+                    <img src={c.trace} alt={`Tracé du ${c.name}`} loading="lazy" width="65" height="41" />
+                    <div>
+                      <h3>
+                        <a href={`/circuits/${c.slug}/`}>{c.name}</a>
+                      </h3>
+                      <p class="circuit__place">
+                        <Icon name="pin" size={15} /> {c.city} ({c.department})
+                      </p>
+                    </div>
+                  </div>
+                  <p class="circuit__summary">{c.summary}</p>
+                  <ul class="circuit__facts">
+                    <li>
+                      <Icon name="track" size={16} /> {c.length}
+                    </li>
+                    <li>
+                      <Icon name="helmet" size={16} /> {c.cars.length} voitures
+                    </li>
+                  </ul>
+                  <div class="circuit__foot">
+                    <p class="price">
+                      <small>à partir de</small>
+                      <strong>{formatPrice(c.priceFrom)}</strong>
+                    </p>
+                    <span class="link-arrow" aria-hidden="true">Voir</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+      <p class="note">Tous nos circuits sont homologués par la FFSA.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .region-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 48px;
+  }
+  .region-nav a {
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-decoration: none;
+  }
+  .region-nav a:hover {
+    border-color: var(--teal);
+    color: var(--teal-700);
+  }
+  .region + .region {
+    margin-top: 56px;
+  }
+  .region__title {
+    font-size: 2rem;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--line);
+    margin-bottom: 24px;
+  }
+  .circuit {
+    position: relative;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .circuit:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+  .circuit__top {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .circuit__top img {
+    flex: none;
+    width: 72px;
+    height: 52px;
+    object-fit: contain;
+    padding: 6px;
+    background: var(--bg-soft);
+    border-radius: var(--radius-sm);
+  }
+  .circuit h3 {
+    font-size: 1.35rem;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .circuit h3 a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .circuit h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .circuit__place {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .circuit__summary {
+    color: var(--muted);
+    font-size: 0.94rem;
+  }
+  .circuit__facts {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+    display: flex;
+    gap: 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--teal-700);
+  }
+  .circuit__facts li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .circuit__foot {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  }
+  .circuit__foot .price {
+    margin: 0;
+  }
+  .circuit__foot .price strong {
+    font-size: 1.4rem;
+  }
+  .note {
+    margin-top: 40px;
+  }
+</style>

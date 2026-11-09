@@ -1,0 +1,32 @@
+---
+interface Props {
+  title: string;
+  eyebrow?: string;
+  lead?: string;
+  image?: string;
+  crumbs?: { href: string; label: string }[];
+}
+const { title, eyebrow, lead, image = '/images/voitures/multigt2.webp', crumbs = [] } = Astro.props;
+---
+
+<section class="page-hero">
+  <img class="page-hero__img" src={image} alt="" width="1920" height="500" fetchpriority="high" />
+  <div class="container">
+    {
+      crumbs.length > 0 && (
+        <nav aria-label="Fil d’Ariane">
+          <ol class="breadcrumb">
+            <li><a href="/">Accueil</a></li>
+            {crumbs.map((c, i) =>
+              i === crumbs.length - 1 ? <li aria-current="page">{c.label}</li> : <li><a href={c.href}>{c.label}</a></li>
+            )}
+          </ol>
+        </nav>
+      )
+    }
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    {lead && <p>{lead}</p>}
+    <slot />
+  </div>
+</section>

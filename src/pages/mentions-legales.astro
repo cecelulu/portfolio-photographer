@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+---
+
+<Base title="Mentions légales" description="Mentions légales du site Sprint Racing (PPK SAS)." >
+  <PageHero title="Mentions légales" crumbs={[{ href: '/mentions-legales/', label: 'Mentions légales' }]} image="/images/voitures/AMV2.webp" />
+  <section class="section">
+    <div class="container prose">
+      <h2>Éditeur du site</h2>
+      <p>
+        {site.legal.company}<br />
+        {site.legal.rcs}<br />
+        {site.legal.vat}<br />
+        {site.address.street}, {site.address.zip} {site.address.city}<br />
+        Téléphone : {site.phoneFr} – E-mail : <a href={`mailto:${site.email}`}>{site.email}</a>
+      </p>
+
+      <h2>Hébergement</h2>
+      <p>[À compléter : nom, adresse et téléphone de l’hébergeur du site.]</p>
+
+      <h2>Conditions générales de vente</h2>
+      <p>Les conditions générales de vente applicables aux stages, coffrets et chèques cadeaux sont disponibles sur demande auprès du service relations clients. [À compléter : lien vers les CGV.]</p>
+
+      <h2>Données personnelles</h2>
+      <p>
+        Les informations transmises via les formulaires du site sont utilisées uniquement par Sprint Racing pour traiter votre demande et vous recontacter. Elles ne sont jamais cédées à des tiers. Conformément au RGPD, vous disposez d’un droit d’accès, de rectification et de suppression de vos données en écrivant à <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+
+      <h2>Crédits</h2>
+      <p>Photographies : Sprint Racing. Tous droits réservés.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .prose h2 {
+    font-size: 1.7rem;
+    margin-top: 36px;
+  }
+</style>
