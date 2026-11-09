@@ -74,4 +74,6 @@ Les prix affichés sont les prix **« à partir de », hors promotion**, relevé
 
 ## Mise en ligne
 
-Le dossier `dist/` produit par `npm run build` peut être déposé sur n’importe quel hébergeur statique (Netlify, Vercel, Cloudflare Pages, OVH…). L’adresse finale du site se règle dans `astro.config.mjs` (`site`).
+Le dossier `dist/` produit par `npm run build` peut être déposé sur n’importe quel hébergeur statique (Netlify, Vercel, Cloudflare Pages, OVH…).
+
+Sur **Netlify**, le fichier `netlify.toml` contient déjà les réglages (commande `npm run build`, dossier `dist`, Node 22). Il suffit d’importer le dépôt depuis GitHub et de choisir la branche à publier. L’adresse finale du site se règle dans `astro.config.mjs` (`site`).
