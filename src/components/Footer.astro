@@ -1,175 +1,154 @@
 ---
 import Icon from './Icon.astro';
 import { site } from '../data/site';
-import cars from '../data/cars.json';
 
 const year = new Date().getFullYear();
-const gtCars = cars.filter((c) => c.category === 'gt').slice(0, 8);
+const columns = [
+  {
+    title: 'Stages',
+    links: [
+      { href: '/stages/', label: 'Toutes les voitures' },
+      { href: '/stages/multi-gt/', label: 'Multi GT : duo, trio' },
+      { href: '/stages/#monoplace', label: 'Monoplace' },
+      { href: '/stages/drift/', label: 'Drift et glisse' },
+      { href: '/stages/jeunes/', label: 'Stage jeunes dès 16 ans' },
+      { href: '/stages/coaching/', label: 'Coaching' },
+    ],
+  },
+  {
+    title: 'Sprint Racing',
+    links: [
+      { href: '/circuits/', label: 'Nos circuits' },
+      { href: '/offrir/', label: 'Offrir un stage' },
+      { href: '/entreprises/', label: 'Groupes et entreprises' },
+      { href: '/le-stage/', label: 'Le déroulement' },
+      { href: '/faq/', label: 'Questions fréquentes' },
+    ],
+  },
+];
 ---
 
 <footer class="footer">
-  <div class="container footer__cta">
-    <div>
-      <h2>Prêt à prendre le volant ?</h2>
-      <p>Réservez en ligne en quelques clics, ou posez-nous vos questions : notre équipe vous répond.</p>
-    </div>
-    <div class="footer__cta-actions">
-      <a class="btn" href="/commande/">Réserver mon stage</a>
-      <a class="btn btn--light" href={site.phoneFrHref}><Icon name="phone" size={18} /> {site.phoneFr}</a>
-    </div>
-  </div>
-
   <div class="container footer__grid">
     <div class="footer__brand">
-      <img src="/images/logo/sprint-racing-blanc.png" alt="Sprint Racing" width="220" height="40" loading="lazy" />
-      <p>{site.tagline}. Stages de pilotage en GT et en monoplace sur 25 circuits en France et en Belgique depuis 2002.</p>
+      <img src="/images/logo/sprint-racing.png" alt="Sprint Racing" width="205" height="47" loading="lazy" />
+      <p>Stages de pilotage en GT et en monoplace sur 25 circuits en France et en Belgique, depuis 2002.</p>
       <div class="footer__social">
-        <a href={site.social.facebook} aria-label="Facebook" rel="noopener" target="_blank"><Icon name="facebook" size={20} /></a>
-        <a href={site.social.instagram} aria-label="Instagram" rel="noopener" target="_blank"><Icon name="instagram" size={20} /></a>
-        <a href={site.social.youtube} aria-label="YouTube" rel="noopener" target="_blank"><Icon name="youtube" size={20} /></a>
+        <a href={site.social.instagram} aria-label="Instagram" rel="noopener" target="_blank"><Icon name="instagram" size={18} /></a>
+        <a href={site.social.facebook} aria-label="Facebook" rel="noopener" target="_blank"><Icon name="facebook" size={18} /></a>
+        <a href={site.social.youtube} aria-label="YouTube" rel="noopener" target="_blank"><Icon name="youtube" size={18} /></a>
       </div>
     </div>
 
-    <div>
-      <h3>Stages</h3>
-      <ul>
-        {gtCars.map((c) => <li><a href={`/stages/${c.slug}/`}>{c.name}</a></li>)}
-        <li><a href="/stages/">Toutes les voitures</a></li>
-      </ul>
-    </div>
+    {
+      columns.map((col) => (
+        <div>
+          <h3>{col.title}</h3>
+          <ul>
+            {col.links.map((l) => (
+              <li>
+                <a href={l.href}>{l.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
 
     <div>
-      <h3>Expériences</h3>
-      <ul>
-        <li><a href="/stages/multi-gt/">Multi GT : duo, trio</a></li>
-        <li><a href="/stages/#monoplace">Monoplace</a></li>
-        <li><a href="/stages/drift/">Drift et glisse</a></li>
-        <li><a href="/stages/jeunes/">Stage jeunes dès 16 ans</a></li>
-        <li><a href="/stages/coaching/">Coaching</a></li>
-        <li><a href="/offrir/">Coffrets et chèques cadeaux</a></li>
-        <li><a href="/entreprises/">Groupes et entreprises</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <h3>Nous contacter</h3>
+      <h3>Contact</h3>
       <ul class="footer__contact">
-        <li><Icon name="phone" size={18} /><span><a href={site.phoneFrHref}>{site.phoneFr}</a> (France)<br /><a href={site.phoneBeHref}>{site.phoneBe}</a> (Belgique)</span></li>
-        <li><Icon name="mail" size={18} /><a href={`mailto:${site.email}`}>{site.email}</a></li>
-        <li><Icon name="clock" size={18} /><span>{site.hours}</span></li>
-        <li><Icon name="pin" size={18} /><span>{site.address.street}<br />{site.address.zip} {site.address.city}</span></li>
+        <li><a href={site.phoneFrHref}>{site.phoneFr}</a> <span>France</span></li>
+        <li><a href={site.phoneBeHref}>{site.phoneBe}</a> <span>Belgique</span></li>
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li><span>{site.hours}</span></li>
       </ul>
     </div>
   </div>
 
-  <div class="footer__bottom">
-    <div class="container footer__bottom-inner">
-      <p>© {year} {site.name} – {site.legal.company} – {site.legal.rcs}</p>
-      <nav aria-label="Liens légaux">
-        <a href="/mentions-legales/">Mentions légales</a>
-        <a href="/contact/">Contact</a>
-        <a href="/faq/">FAQ</a>
-      </nav>
-    </div>
+  <div class="container footer__bottom">
+    <p>© {year} {site.name} · {site.legal.company}</p>
+    <nav aria-label="Liens légaux">
+      <a href="/mentions-legales/">Mentions légales et crédits photo</a>
+      <a href="/contact/">Contact</a>
+    </nav>
   </div>
 </footer>
 
 <style>
   .footer {
-    background: var(--ink);
-    color: #b9b9c4;
-    font-size: 0.95rem;
-  }
-  .footer__cta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding-block: 48px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  }
-  .footer__cta h2 {
-    color: #fff;
-    margin-bottom: 6px;
-  }
-  .footer__cta p {
-    margin: 0;
-    max-width: 52ch;
-  }
-  .footer__cta-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.92rem;
   }
   .footer__grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr 1.3fr;
+    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
     gap: 40px;
-    padding-block: 56px;
+    padding-block: 64px 48px;
   }
   .footer__brand img {
-    width: 200px;
-    margin-bottom: 18px;
+    width: 170px;
+    margin-bottom: 16px;
+  }
+  .footer__brand p {
+    max-width: 34ch;
   }
   .footer h3 {
-    color: #fff;
-    font-size: 1.15rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 14px;
   }
   .footer ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 8px;
+    gap: 9px;
   }
   .footer a {
-    color: #e3e3ea;
+    color: var(--muted);
     text-decoration: none;
   }
   .footer a:hover {
-    color: #f6a9d1;
+    color: var(--ink);
   }
-  .footer__contact li {
-    display: grid;
-    grid-template-columns: 18px 1fr;
-    gap: 12px;
-    align-items: start;
+  .footer__contact a {
+    color: var(--ink);
+    font-weight: 500;
   }
-  .footer__contact :global(svg) {
-    margin-top: 3px;
-    color: var(--teal);
+  .footer__contact span {
+    color: #9a9aa2;
   }
   .footer__social {
     display: flex;
-    gap: 10px;
+    gap: 8px;
   }
   .footer__social a {
-    display: inline-flex;
-    width: 40px;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
+    display: inline-grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
+    background: #fff;
+    color: var(--ink);
+    border: 1px solid var(--line);
   }
   .footer__social a:hover {
-    background: var(--magenta);
+    background: var(--ink);
     color: #fff;
+    border-color: var(--ink);
   }
   .footer__bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    font-size: 0.85rem;
-  }
-  .footer__bottom-inner {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 12px;
-    padding-block: 20px;
+    padding-block: 20px 28px;
+    border-top: 1px solid var(--line);
+    font-size: 0.82rem;
   }
   .footer__bottom p {
     margin: 0;
@@ -178,7 +157,6 @@ const gtCars = cars.filter((c) => c.category === 'gt').slice(0, 8);
     display: flex;
     gap: 20px;
   }
-
   @media (max-width: 900px) {
     .footer__grid {
       grid-template-columns: 1fr 1fr;
@@ -187,6 +165,7 @@ const gtCars = cars.filter((c) => c.category === 'gt').slice(0, 8);
   @media (max-width: 560px) {
     .footer__grid {
       grid-template-columns: 1fr;
+      gap: 32px;
     }
   }
 </style>

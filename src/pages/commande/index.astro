@@ -436,12 +436,12 @@ const payload = { pricing, carInfo, circuitInfo, regionOrder, boxes, courier: 12
 
 <style>
   .checkout-top {
-    background: var(--graphite);
-    color: #fff;
-    padding-block: 36px 28px;
+    background: var(--bg);
+    color: var(--ink);
+    padding-block: 32px 8px;
   }
   .checkout-top h1 {
-    color: #fff;
+    color: var(--ink);
     font-size: clamp(2rem, 5vw, 3rem);
     margin-bottom: 20px;
   }
@@ -469,19 +469,19 @@ const payload = { pricing, carInfo, circuitInfo, regionOrder, boxes, courier: 12
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    border: 2px solid #55555f;
+    border: 1px solid #c9c9cf;
     font-size: 0.85rem;
   }
   .stepper .is-current {
-    color: #fff;
+    color: var(--ink);
   }
   .stepper .is-current span {
-    background: var(--magenta);
-    border-color: var(--magenta);
+    background: var(--ink);
+    border-color: var(--ink);
     color: #fff;
   }
   .stepper .is-done {
-    color: #cfcfd8;
+    color: var(--muted);
   }
   .stepper .is-done span {
     background: var(--teal-700);
@@ -591,7 +591,7 @@ const payload = { pricing, carInfo, circuitInfo, regionOrder, boxes, courier: 12
     font-weight: 600;
   }
   .chip input:checked + span {
-    border-color: var(--magenta);
+    border-color: var(--ink);
     background: var(--magenta-50);
     color: var(--magenta-600);
   }
@@ -692,7 +692,6 @@ const payload = { pricing, carInfo, circuitInfo, regionOrder, boxes, courier: 12
     font-family: var(--font-display);
     font-size: 1.4rem;
     font-weight: 700;
-    text-transform: uppercase;
     color: var(--ink);
     margin-bottom: 10px;
   }
@@ -733,7 +732,7 @@ const payload = { pricing, carInfo, circuitInfo, regionOrder, boxes, courier: 12
   .summary__total strong {
     font-family: var(--font-display);
     font-size: 2rem;
-    color: var(--magenta);
+    color: var(--ink);
   }
   .summary__three {
     margin: 2px 0 14px;
@@ -812,7 +811,7 @@ const payload = { pricing, carInfo, circuitInfo, regionOrder, boxes, courier: 12
     .mobile-bar strong {
       font-family: var(--font-display);
       font-size: 1.6rem;
-      color: var(--magenta);
+      color: var(--ink);
       line-height: 1;
     }
   }

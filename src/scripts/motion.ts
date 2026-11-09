@@ -30,50 +30,34 @@ export const REVEAL_SELECTOR = [
   '[data-reveal]',
 ].join(',');
 
-function posterIntro(hero: HTMLElement) {
-  const title = hero.querySelector('.poster__title');
-  const car = hero.querySelector('.poster__car');
-  const shadow = hero.querySelector('.poster__reflection');
-  const rest = hero.querySelectorAll('.poster__eyebrow, .poster__pitch > *, .poster__card');
+function studioIntro(hero: HTMLElement) {
+  const title = hero.querySelector('.hero__title');
+  const car = hero.querySelector('.hero__car');
+  const panel = hero.querySelector('.hero__panel');
+  const rest = hero.querySelectorAll('.hero__intro > *, .hero__scroll');
 
   const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-  if (title) tl.fromTo(title, { autoAlpha: 0, yPercent: 35 }, { autoAlpha: 1, yPercent: 0, duration: 1.2 }, 0);
-  if (car) tl.fromTo(car, { autoAlpha: 0, xPercent: 28 }, { autoAlpha: 1, xPercent: 0, duration: 1.4, ease: 'power4.out' }, 0.25);
-  if (shadow) tl.fromTo(shadow, { autoAlpha: 0, xPercent: 28 }, { autoAlpha: 0.14, xPercent: 0, duration: 1.4, ease: 'power4.out' }, 0.25);
-  if (rest.length) tl.fromTo(rest, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.08 }, 0.7);
-
-  // Au défilement (grands écrans) : la voiture « avance » vers la gauche, le titre glisse en sens inverse.
-  if (window.matchMedia('(min-width: 701px)').matches) {
-    const st = { trigger: hero, start: 'top top', end: 'bottom top', scrub: true };
-    if (car) gsap.to([car, shadow], { x: -90, ease: 'none', scrollTrigger: { ...st } });
-    if (title) gsap.to(title, { x: 40, ease: 'none', scrollTrigger: { ...st } });
-  }
+  if (title) tl.fromTo(title, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 1.1 }, 0);
+  if (car) tl.fromTo(car, { autoAlpha: 0, x: 80 }, { autoAlpha: 1, x: 0, duration: 1.5, ease: 'power3.out' }, 0.15);
+  if (panel) tl.fromTo(panel, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.9 }, 0.6); // fondu seul : le panneau est centré en CSS (translateY)
+  if (rest.length) tl.fromTo(rest, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.08 }, 0.75);
 }
 
 function heroIntro() {
   const hero = document.querySelector<HTMLElement>('.hero, .page-hero');
   if (!hero) return;
-  if (hero.classList.contains('poster')) return posterIntro(hero);
+  if (hero.classList.contains('hero--studio')) return studioIntro(hero);
   const img = hero.querySelector<HTMLElement>('.hero__img, .page-hero__img');
   const text = hero.querySelectorAll<HTMLElement>(
-    '.breadcrumb, .eyebrow, h1, .hero__lead, .page-hero .container > p:not(.eyebrow), .hero__ctas, .hero-specs, .hero-ctas, .facts, .ctas'
+    '.breadcrumb, .eyebrow, h1, .hero__lead, .page-hero__lead, .hero__ctas, .hero-specs, .hero-ctas, .facts, .ctas'
   );
   const finder = hero.querySelector<HTMLElement>('.finder');
 
   const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-  if (img) tl.fromTo(img, { scale: 1.12 }, { scale: 1, duration: 1.6 }, 0);
-  if (text.length) tl.fromTo(text, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 1.2, stagger: 0.08 }, 0.1);
+  if (img) tl.fromTo(img, { autoAlpha: 0, scale: 1.06 }, { autoAlpha: 1, scale: 1, duration: 1.4 }, 0);
+  if (text.length) tl.fromTo(text, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1, stagger: 0.07 }, 0.1);
   if (finder) tl.fromTo(finder, { autoAlpha: 0, x: 40 }, { autoAlpha: 1, x: 0, duration: 1.2 }, 0.35);
 
-  // Couche d'ambiance : légère profondeur de la photo au défilement (grands écrans seulement :
-  // sur téléphone la photo est une bande au-dessus du texte).
-  if (img && window.matchMedia('(min-width: 701px)').matches) {
-    gsap.to(img, {
-      yPercent: 12,
-      ease: 'none',
-      scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
-    });
-  }
 }
 
 function scrollReveals() {

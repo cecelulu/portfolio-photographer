@@ -43,7 +43,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/lamborghini-temerario.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/lamborghini-temerario.html",
+    "cutout": "/images/detoure/lamborghini-temerario.webp",
+    "cutoutW": 892,
+    "cutoutH": 305
   },
   {
     "slug": "lamborghini-huracan",
@@ -89,7 +92,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/lamborghini-huracan.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/lamborghini-huracan.html",
+    "cutout": "/images/detoure/lamborghini-huracan.webp",
+    "cutoutW": 900,
+    "cutoutH": 259
   },
   {
     "slug": "ferrari-296-gtb",
@@ -127,7 +133,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/ferrari-296.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/ferrari-296.html",
+    "cutout": "/images/detoure/ferrari-296-gtb.webp",
+    "cutoutW": 900,
+    "cutoutH": 327
   },
   {
     "slug": "ferrari-f8-tributo",
@@ -173,7 +182,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/ferrari-f8.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/ferrari-f8.html",
+    "cutout": "/images/detoure/ferrari-f8-tributo.webp",
+    "cutoutW": 900,
+    "cutoutH": 326
   },
   {
     "slug": "ferrari-488-gtb",
@@ -219,7 +231,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/ferrari-488.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/ferrari-488.html",
+    "cutout": "/images/detoure/ferrari-488-gtb.webp",
+    "cutoutW": 900,
+    "cutoutH": 314
   },
   {
     "slug": "mclaren-600lt",
@@ -254,7 +269,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/mclaren-600lt.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/mclaren-600lt.html",
+    "cutout": "/images/detoure/mclaren-600lt.webp",
+    "cutoutW": 900,
+    "cutoutH": 275
   },
   {
     "slug": "porsche-991-gt3-rs",
@@ -300,7 +318,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/porsche-911-gt3-rs.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/porsche-911-gt3-rs.html",
+    "cutout": "/images/detoure/porsche-991-gt3-rs.webp",
+    "cutoutW": 900,
+    "cutoutH": 337
   },
   {
     "slug": "porsche-992-gt3",
@@ -346,7 +367,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/porsche-992-gt3.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/porsche-992-gt3.html",
+    "cutout": "/images/detoure/porsche-992-gt3.webp",
+    "cutoutW": 900,
+    "cutoutH": 298
   },
   {
     "slug": "porsche-718-gt4-rs",
@@ -392,7 +416,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/porsche-718-gt4-rs.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/porsche-718-gt4-rs.html",
+    "cutout": "/images/detoure/porsche-718-gt4-rs.webp",
+    "cutoutW": 900,
+    "cutoutH": 351
   },
   {
     "slug": "porsche-cayman-718-s",
@@ -438,7 +465,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/porsche-cayman-718-s.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/porsche-cayman-718-s.html",
+    "cutout": "/images/detoure/porsche-cayman-718-s.webp",
+    "cutoutW": 900,
+    "cutoutH": 297
   },
   {
     "slug": "aston-martin-vantage",
@@ -484,7 +514,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/aston-martin.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/aston-martin.html",
+    "cutout": "/images/detoure/aston-martin-vantage.webp",
+    "cutoutW": 900,
+    "cutoutH": 314
   },
   {
     "slug": "audi-r8-v10",
@@ -530,7 +563,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/audi-r8-v10.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/audi-r8-v10.html",
+    "cutout": "/images/detoure/audi-r8-v10.webp",
+    "cutoutW": 900,
+    "cutoutH": 362
   },
   {
     "slug": "ford-mustang-shelby-gt500",
@@ -576,7 +612,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/mustang.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/mustang.html",
+    "cutout": "/images/detoure/ford-mustang-shelby-gt500.webp",
+    "cutoutW": 888,
+    "cutoutH": 373
   },
   {
     "slug": "corvette-c8",
@@ -622,7 +661,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/corvette-c8.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/corvette-c8.html",
+    "cutout": "/images/detoure/corvette-c8.webp",
+    "cutoutW": 900,
+    "cutoutH": 279
   },
   {
     "slug": "alpine-a110s",
@@ -668,7 +710,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/alpine-a110s.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/alpine-a110s.html",
+    "cutout": "/images/detoure/alpine-a110s.webp",
+    "cutoutW": 900,
+    "cutoutH": 315
   },
   {
     "slug": "formule-4",
@@ -699,7 +744,10 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/formule4.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/formule4.html",
+    "cutout": "/images/detoure/formule-4.webp",
+    "cutoutW": 900,
+    "cutoutH": 273
   },
   {
     "slug": "formule-renault",
@@ -730,6 +778,9 @@
       "saintonge",
       "trappes"
     ],
-    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/formule-renault.html"
+    "sourcePage": "https://www.sprint-racing.com/stage-pilotage/formule-renault.html",
+    "cutout": "/images/detoure/formule-renault.webp",
+    "cutoutW": 900,
+    "cutoutH": 326
   }
 ]

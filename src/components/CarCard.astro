@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 import { formatPrice } from '../data/site';
 
 interface Props {
@@ -8,43 +9,46 @@ interface Props {
     model: string;
     name: string;
     power: number;
-    gearbox: string;
     engine: string;
-    imageSmall: string;
     priceFrom: number;
     youngDrivers: boolean;
     category: string;
+    cutout: string;
+    cutoutW: number;
+    cutoutH: number;
   };
 }
 const { car } = Astro.props;
+const title = car.category === 'gt' ? car.model : car.brand;
 ---
 
-<article class="car-card card">
-  <a href={`/stages/${car.slug}/`} class="car-card__media" tabindex="-1" aria-hidden="true">
-    <img src={car.imageSmall} alt="" width="800" height="208" loading="lazy" decoding="async" />
-    {car.youngDrivers && <span class="tag tag--magenta car-card__badge">Dès 16 ans</span>}
-  </a>
+<article class="car-card">
+  <div class="car-card__media">
+    <img src={car.cutout} alt={car.name} width={car.cutoutW} height={car.cutoutH} loading="lazy" decoding="async" />
+    {car.youngDrivers && <span class="car-card__badge">Dès 16 ans</span>}
+  </div>
   <div class="car-card__body">
-    <p class="car-card__brand">{car.brand}</p>
-    <h3 class="car-card__title">
-      <a href={`/stages/${car.slug}/`}>{car.category === 'gt' ? car.model : car.brand}</a>
-    </h3>
-    <ul class="car-card__specs">
-      <li><strong>{car.power} ch</strong></li>
-      <li>{car.engine}</li>
-    </ul>
-    <div class="car-card__foot">
-      <p class="price"><small>à partir de</small><strong>{formatPrice(car.priceFrom)}</strong></p>
-      <a class="btn btn--sm" href={`/commande/?voiture=${car.slug}`}>Réserver</a>
+    <div>
+      <p class="car-card__brand">{car.brand} · {car.power} ch</p>
+      <h3 class="car-card__title">
+        <a href={`/stages/${car.slug}/`}>{title}</a>
+      </h3>
+      <p class="car-card__price">dès {formatPrice(car.priceFrom)}</p>
     </div>
+    <span class="car-card__go" aria-hidden="true"><Icon name="arrow" size={18} /></span>
   </div>
 </article>
 
 <style>
   .car-card {
+    position: relative;
     display: flex;
     flex-direction: column;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 10px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid #ececee;
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
   }
   .car-card:hover {
     transform: translateY(-4px);
@@ -52,45 +56,52 @@ const { car } = Astro.props;
   }
   .car-card__media {
     position: relative;
-    display: block;
-    aspect-ratio: 16 / 7;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    padding: 18px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--studio);
     overflow: hidden;
-    background: var(--bg-soft);
   }
   .car-card__media img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scale(1.35);
-    transition: transform 0.4s ease;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 14px 12px rgba(0, 0, 0, 0.18));
+    transition: transform 0.5s var(--ease-out);
   }
   .car-card:hover .car-card__media img {
-    transform: scale(1.45);
+    transform: scale(1.04);
   }
   .car-card__badge {
     position: absolute;
     top: 12px;
     left: 12px;
-    background: #fff;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ink);
   }
   .car-card__body {
     display: flex;
-    flex-direction: column;
-    flex: 1;
-    padding: 18px 20px 20px;
+    justify-content: space-between;
+    align-items: end;
+    gap: 12px;
+    padding: 16px 8px 8px;
   }
   .car-card__brand {
     margin: 0;
-    font-size: 0.74rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #7a7a86;
+    font-size: 0.82rem;
+    color: var(--muted);
   }
   .car-card__title {
-    font-size: 1.7rem;
-    margin: 2px 0 8px;
-    text-transform: uppercase;
+    margin: 2px 0 4px;
+    font-size: 1.15rem;
+    font-weight: 500;
   }
   .car-card__title a {
     color: inherit;
@@ -101,34 +112,24 @@ const { car } = Astro.props;
     position: absolute;
     inset: 0;
   }
-  .car-card {
-    position: relative;
-  }
-  .car-card__specs {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 16px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 14px;
-    color: var(--muted);
-    font-size: 0.92rem;
-  }
-  .car-card__specs strong {
+  .car-card__price {
+    margin: 0;
+    font-weight: 600;
     color: var(--ink);
   }
-  .car-card__foot {
-    margin-top: auto;
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 12px;
+  .car-card__go {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    transform: rotate(-45deg);
+    transition: transform 0.3s var(--ease-out);
   }
-  .car-card__foot .price {
-    margin: 0;
-  }
-  .car-card__foot .btn {
-    position: relative;
-    z-index: 1;
+  .car-card:hover .car-card__go {
+    transform: rotate(0);
   }
 </style>

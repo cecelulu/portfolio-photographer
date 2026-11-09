@@ -31,6 +31,7 @@ const nearby = circuitsData.circuits.filter((c) => c.regionKey === circuit.regio
     title={circuit.name}
     lead={circuit.summary}
     image={heroImage}
+    cutout={!isDrift && heroCar ? { src: heroCar.cutout, w: heroCar.cutoutW, h: heroCar.cutoutH, alt: heroCar.name } : undefined}
     crumbs={[
       { href: '/circuits/', label: 'Circuits' },
       { href: `/circuits/${circuit.slug}/`, label: circuit.name },
@@ -139,9 +140,10 @@ const nearby = circuitsData.circuits.filter((c) => c.regionKey === circuit.regio
     gap: 8px;
     padding: 8px 14px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.12);
-    font-weight: 600;
-    font-size: 0.92rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    font-weight: 500;
+    font-size: 0.88rem;
   }
   .ctas {
     display: flex;
@@ -157,7 +159,7 @@ const nearby = circuitsData.circuits.filter((c) => c.regionKey === circuit.regio
     gap: 20px;
     padding: 28px;
     margin-bottom: 56px;
-    border-left: 4px solid var(--magenta);
+    border-left: 4px solid var(--ink);
   }
   .drift-box h2 {
     font-size: 1.9rem;

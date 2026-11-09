@@ -45,6 +45,7 @@ const includes = isMono
     eyebrow={isMono ? 'Stage monoplace' : 'Stage GT'}
     title={car.name}
     image={car.image}
+    cutout={{ src: car.cutout, w: car.cutoutW, h: car.cutoutH, alt: car.name }}
     crumbs={[
       { href: '/stages/', label: 'Nos stages' },
       { href: `/stages/${car.slug}/`, label: car.name },
@@ -172,10 +173,10 @@ const includes = isMono
     gap: 8px;
     padding: 8px 14px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(6px);
-    font-weight: 600;
-    font-size: 0.92rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    font-weight: 500;
+    font-size: 0.88rem;
   }
   .car-layout {
     display: grid;
@@ -188,7 +189,6 @@ const includes = isMono
   }
   .sub {
     font-size: 1.6rem;
-    text-transform: uppercase;
     margin-top: 44px;
   }
   .conditions {

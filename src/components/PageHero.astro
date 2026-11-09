@@ -3,32 +3,43 @@ interface Props {
   title: string;
   eyebrow?: string;
   lead?: string;
+  /** Photo affichée dans une carte arrondie à droite. */
   image?: string;
+  /** Voiture détourée (prioritaire sur la photo), posée sur un fond « studio ». */
+  cutout?: { src: string; w: number; h: number; alt?: string };
   crumbs?: { href: string; label: string }[];
 }
-const { title, eyebrow, lead, image = '/images/voitures/multigt2.webp', crumbs = [] } = Astro.props;
+const { title, eyebrow, lead, image = '/images/voitures/multigt2.webp', cutout, crumbs = [] } = Astro.props;
 ---
 
 <section class="page-hero">
-  <div class="page-hero__media">
-    <img class="page-hero__img" src={image} alt="" width="1920" height="500" fetchpriority="high" />
-  </div>
-  <div class="container">
-    {
-      crumbs.length > 0 && (
-        <nav aria-label="Fil d’Ariane">
-          <ol class="breadcrumb">
-            <li><a href="/">Accueil</a></li>
-            {crumbs.map((c, i) =>
-              i === crumbs.length - 1 ? <li aria-current="page">{c.label}</li> : <li><a href={c.href}>{c.label}</a></li>
-            )}
-          </ol>
-        </nav>
-      )
-    }
-    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    <h1>{title}</h1>
-    {lead && <p>{lead}</p>}
-    <slot />
+  <div class="container page-hero__grid">
+    <div class="page-hero__text">
+      {
+        crumbs.length > 0 && (
+          <nav aria-label="Fil d’Ariane">
+            <ol class="breadcrumb">
+              <li><a href="/">Accueil</a></li>
+              {crumbs.map((c, i) =>
+                i === crumbs.length - 1 ? <li aria-current="page">{c.label}</li> : <li><a href={c.href}>{c.label}</a></li>
+              )}
+            </ol>
+          </nav>
+        )
+      }
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1>{title}</h1>
+      {lead && <p class="page-hero__lead">{lead}</p>}
+      <slot />
+    </div>
+    <div class:list={['page-hero__media', { 'is-cutout': cutout }]}>
+      {
+        cutout ? (
+          <img class="page-hero__img" src={cutout.src} alt={cutout.alt ?? ''} width={cutout.w} height={cutout.h} fetchpriority="high" />
+        ) : (
+          <img class="page-hero__img" src={image} alt="" width="1920" height="500" fetchpriority="high" />
+        )
+      }
+    </div>
   </div>
 </section>

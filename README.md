@@ -40,7 +40,11 @@ Tout le contenu est rassemblé dans `src/data/` :
 - `experiences.ts` : les familles de stages et les formules des pages spéciales
 - `content.ts` : étapes, déroulement, options, coffrets cadeaux, avis clients, FAQ, présentation
 
-Les photos et le logo sont dans `public/images/` (repris du site actuel, convertis en WebP).
+Les photos et le logo sont dans `public/images/` :
+
+- `voitures/`, `categories/`, `circuits/` : photos du site actuel, converties en WebP ;
+- `detoure/` : une voiture détourée par modèle (fond transparent), utilisée dans les cartes et les en-têtes ;
+- `hd/` : la Lamborghini Temerario de l’accueil, en haute définition. Photo de Calreyn88 (Wikimedia Commons), licence **CC BY-SA 4.0** : le crédit figure dans les mentions légales et doit y rester.
 
 ## Mode maquette
 
@@ -60,6 +64,10 @@ Le site est statique : il faut indiquer où envoyer les demandes. Dans `src/data
 - **une URL** (par exemple un formulaire [Formspree](https://formspree.io), Getform, Basin ou une API maison) : la demande est envoyée directement en arrière-plan, puis le visiteur arrive sur la page `/merci`.
 
 Les formulaires comprennent une validation des champs, un champ anti-spam invisible et une case de consentement RGPD.
+
+## Style
+
+Style « studio » monochrome, inspiré des sites automobiles haut de gamme : fond gris très clair (`--bg`), cartes blanches, texte noir, boutons noirs arrondis, typographie Inter en minuscules. Les voitures sont détourées et posées sur un dégradé gris (`--studio`). Le magenta de la marque ne sert plus qu’au logo et aux petites pastilles des libellés. Tout se règle dans les variables en haut de `src/styles/global.css`.
 
 ## Réservation en ligne (démonstration)
 
