@@ -44,7 +44,7 @@ Les photos et le logo sont dans `public/images/` :
 
 - `voitures/`, `categories/`, `circuits/` : photos du site actuel, converties en WebP ;
 - `detoure/` : une voiture détourée par modèle (fond transparent), utilisée dans les cartes et les en-têtes ;
-- `hd/` : la Lamborghini Temerario de l’accueil, en haute définition. Photo de Calreyn88 (Wikimedia Commons), licence **CC BY-SA 4.0** : le crédit figure dans les mentions légales et doit y rester.
+- `hd/` : la Ferrari 296 GTB de l’accueil, en haute définition. Photo d’Alexander Migl (Wikimedia Commons), licence **CC BY-SA 4.0**, détourée et avec une plaque Sprint Racing : le crédit figure dans les mentions légales et doit y rester.
 
 ## Mode maquette
 

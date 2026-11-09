@@ -46,13 +46,13 @@ const reasons = [
 
       <div class="hero__stage">
         <picture class="hero__car-wrap">
-          <source media="(max-width: 700px)" srcset="/images/hd/temerario-1000.webp" />
+          <source media="(max-width: 700px)" srcset="/images/hd/ferrari-296-1000.webp" />
           <img
             class="hero__car"
-            src="/images/hd/temerario-2000.webp"
-            alt="Lamborghini Temerario gris-bleu mat"
+            src="/images/hd/ferrari-296-2000.webp"
+            alt="Ferrari 296 GTB grise à bande jaune"
             width="2000"
-            height="1261"
+            height="884"
             fetchpriority="high"
           />
         </picture>
@@ -68,7 +68,7 @@ const reasons = [
               <span class="sr-only">Voiture</span>
               <select name="voiture" data-voiture>
                 <optgroup label="GT" data-kind="gt">
-                  {gt.map((c) => <option value={c.slug}>{c.name}</option>)}
+                  {gt.map((c) => <option value={c.slug} selected={c.slug === 'ferrari-296-gtb'}>{c.name}</option>)}
                 </optgroup>
                 <optgroup label="Monoplace" data-kind="mono" disabled hidden>
                   {mono.map((c) => <option value={c.slug}>{c.name}</option>)}
@@ -310,7 +310,7 @@ const reasons = [
   }
   .hero__car {
     display: block;
-    width: min(82%, 980px);
+    width: min(86%, 1040px);
     height: auto;
     margin-inline: auto 12%;
     filter: drop-shadow(0 30px 26px rgba(0, 0, 0, 0.16));
