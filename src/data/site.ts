@@ -41,6 +41,14 @@ export const site = {
    *   directement en POST (FormData) puis le visiteur est redirigé vers /merci.
    */
   formEndpoint: '',
+
+  /**
+   * Mode maquette : bandeau « projet non officiel » en haut de chaque page, pages non indexées
+   * par Google et formulaires désactivés (aucune demande n’est envoyée).
+   * Passer à `false` uniquement pour la version officielle validée par Sprint Racing.
+   */
+  demo: true,
+  officialUrl: 'https://www.sprint-racing.com',
 };
 
 export const stats = [

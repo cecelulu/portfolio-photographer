@@ -1,0 +1,56 @@
+---
+import { site } from '../data/site';
+---
+
+<div class="demo-banner" role="note">
+  <div class="container demo-banner__inner">
+    <span class="demo-banner__tag">Maquette</span>
+    <p>
+      Projet de refonte <strong>non officiel</strong> : ce site n’est pas celui de Sprint Racing et aucune réservation n’y est possible.
+      <a href={site.officialUrl} rel="noopener">Aller sur le site officiel →</a>
+    </p>
+  </div>
+</div>
+
+<style>
+  .demo-banner {
+    background: #fff4c2;
+    color: #4a3b00;
+    border-bottom: 1px solid #f0d873;
+    font-size: 0.88rem;
+    line-height: 1.4;
+  }
+  .demo-banner__inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-block: 9px;
+  }
+  .demo-banner__tag {
+    flex: none;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #4a3b00;
+    color: #fff4c2;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .demo-banner p {
+    margin: 0;
+  }
+  .demo-banner a {
+    color: #4a3b00;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  @media (max-width: 560px) {
+    .demo-banner__inner {
+      align-items: flex-start;
+    }
+    .demo-banner__tag {
+      margin-top: 1px;
+    }
+  }
+</style>

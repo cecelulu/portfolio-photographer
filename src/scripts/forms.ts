@@ -55,6 +55,18 @@ export function initForms() {
       const trap = form.querySelector<HTMLInputElement>('[name="_site_web"]');
       if (trap && trap.value) return;
 
+      // Mode maquette : rien n'est envoyé.
+      if (document.documentElement.dataset.demo === 'true') {
+        if (status) {
+          status.hidden = false;
+          status.classList.remove('is-error');
+          status.textContent =
+            'Ceci est une maquette : le formulaire fonctionne, mais aucune demande n’est envoyée. Pour réserver un vrai stage, rendez-vous sur sprint-racing.com.';
+          status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+
       const rows = collect(form);
       const endpoint = form.dataset.endpoint;
 

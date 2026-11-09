@@ -41,6 +41,16 @@ Tout le contenu est rassemblé dans `src/data/` :
 
 Les photos et le logo sont dans `public/images/` (repris du site actuel, convertis en WebP).
 
+## Mode maquette
+
+Tant que `demo: true` dans `src/data/site.ts` (réglage actuel) :
+
+- un bandeau jaune « Maquette – projet non officiel » s’affiche en haut de chaque page, avec un lien vers le site officiel ;
+- les pages ne sont pas indexées par Google (balise `noindex` et `robots.txt` qui bloque tout) ;
+- les formulaires se remplissent normalement, mais **aucune demande n’est envoyée** : un message l’explique au visiteur.
+
+Ne passer à `demo: false` que pour une version officielle validée par Sprint Racing.
+
 ## Formulaires (demande de stage, devis, contact)
 
 Le site est statique : il faut indiquer où envoyer les demandes. Dans `src/data/site.ts`, `formEndpoint` :
