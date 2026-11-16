@@ -84,7 +84,7 @@ const featured = 'multi';
   }
   .svc__top {
     position: relative;
-    height: clamp(150px, 17vw, 260px);
+    height: clamp(160px, 18.5vw, 280px);
     max-width: 1240px;
     margin-inline: auto;
   }
@@ -94,7 +94,7 @@ const featured = 'multi';
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -0.3em;
+    bottom: -0.2em;
     display: flex;
     justify-content: center;
     margin: 0;
@@ -103,21 +103,26 @@ const featured = 'multi';
     line-height: 1;
     letter-spacing: -0.06em;
     white-space: nowrap;
-    background: linear-gradient(180deg, rgba(160, 36, 104, 0.95) 0%, rgba(196, 104, 156, 0.6) 34%, rgba(230, 229, 231, 0) 62%);
+    background: linear-gradient(180deg, rgba(160, 36, 104, 0.95) 0%, rgba(196, 104, 156, 0.72) 42%, rgba(230, 229, 231, 0) 74%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     user-select: none;
   }
+  /* Le « i » est positionné (pour son point carré) : il doit reprendre lui-même le dégradé,
+     sinon il reste transparent. */
   .svc__i {
     position: relative;
     display: inline-block;
+    background: inherit;
+    -webkit-background-clip: text;
+    background-clip: text;
   }
   /* Le point du « i » est un carré rouge, comme sur la maquette. */
   .svc__i i {
     position: absolute;
     left: 50%;
-    top: 0.08em;
+    top: 0.2em;
     width: 0.11em;
     height: 0.11em;
     translate: -50% 0;

@@ -239,16 +239,29 @@ import { site } from '../../data/site';
   @media (max-width: 900px) {
     .hero {
       height: auto;
-      min-height: max(640px, 100svh);
       display: flex;
       flex-direction: column;
     }
+    /* Sur mobile, la photo suit le titre, en pleine largeur et peu zoomée :
+       la voiture reste entière et nette. */
+    .hero {
+      min-height: 0;
+      padding-bottom: clamp(96px, 16vw, 140px);
+      background: #030203;
+    }
+    .hero__media {
+      position: relative;
+      inset: auto;
+      order: 1;
+      height: min(84vw, 560px);
+      margin-top: 8px;
+    }
     .hero__img {
-      object-position: 64% 60%;
+      object-position: 97% 50%;
     }
     .hero__shade {
       background:
-        linear-gradient(180deg, rgba(12, 4, 5, 0.75) 0%, rgba(12, 4, 5, 0.1) 42%, rgba(12, 4, 5, 0) 60%, rgba(12, 4, 5, 0.55) 100%);
+        linear-gradient(180deg, #030203 0%, rgba(3, 2, 3, 0) 22%, rgba(3, 2, 3, 0) 78%, #030203 100%);
     }
     .hero__content {
       position: relative;
@@ -261,21 +274,20 @@ import { site } from '../../data/site';
       font-size: clamp(2.7rem, 11vw, 4.4rem);
     }
     .hero__video {
-      top: auto;
+      top: calc(var(--header-h) + var(--header-gap) + 44px);
       right: var(--gutter);
-      bottom: calc(18% + 24px);
       width: 112px;
       border-radius: 12px;
     }
     .hero__circle {
       top: auto;
       left: var(--gutter);
-      bottom: 26px;
+      bottom: 22px;
       width: 124px;
     }
     .hero__giant {
       right: var(--gutter);
-      bottom: 18px;
+      bottom: 14px;
       font-size: clamp(3.4rem, 17vw, 7rem);
     }
   }
@@ -284,11 +296,11 @@ import { site } from '../../data/site';
       display: none;
     }
     .hero__circle {
-      width: 112px;
-      font-size: 0.78rem;
+      width: 104px;
+      font-size: 0.76rem;
     }
     .hero__giant {
-      font-size: 22vw;
+      font-size: 19vw;
     }
   }
 </style>
