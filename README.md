@@ -17,7 +17,7 @@ npm run preview   # prévisualise la version finale
 
 | Page | Adresse | Contenu |
 | --- | --- | --- |
-| Accueil | `/` | Accroche, recherche rapide, expériences, flotte, chiffres clés, étapes, cadeau, avis, circuits, entreprises, FAQ |
+| Accueil | `/` | Grand visuel, prestations, liste des stages, cartes « Offrir » et « Entreprises », équipe, avis clients (dans l’ordre de la maquette) |
 | Nos stages | `/stages/` | Les 17 voitures (filtre par marque / « dès 16 ans ») et les autres expériences |
 | Fiche voiture | `/stages/<voiture>/` | Description, caractéristiques, ce qui est inclus, conditions, circuits, prix « à partir de » |
 | Stages spéciaux | `/stages/multi-gt/`, `/stages/drift/`, `/stages/jeunes/`, `/stages/coaching/` | Présentation et formules |
@@ -44,7 +44,7 @@ Les photos et le logo sont dans `public/images/` :
 
 - `voitures/`, `categories/`, `circuits/` : photos du site actuel, converties en WebP ;
 - `detoure/` : une voiture détourée par modèle (fond transparent), utilisée dans les cartes et les en-têtes ;
-- `hd/` : la Ferrari 296 GTB de l’accueil, en haute définition. Photo d’Alexander Migl (Wikimedia Commons), licence **CC BY-SA 4.0**, détourée et avec une plaque Sprint Racing : le crédit figure dans les mentions légales et doit y rester.
+- `maquette/` : les visuels de la page d’accueil, repris de la maquette graphique fournie (grand visuel, gros plans des cartes, deux grandes cartes photo, portraits, vignette vidéo). Les textes posés dessus ont été effacés et les images agrandies. **Ce sont des illustrations, pas des photos de Sprint Racing** (les portraits ne sont pas l’équipe réelle) : à remplacer par de vraies photos avant une mise en ligne officielle. Les fichiers gardent les mêmes noms, il suffit de les écraser.
 
 ## Mode maquette
 
@@ -67,7 +67,12 @@ Les formulaires comprennent une validation des champs, un champ anti-spam invisi
 
 ## Style
 
-Style « studio » monochrome, inspiré des sites automobiles haut de gamme : fond gris très clair (`--bg`), cartes blanches, texte noir, boutons noirs arrondis, typographie Inter en minuscules. Les voitures sont détourées et posées sur un dégradé gris (`--studio`). Le magenta de la marque ne sert plus qu’au logo et aux petites pastilles des libellés. Tout se règle dans les variables en haut de `src/styles/global.css`.
+Le site reproduit la maquette fournie : fond blanc, grandes photos sombres, cartes gris très clair aux coins arrondis, pastilles, rouge profond pour les boutons et les icônes, typographie Inter fine, grands mots décoratifs (« sprint racing », « pilotage »). L’en-tête est une « pilule » blanche qui flotte au-dessus des grands visuels.
+
+- Les couleurs se règlent en haut de `src/styles/global.css` (`--accent`, `--accent-bright`…). Pour revenir au rose de la marque, il suffit de remplacer les valeurs de `--accent`.
+- Les sections de l’accueil sont des composants indépendants dans `src/components/home/` (`HomeHero`, `Prestations`, `ServicesList`, `FeatureCards`, `TeamSection`, `Testimonials`).
+- Les icônes viennent de [Lucide](https://lucide.dev) (`src/components/Lucide.astro`), insérées en SVG à la génération : aucun script envoyé au navigateur.
+- Les pages intérieures reprennent l’ambiance de l’accueil : en-tête sombre avec halo rouge (`.page-hero`).
 
 ## Réservation en ligne (démonstration)
 
@@ -79,10 +84,14 @@ Style « studio » monochrome, inspiré des sites automobiles haut de gamme : fo
 
 Les animations utilisent [GSAP](https://gsap.com) et son module ScrollTrigger (`src/scripts/motion.ts`). On peut tout régler depuis ce seul fichier :
 
-- **Accueil** : la photo se recadre doucement, puis titre, texte et boutons arrivent en cascade, et la photo prend un léger effet de profondeur au défilement.
+- **Défilement doux** : [Lenis](https://lenis.darkroom.engineering), sur ordinateur uniquement ; les liens internes (« Découvrir nos stages ») glissent jusqu’à la section.
+- **Accueil** : la photo se recadre doucement, le titre se dévoile ligne par ligne, le grand texte « sprint racing » remonte, la carte vidéo et le bouton rond flottent de quelques pixels ; au défilement, la photo et le grand texte bougent à des vitesses différentes (parallaxe légère).
+- **Panneau des stages** : le mot géant « pilotage » glisse au défilement, les pastilles apparaissent puis flottent.
+- **En-tête** : il prend une ombre dès qu’on quitte le haut de page, se masque quand on descend et revient dès qu’on remonte.
+- **Avis clients** : carrousel automatique (pause au survol), flèches précédent / suivant.
 - **Défilement** : titres de section, cartes, étapes, avis et questions apparaissent avec un fondu et une petite montée.
 - **Chiffres clés** : ils comptent jusqu'à leur valeur (20 ans, 450 dates, 8,6/10…).
-- **Survols** : les boutons et les cartes réagissent au survol et au clic.
+- **Survols** : cartes qui se soulèvent, photos qui zooment légèrement, flèches qui pivotent, boutons qui changent de couleur.
 
 Toutes les animations sont désactivées pour les visiteurs qui ont demandé à réduire les animations sur leur appareil : le contenu s'affiche alors directement.
 

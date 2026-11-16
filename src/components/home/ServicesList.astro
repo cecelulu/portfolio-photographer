@@ -1,0 +1,276 @@
+---
+// 3e bloc : grand panneau gris, mot géant décoratif, pastilles flottantes
+// et liste de toutes les familles de stages avec description et bouton.
+import Lucide from '../Lucide.astro';
+import { experiences } from '../../data/experiences';
+import { formatPrice } from '../../data/site';
+
+const icons = {
+  gt: 'CarFront',
+  multi: 'Gauge',
+  monoplace: 'Flag',
+  drift: 'Wind',
+  jeunes: 'GraduationCap',
+  coaching: 'Award',
+} as const;
+
+const floating = [
+  { label: 'Stage GT', x: 12, y: 21, r: -21, d: 0 },
+  { label: 'Monoplace', x: 33, y: 33, r: 14, d: 1 },
+  { label: 'Drift', x: 61, y: 18, r: 12, d: 2 },
+  { label: 'Dès 16 ans', x: 80, y: 29, r: -28, d: 3 },
+];
+const featured = 'multi';
+---
+
+<section class="svc" id="stages" aria-labelledby="svc-title">
+  <div class="container container--wide">
+    <div class="svc__panel">
+      <div class="svc__top" aria-hidden="true">
+        <p class="svc__giant" data-giant>p<span class="svc__i">ı<i></i></span>lotage</p>
+        {
+          floating.map((f) => (
+            <span
+              class="svc__float"
+              style={`--x:${f.x}%;--y:${f.y}%;--r:${f.r}deg`}
+              data-float-badge={f.d}
+            >
+              {f.label}
+            </span>
+          ))
+        }
+      </div>
+
+      <h2 class="svc__title" id="svc-title" data-reveal>
+        Toutes nos formules, encadrées par <br />des moniteurs diplômés d’État
+      </h2>
+
+      <ul class="svc__list" data-stagger>
+        {
+          experiences.map((e) => (
+            <li class:list={['svc__row', { 'is-featured': e.key === featured }]}>
+              <span class="svc__icon">
+                <Lucide name={icons[e.key as keyof typeof icons] ?? 'CarFront'} size={22} stroke={1.6} />
+              </span>
+              <div class="svc__text">
+                <h3>
+                  <a href={e.href}>{e.title}</a>
+                </h3>
+                <p>
+                  {e.description} <span class="svc__price">Dès {formatPrice(e.priceFrom)}.</span>
+                </p>
+              </div>
+              <span class="svc__btn" aria-hidden="true">Découvrir</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .svc {
+    padding-bottom: clamp(10px, 0.9vw, 16px);
+  }
+  .svc__panel {
+    position: relative;
+    overflow: hidden;
+    padding: 0 clamp(16px, 4vw, 40px) clamp(28px, 3vw, 44px);
+    border-radius: 14px;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255, 255, 255, 0.55), transparent 70%),
+      linear-gradient(180deg, #ecebec 0%, #e6e5e7 100%);
+  }
+  .svc__top {
+    position: relative;
+    height: clamp(150px, 17vw, 260px);
+    max-width: 1240px;
+    margin-inline: auto;
+  }
+  .svc__giant {
+    position: absolute;
+    left: 50%;
+    bottom: -0.3em;
+    margin: 0;
+    font-size: clamp(5.4rem, 21vw, 19.5rem);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    white-space: nowrap;
+    translate: -50% 0;
+    background: linear-gradient(180deg, rgba(140, 40, 38, 0.95) 0%, rgba(170, 92, 90, 0.6) 34%, rgba(230, 229, 231, 0) 62%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    user-select: none;
+  }
+  .svc__i {
+    position: relative;
+    display: inline-block;
+  }
+  /* Le point du « i » est un carré rouge, comme sur la maquette. */
+  .svc__i i {
+    position: absolute;
+    left: 50%;
+    top: 0.08em;
+    width: 0.11em;
+    height: 0.11em;
+    translate: -50% 0;
+    background: #b3110d;
+  }
+  .svc__float {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    z-index: 2;
+    padding: 0.5em 1.15em;
+    border-radius: 999px;
+    background: #fff;
+    font-size: clamp(0.7rem, 0.9vw, 0.88rem);
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+    box-shadow: 0 12px 26px rgba(40, 10, 10, 0.16);
+    rotate: var(--r);
+  }
+
+  .svc__title {
+    position: relative;
+    margin: clamp(-8px, -0.4vw, 0px) 0 clamp(18px, 2vw, 30px);
+    text-align: center;
+    font-size: clamp(1.25rem, 1.85vw, 1.7rem);
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .svc__list {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+  .svc__row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    align-items: center;
+    gap: 4px 16px;
+    padding: clamp(12px, 1.1vw, 16px) 6px;
+    border-top: 1px solid rgba(20, 20, 20, 0.14);
+    transition: background 0.35s var(--ease-out);
+  }
+  .svc__row::before {
+    content: '';
+    position: absolute;
+    inset: 0 -14px;
+    z-index: -1;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0);
+    transition: background 0.35s var(--ease-out);
+  }
+  .svc__row:hover::before {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  .svc__icon {
+    align-self: start;
+    padding-top: 6px;
+    color: var(--accent-bright);
+    transition: transform 0.35s var(--ease-out);
+  }
+  .svc__row:hover .svc__icon {
+    transform: translateX(3px) rotate(-6deg);
+  }
+  .svc__text h3 {
+    margin: 0 0 4px;
+    font-size: clamp(1.3rem, 2.1vw, 2rem);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+  }
+  .svc__text h3 a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .svc__text h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .svc__text p {
+    max-width: 68ch;
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #55555a;
+  }
+  .svc__price {
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .svc__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 116px;
+    height: 42px;
+    padding: 0 20px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+  }
+  /* La ligne mise en avant (comme « Performance » sur la maquette) passe la main à celle survolée. */
+  .svc__list:not(:hover) .is-featured .svc__btn,
+  .svc__row:hover .svc__btn,
+  .svc__row:focus-within .svc__btn {
+    background: var(--accent);
+    color: #fff;
+  }
+  .svc__row:hover .svc__btn {
+    transform: translateX(-4px);
+  }
+
+  @media (max-width: 760px) {
+    .svc__float {
+      font-size: 0.68rem;
+    }
+    .svc__float:nth-of-type(1) {
+      left: 3%;
+      top: 18%;
+    }
+    .svc__float:nth-of-type(2) {
+      left: 30%;
+      top: 44%;
+    }
+    .svc__float:nth-of-type(3) {
+      left: 56%;
+      top: 12%;
+    }
+    .svc__float:nth-of-type(4) {
+      left: 74%;
+      top: 34%;
+    }
+    .svc__row {
+      grid-template-columns: 30px 1fr;
+    }
+    .svc__btn {
+      grid-column: 2;
+      justify-self: start;
+      height: 36px;
+      min-width: 0;
+      margin-top: 8px;
+    }
+    .svc__text p {
+      font-size: 0.85rem;
+    }
+  }
+  @media (max-width: 480px) {
+    .svc__title br {
+      display: none;
+    }
+  }
+</style>

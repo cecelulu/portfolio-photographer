@@ -1,0 +1,288 @@
+---
+// 1er bloc de l'accueil : grande photo sombre, titre, texte, bouton rond,
+// petite carte vidéo et grand texte métallique, placés comme sur la maquette.
+import Lucide from '../Lucide.astro';
+import { site } from '../../data/site';
+---
+
+<section class="hero" aria-labelledby="hero-title" data-hero>
+  <div class="hero__media" aria-hidden="true">
+    <picture>
+      <source media="(max-width: 900px)" srcset="/images/maquette/hero-853.webp 853w, /images/maquette/hero-1706.webp 1706w" sizes="200vw" />
+      <img
+        class="hero__img"
+        src="/images/maquette/hero-1706.webp"
+        alt=""
+        width="1706"
+        height="926"
+        fetchpriority="high"
+        decoding="async"
+        data-hero-img
+      />
+    </picture>
+    <span class="hero__shade"></span>
+  </div>
+
+  <div class="hero__content">
+    <h1 class="hero__title" id="hero-title" data-hero-title>
+      <span class="line"><span>Pilotez</span></span>
+      <span class="line"><span>votre passion</span></span>
+    </h1>
+    <p class="hero__lead" data-hero-fade>
+      Stages de pilotage en GT et en monoplace sur 25 circuits en France et en Belgique, depuis 2002.
+    </p>
+  </div>
+
+  <a class="hero__circle" href="#prestations" data-hero-fade data-float="6">
+    <span>Découvrir nos stages</span>
+  </a>
+
+  <a class="hero__video" href={site.social.youtube} target="_blank" rel="noopener" data-hero-fade data-float="8">
+    <img src="/images/maquette/video.webp" alt="" width="282" height="378" loading="eager" />
+    <span class="hero__play" aria-hidden="true"><Lucide name="Play" size={18} stroke={2} /></span>
+    <span class="hero__video-label">Notre école<br />en vidéo</span>
+    <span class="sr-only">(sur YouTube, nouvel onglet)</span>
+  </a>
+
+  <p class="hero__giant" aria-hidden="true" data-hero-giant>
+    <span>sprint</span>
+    <span>racing</span>
+  </p>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    /* Même rapport que la photo de la maquette (853 × 463). */
+    height: clamp(640px, 54.3vw, 900px);
+    background: #120607;
+    color: #fff;
+  }
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 60% 50%;
+    transform-origin: 62% 55%;
+    will-change: transform;
+  }
+  .hero__shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(12, 4, 5, 0.55) 0%, rgba(12, 4, 5, 0) 38%),
+      linear-gradient(0deg, rgba(10, 4, 5, 0.35) 0%, rgba(10, 4, 5, 0) 25%);
+  }
+
+  .hero__content {
+    position: absolute;
+    left: 4.3%;
+    top: 24.5%;
+    width: min(38%, 560px);
+  }
+  .hero__title {
+    margin: 0 0 0.42em;
+    font-size: clamp(2.7rem, 5.6vw, 5.6rem);
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    color: #fff;
+  }
+  .hero__title .line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+    white-space: nowrap;
+  }
+  .hero__title .line > span {
+    display: inline-block;
+  }
+  .hero__lead {
+    max-width: 44ch;
+    margin: 0;
+    font-size: clamp(0.92rem, 1.1vw, 1.08rem);
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.86);
+  }
+
+  .hero__circle {
+    position: absolute;
+    left: 4.1%;
+    top: 67%;
+    display: grid;
+    place-items: center;
+    width: clamp(132px, 13.1vw, 200px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--ink);
+    font-size: clamp(0.82rem, 1vw, 1rem);
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    transition: background 0.35s var(--ease-out), color 0.35s var(--ease-out);
+  }
+  .hero__circle span {
+    max-width: 9ch;
+    line-height: 1.25;
+    transition: transform 0.35s var(--ease-out);
+  }
+  .hero__circle:hover {
+    background: var(--accent);
+    color: #fff;
+  }
+  .hero__circle:hover span {
+    transform: scale(1.06);
+  }
+
+  .hero__video {
+    position: absolute;
+    right: 4.1%;
+    top: 16.2%;
+    width: clamp(120px, 11.4vw, 176px);
+    aspect-ratio: 282 / 378;
+    overflow: hidden;
+    border-radius: 14px;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+  }
+  .hero__video img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.04);
+    transition: transform 0.6s var(--ease-out);
+  }
+  .hero__video::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.72) 100%);
+  }
+  .hero__video:hover img {
+    transform: scale(1.12);
+  }
+  .hero__play {
+    position: absolute;
+    left: 49%;
+    top: 45%;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 30%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--accent-bright);
+    translate: -50% -50%;
+    box-shadow: 0 0 0 5px rgba(200, 35, 30, 0.85);
+    transition: transform 0.35s var(--ease-out);
+  }
+  .hero__play :global(svg) {
+    fill: currentColor;
+    margin-left: 2px;
+  }
+  .hero__video:hover .hero__play {
+    transform: scale(1.1);
+  }
+  .hero__video-label {
+    position: absolute;
+    left: 12%;
+    right: 8%;
+    bottom: 9%;
+    z-index: 1;
+    font-size: clamp(0.82rem, 1.05vw, 1.05rem);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .hero__giant {
+    position: absolute;
+    right: 4%;
+    bottom: 3.6%;
+    margin: 0;
+    display: grid;
+    justify-items: end;
+    font-size: clamp(4.4rem, 10.4vw, 12rem);
+    font-weight: 600;
+    line-height: 0.8;
+    letter-spacing: -0.065em;
+    pointer-events: none;
+    user-select: none;
+  }
+  .hero__giant span {
+    display: block;
+    padding: 0 0.04em 0.06em 0;
+    background: linear-gradient(180deg, #ffffff 0%, #e7e7e7 30%, #a9a9ab 62%, rgba(120, 120, 124, 0.55) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.35));
+  }
+
+  /* ---- Tablette et mobile ---- */
+  @media (max-width: 900px) {
+    .hero {
+      height: auto;
+      min-height: max(640px, 100svh);
+      display: flex;
+      flex-direction: column;
+    }
+    .hero__img {
+      object-position: 58% 60%;
+    }
+    .hero__shade {
+      background:
+        linear-gradient(180deg, rgba(12, 4, 5, 0.75) 0%, rgba(12, 4, 5, 0.1) 42%, rgba(12, 4, 5, 0) 60%, rgba(12, 4, 5, 0.55) 100%);
+    }
+    .hero__content {
+      position: relative;
+      left: auto;
+      top: auto;
+      width: auto;
+      padding: calc(var(--header-h) + var(--header-gap) + 44px) var(--gutter) 0;
+    }
+    .hero__title {
+      font-size: clamp(2.7rem, 11vw, 4.4rem);
+    }
+    .hero__video {
+      top: auto;
+      right: var(--gutter);
+      bottom: calc(18% + 24px);
+      width: 112px;
+      border-radius: 12px;
+    }
+    .hero__circle {
+      top: auto;
+      left: var(--gutter);
+      bottom: 26px;
+      width: 124px;
+    }
+    .hero__giant {
+      right: var(--gutter);
+      bottom: 18px;
+      font-size: clamp(3.4rem, 17vw, 7rem);
+    }
+  }
+  @media (max-width: 560px) {
+    .hero__video {
+      display: none;
+    }
+    .hero__circle {
+      width: 112px;
+      font-size: 0.78rem;
+    }
+    .hero__giant {
+      font-size: 22vw;
+    }
+  }
+</style>

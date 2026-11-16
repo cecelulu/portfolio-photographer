@@ -1,0 +1,205 @@
+---
+// 2e bloc : titre centré et trois cartes illustrées (photo à droite qui se fond dans la carte).
+import Badge from './Badge.astro';
+import Lucide from '../Lucide.astro';
+import { formatPrice } from '../../data/site';
+
+const cards = [
+  {
+    tag: 'Supercars',
+    title: 'Stage GT',
+    text: 'Ferrari, Lamborghini, Porsche, McLaren… de 292 à 920 ch, avec un moniteur diplômé à vos côtés.',
+    price: 99.9,
+    href: '/stages/#gt',
+    image: '/images/maquette/carte-1.webp',
+  },
+  {
+    tag: 'Plusieurs voitures',
+    title: 'Multi GT : duo, trio…',
+    text: 'Enchaînez 2, 3, 4 ou 5 voitures d’exception lors d’une même journée sur circuit.',
+    price: 194.9,
+    href: '/stages/multi-gt/',
+    image: '/images/maquette/carte-2.webp',
+  },
+  {
+    tag: 'Perfectionnement',
+    title: 'Coaching et pilotage',
+    text: 'Des journées à 5 ou 6 participants au maximum, en Audi A1 Cup ou en Porsche 993.',
+    price: 209,
+    href: '/stages/coaching/',
+    image: '/images/maquette/carte-3.webp',
+  },
+];
+---
+
+<section class="presta" id="prestations" aria-labelledby="presta-title">
+  <div class="container container--wide">
+    <header class="presta__head" data-reveal>
+      <Badge label="Nos prestations" />
+      <h2 id="presta-title">Des stages de pilotage<br />pour chaque passionné</h2>
+    </header>
+
+    <div class="presta__grid" data-stagger>
+      {
+        cards.map((c) => (
+          <article class="pcard">
+            <img class="pcard__img" src={c.image} alt="" width="377" height="410" loading="lazy" decoding="async" />
+            <div class="pcard__body">
+              <span class="pcard__tag">{c.tag}</span>
+              <h3 class="pcard__title">
+                <a href={c.href}>{c.title}</a>
+              </h3>
+              <p class="pcard__text">{c.text}</p>
+              <p class="pcard__price">dès {formatPrice(c.price)}</p>
+              <span class="pcard__go" aria-hidden="true">
+                <Lucide name="ArrowRight" size={14} stroke={2} />
+              </span>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .presta {
+    padding-block: clamp(28px, 2.4vw, 36px) clamp(40px, 4vw, 62px);
+  }
+  .presta__head {
+    text-align: center;
+    margin-bottom: clamp(26px, 2.6vw, 38px);
+  }
+  .presta__head h2 {
+    margin: 0;
+    font-size: clamp(1.75rem, 3.15vw, 2.85rem);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+  .presta__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(10px, 1.05vw, 16px);
+  }
+
+  .pcard {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: clamp(250px, 20.6vw, 300px);
+    border: 1px solid #d9d9da;
+    border-radius: 12px;
+    background: #f7f7f7;
+    transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out), border-color 0.45s var(--ease-out);
+  }
+  .pcard:hover {
+    transform: translateY(-6px);
+    border-color: #cfcfd1;
+    box-shadow: 0 26px 50px rgba(30, 10, 10, 0.12);
+  }
+  .pcard__img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    width: 60%;
+    height: 100%;
+    object-fit: cover;
+    object-position: right center;
+    /* La photo se fond dans le gris de la carte, comme sur la maquette. */
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 34%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 34%);
+    transform-origin: 80% 50%;
+    transition: transform 0.8s var(--ease-out);
+  }
+  .pcard:hover .pcard__img {
+    transform: scale(1.06);
+  }
+  .pcard__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    padding: clamp(14px, 1.15vw, 18px) clamp(16px, 1.6vw, 24px) clamp(14px, 1.2vw, 18px);
+  }
+  .pcard__tag {
+    padding: 3px 11px;
+    border: 1px solid var(--accent-bright);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 0.74rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .pcard__title {
+    max-width: 9.5em;
+    margin: auto 0 10px;
+    padding-top: 34px;
+    font-size: clamp(1.15rem, 1.6vw, 1.5rem);
+    font-weight: 450;
+    line-height: 1.12;
+  }
+  .pcard__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .pcard__title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .pcard__text {
+    max-width: 24ch;
+    margin: 0 0 6px;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: #4b4b50;
+  }
+  .pcard__price {
+    margin: 0 0 14px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .pcard__go {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--accent-bright);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--accent);
+    transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+  }
+  .pcard:hover .pcard__go {
+    background: var(--accent);
+    color: #fff;
+    transform: rotate(-45deg);
+  }
+
+  @media (max-width: 980px) {
+    .presta__grid {
+      grid-template-columns: 1fr;
+      max-width: 620px;
+      margin-inline: auto;
+    }
+    .pcard {
+      min-height: 230px;
+    }
+    .pcard__img {
+      width: 56%;
+    }
+  }
+  @media (max-width: 480px) {
+    .pcard__img {
+      width: 62%;
+      opacity: 0.95;
+    }
+    .pcard__text {
+      max-width: 20ch;
+    }
+  }
+</style>

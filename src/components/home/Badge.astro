@@ -1,0 +1,39 @@
+---
+// Petite pastille rouge au-dessus des titres de section (« Nos prestations », « Notre équipe »…).
+import Lucide from '../Lucide.astro';
+interface Props {
+  label: string;
+  tone?: 'light' | 'dark';
+}
+const { label, tone = 'light' } = Astro.props;
+---
+
+<p class:list={['badge', `badge--${tone}`]}>
+  <Lucide name="Star" size={12} stroke={2.2} class="badge__star" />
+  {label}
+</p>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0 0 14px;
+    padding: 5px 14px 5px 12px;
+    border: 1px solid var(--accent-bright);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--accent);
+    background: #fff;
+  }
+  .badge :global(.badge__star) {
+    color: var(--accent-bright);
+    fill: var(--accent-bright);
+  }
+  .badge--dark {
+    background: transparent;
+    color: #fff;
+  }
+</style>

@@ -1,40 +1,52 @@
 /* ==========================================================================
-   Sprint Racing — charte graphique
-   Style « studio » : fond gris très clair, cartes blanches, texte noir, avec
-   des touches de rose de la marque (boutons principaux, flèches, détails).
+   Sprint Racing — charte graphique (d'après la maquette fournie)
+   Fond blanc, cartes gris très clair, rouge profond pour les actions,
+   grandes photos sombres, coins arrondis et pastilles.
    ========================================================================== */
 
 :root {
-  /* Couleur de la marque : boutons principaux et petites touches de rose. */
-  --magenta: #cd398a;
-  --magenta-600: #b52c77;
-  --magenta-50: #fbeef5;
-  /* L'ancien bleu-vert est ramené aux gris. */
+  /* Rouge de la maquette : boutons, icônes, pastilles. Pour revenir au rose de la marque,
+     remplacer ces trois valeurs par #cd398a / #b52c77 / #e0479b. */
+  --accent: #800d0a;
+  --accent-600: #5f0806;
+  --accent-bright: #c8231e;
+  --accent-50: #f6e9e9;
+  --accent-soft: #e9d3d3;
+
+  /* Anciens noms, conservés pour les pages qui les utilisent encore. */
+  --magenta: var(--accent);
+  --magenta-600: var(--accent-600);
+  --magenta-50: var(--accent-50);
   --teal: #b8b8be;
   --teal-700: #111113;
-  --teal-50: #f0f0f2;
+  --teal-50: #f2f2f2;
 
-  --ink: #111113;
-  --graphite: #111113;
-  --text: #2a2a2e;
-  --muted: #6e6e76;
-  --line: #e6e6e8;
-  --bg: #f3f3f3;
-  --bg-soft: #f3f3f3;
+  --ink: #141414;
+  --graphite: #141414;
+  --text: #2b2b2e;
+  --muted: #6f6f74;
+  --line: #e4e4e6;
+  --bg: #ffffff;
+  --bg-soft: #f7f7f7;
   --surface: #ffffff;
-  --studio: radial-gradient(ellipse 80% 70% at 50% 35%, #fafafa 0%, #e7e7e9 100%);
+  --panel: #ebeaeb;
+  --night: #242328;
+  --studio: radial-gradient(ellipse 80% 70% at 50% 35%, #fbfbfb 0%, #ebebeb 100%);
 
   --radius: 18px;
   --radius-sm: 12px;
+  --radius-lg: 22px;
   --shadow: 0 1px 2px rgba(17, 17, 19, 0.03);
-  --shadow-lg: 0 18px 40px rgba(17, 17, 19, 0.08);
+  --shadow-lg: 0 18px 40px rgba(17, 17, 19, 0.1);
 
-  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+--font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  --container: 1200px;
-  --gutter: clamp(16px, 4vw, 32px);
-  --header-h: 72px;
+  --container: 1240px;
+  --container-wide: 1440px;
+  --gutter: clamp(16px, 2.4vw, 34px);
+  --header-h: 64px;
+  --header-gap: 14px;
 }
 
 *,
@@ -76,7 +88,7 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 450;
   line-height: 1.1;
   color: var(--ink);
   margin: 0 0 0.5em;
@@ -85,11 +97,11 @@ h4 {
 }
 
 h1 {
-  font-size: clamp(2.3rem, 5vw, 3.8rem);
+  font-size: clamp(2.4rem, 5.4vw, 4.9rem);
   letter-spacing: -0.035em;
 }
 h2 {
-  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  font-size: clamp(1.75rem, 3.1vw, 2.85rem);
   letter-spacing: -0.03em;
 }
 h3 {
@@ -102,9 +114,9 @@ p {
 }
 
 :focus-visible {
-  outline: 3px solid var(--teal);
-  outline-offset: 2px;
-  border-radius: 4px;
+  outline: 2px solid var(--accent-bright);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 /* Un élément masqué reste masqué, même si une règle lui donne un affichage (grid, flex…). */
@@ -145,6 +157,10 @@ p {
   max-width: var(--container);
   margin-inline: auto;
   padding-inline: var(--gutter);
+}
+/* Largeur de la maquette : les grands blocs vont presque d'un bord à l'autre. */
+.container--wide {
+  max-width: var(--container-wide);
 }
 
 .section {
@@ -194,7 +210,7 @@ p {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--magenta);
+  background: var(--accent-bright);
 }
 
 .grid {
@@ -378,10 +394,35 @@ p {
   color: var(--muted);
 }
 
-/* ---------- En-tête des pages intérieures ---------- */
+/* ---------- En-tête des pages intérieures ----------
+   Même ambiance que l'accueil : fond sombre, halo rouge, texte blanc, l'en-tête flotte au-dessus. */
 
 .page-hero {
-  padding-block: clamp(28px, 4vw, 48px) clamp(32px, 4vw, 56px);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin: 0 clamp(0px, 1vw, 14px);
+  padding-block: calc(var(--header-h) + var(--header-gap) + clamp(36px, 5vw, 64px)) clamp(40px, 5vw, 72px);
+  border-radius: 0 0 clamp(16px, 2vw, 26px) clamp(16px, 2vw, 26px);
+  background:
+    radial-gradient(ellipse 55% 70% at 78% 62%, rgba(190, 26, 24, 0.42), transparent 70%),
+    radial-gradient(ellipse 40% 60% at 8% 20%, rgba(130, 14, 14, 0.35), transparent 70%),
+    linear-gradient(180deg, #1a0809 0%, #0f0606 100%);
+  color: rgba(255, 255, 255, 0.78);
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: -40px;
+  z-index: -1;
+  background: url('/images/maquette/hero-853.webp') center / cover no-repeat;
+  filter: blur(36px) saturate(1.2);
+  opacity: 0.4;
+}
+.page-hero h1,
+.page-hero h2,
+.page-hero h3 {
+  color: #fff;
 }
 .page-hero__grid {
   display: grid;
@@ -390,18 +431,33 @@ p {
   align-items: center;
 }
 .page-hero h1 {
-  max-width: 16ch;
+  max-width: 15ch;
+  font-weight: 400;
 }
 .page-hero__lead {
   max-width: 52ch;
   font-size: 1.05rem;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.76);
+}
+.page-hero .eyebrow {
+  color: rgba(255, 255, 255, 0.7);
+}
+.page-hero .eyebrow::before {
+  background: var(--accent-bright);
+}
+.page-hero .note,
+.page-hero .price small {
+  color: rgba(255, 255, 255, 0.6);
+}
+.page-hero .price,
+.page-hero .price strong {
+  color: #fff;
 }
 .page-hero__media {
   overflow: hidden;
-  border-radius: var(--radius);
+  border-radius: 14px;
   aspect-ratio: 16 / 10;
-  background: var(--studio);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
 }
 .page-hero__img {
   width: 100%;
@@ -409,33 +465,62 @@ p {
   object-fit: cover;
 }
 .page-hero__media.is-cutout {
+  position: relative;
   display: grid;
   place-items: center;
-  padding: 6% 7%;
+  overflow: visible;
+  padding: 4% 2%;
+  box-shadow: none;
+}
+.page-hero__media.is-cutout::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 12%;
+  z-index: -1;
+  height: 18%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(220, 40, 34, 0.55), transparent);
+  filter: blur(10px);
 }
 .page-hero__media.is-cutout .page-hero__img {
   height: auto;
   object-fit: contain;
-  filter: drop-shadow(0 22px 18px rgba(0, 0, 0, 0.18));
+  filter: drop-shadow(0 26px 22px rgba(0, 0, 0, 0.55));
 }
-/* Sur fond clair, le bouton « clair » devient un bouton contour. */
-.page-hero .btn--light {
+.page-hero a:not(.btn) {
+  color: #fff;
+}
+.page-hero .btn--ghost {
+  --btn-fg: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.page-hero .btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+}
+.page-hero .btn--dark {
+  --btn-bg: #fff;
   --btn-fg: var(--ink);
-  background: transparent;
-  border-color: #cfcfd3;
-}
-.page-hero .btn--light:hover {
-  background: #fff;
-  border-color: var(--ink);
 }
 
 @media (max-width: 860px) {
+  .page-hero {
+    margin: 0;
+    border-radius: 0 0 18px 18px;
+  }
   .page-hero__grid {
     grid-template-columns: 1fr;
   }
   .page-hero__media {
     order: -1;
   }
+}
+
+/* Pages sans grand en-tête (commande, 404…) : on laisse la place à l'en-tête flottant. */
+main > :first-child:not(.page-hero):not(.hero) {
+  margin-top: calc(var(--header-h) + var(--header-gap) + 8px);
 }
 
 .breadcrumb {
@@ -447,6 +532,12 @@ p {
   list-style: none;
   font-size: 0.85rem;
   color: #9a9aa2;
+}
+.page-hero .breadcrumb {
+  color: rgba(255, 255, 255, 0.55);
+}
+.page-hero .breadcrumb a {
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 .breadcrumb a {
   color: var(--muted);
@@ -691,8 +782,8 @@ fieldset.field {
 }
 
 html.motion:not(.motion-ready)
-  :is(.section-head, .grid > *, .steps__item, .stat, .review, .reviews__summary, .faq__item, .timeline > li, [data-reveal]),
-html.motion:not(.motion-ready) :is(.hero, .page-hero) :is(.breadcrumb, .eyebrow, h1, h2, p, .hero__ctas, .hero-specs, .hero-ctas, .facts, .ctas, .finder, .hero__car, .hero__panel, .hero__scroll) {
+  :is(.section-head, .grid > *, .steps__item, .stat, .review, .reviews__summary, .faq__item, .timeline > li, [data-reveal], [data-stagger] > *),
+html.motion:not(.motion-ready) :is(.hero, .page-hero) :is(.breadcrumb, .eyebrow, h1, h2, p, .hero__ctas, .hero-specs, .hero-ctas, .facts, .ctas, .finder, [data-hero-fade], [data-hero-giant]) {
   opacity: 0;
 }
 

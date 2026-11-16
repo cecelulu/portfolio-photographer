@@ -1,0 +1,23 @@
+---
+// Icône Lucide (https://lucide.dev), insérée en SVG au moment de la génération du site :
+// aucun JavaScript n'est envoyé au navigateur.
+import * as icons from 'lucide-static';
+
+interface Props {
+  /** Nom de l'icône en PascalCase, par exemple « ArrowRight » ou « CarFront ». */
+  name: keyof typeof icons;
+  size?: number;
+  stroke?: number;
+  class?: string;
+  label?: string;
+}
+const { name, size = 20, stroke = 1.75, class: className, label } = Astro.props;
+const raw = (icons[name] as unknown as string) ?? '';
+const svg = raw
+  .replace(/\swidth="24"/, ` width="${size}"`)
+  .replace(/\sheight="24"/, ` height="${size}"`)
+  .replace(/stroke-width="2"/, `stroke-width="${stroke}"`)
+  .replace(/class="([^"]*)"/, `class="$1${className ? ' ' + className : ''}" ${label ? `role="img" aria-label="${label}"` : 'aria-hidden="true" focusable="false"'}`);
+---
+
+<Fragment set:html={svg} />
