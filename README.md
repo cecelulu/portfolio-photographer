@@ -17,7 +17,7 @@ npm run preview   # prévisualise la version finale
 
 | Page | Adresse | Contenu |
 | --- | --- | --- |
-| Accueil | `/` | Grand visuel, prestations, liste des stages, cartes « Offrir » et « Entreprises », équipe, avis clients (dans l’ordre de la maquette) |
+| Accueil | `/` | Grand visuel, prestations, liste des stages, cartes « Offrir » et « Entreprises », avis clients |
 | Nos stages | `/stages/` | Les 17 voitures (filtre par marque / « dès 16 ans ») et les autres expériences |
 | Fiche voiture | `/stages/<voiture>/` | Description, caractéristiques, ce qui est inclus, conditions, circuits, prix « à partir de » |
 | Stages spéciaux | `/stages/multi-gt/`, `/stages/drift/`, `/stages/jeunes/`, `/stages/coaching/` | Présentation et formules |
@@ -44,7 +44,7 @@ Les photos et le logo sont dans `public/images/` :
 
 - `voitures/`, `categories/`, `circuits/` : photos du site actuel, converties en WebP ;
 - `detoure/` : une voiture détourée par modèle (fond transparent), utilisée dans les cartes et les en-têtes ;
-- `maquette/` : les visuels de la page d’accueil. Le grand visuel, les cartes et la vignette vidéo sont des **images générées par IA** (Lamborghini Temerario noire, ambiance rose), fournies pour le projet ; les plaques « TEMERARIO » ont été remplacées par une plaque Sprint Racing et le grand visuel a été agrandi ×2 (ESRGAN) pour les écrans haute définition. Les portraits de l’équipe viennent de la maquette : **ce ne sont pas les vraies personnes de Sprint Racing**, à remplacer avant une mise en ligne officielle. Les fichiers gardent les mêmes noms, il suffit de les écraser.
+- `maquette/` : les visuels de la page d’accueil. Le grand visuel, les cartes et la vignette vidéo sont des **images générées par IA** (Lamborghini Temerario noire, ambiance rose), fournies pour le projet ; les plaques « TEMERARIO » ont été remplacées par une plaque Sprint Racing et le grand visuel a été agrandi ×2 (ESRGAN) pour les écrans haute définition. Les fichiers gardent les mêmes noms, il suffit de les écraser.
 
 ## Mode maquette
 
@@ -70,7 +70,7 @@ Les formulaires comprennent une validation des champs, un champ anti-spam invisi
 Le site reproduit la maquette fournie : fond blanc, grandes photos sombres, cartes gris très clair aux coins arrondis, pastilles, rose de Sprint Racing pour les boutons et les icônes (à la place du rouge de la maquette), typographie Inter fine, grands mots décoratifs (« sprint racing », « pilotage »). L’en-tête est une « pilule » blanche qui flotte au-dessus des grands visuels.
 
 - Les couleurs se règlent en haut de `src/styles/global.css` (`--accent`, `--accent-bright`…). Pour passer au rouge de la maquette, les valeurs à mettre sont indiquées en commentaire.
-- Les sections de l’accueil sont des composants indépendants dans `src/components/home/` (`HomeHero`, `Prestations`, `ServicesList`, `FeatureCards`, `TeamSection`, `Testimonials`).
+- Les sections de l’accueil sont des composants indépendants dans `src/components/home/` (`HomeHero`, `Prestations`, `ServicesList`, `FeatureCards`, `Testimonials`).
 - Les icônes viennent de [Lucide](https://lucide.dev) (`src/components/Lucide.astro`), insérées en SVG à la génération : aucun script envoyé au navigateur.
 - Les pages intérieures reprennent l’ambiance de l’accueil : en-tête sombre avec halo rose (`.page-hero`).
 

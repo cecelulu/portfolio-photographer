@@ -1,13 +1,12 @@
 ---
 // Page d'accueil, dans l'ordre exact de la maquette :
 // 1. en-tête (Base) · 2. grand visuel · 3. prestations · 4. liste des stages
-// 5. deux cartes photo · 6. équipe · 7. avis clients · 8. pied de page (Base)
+// 5. deux cartes photo · 6. avis clients · 7. pied de page (Base)
 import Base from '../layouts/Base.astro';
 import HomeHero from '../components/home/HomeHero.astro';
 import Prestations from '../components/home/Prestations.astro';
 import ServicesList from '../components/home/ServicesList.astro';
 import FeatureCards from '../components/home/FeatureCards.astro';
-import TeamSection from '../components/home/TeamSection.astro';
 import Testimonials from '../components/home/Testimonials.astro';
 ---
 
@@ -22,6 +21,5 @@ import Testimonials from '../components/home/Testimonials.astro';
   <Prestations />
   <ServicesList />
   <FeatureCards />
-  <TeamSection />
   <Testimonials />
 </Base>
