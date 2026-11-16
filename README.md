@@ -44,7 +44,7 @@ Les photos et le logo sont dans `public/images/` :
 
 - `voitures/`, `categories/`, `circuits/` : photos du site actuel, converties en WebP ;
 - `detoure/` : une voiture détourée par modèle (fond transparent), utilisée dans les cartes et les en-têtes ;
-- `maquette/` : les visuels de la page d’accueil, repris de la maquette graphique fournie (grand visuel, gros plans des cartes, deux grandes cartes photo, portraits, vignette vidéo). Les textes posés dessus ont été effacés et les images agrandies. **Ce sont des illustrations, pas des photos de Sprint Racing** (les portraits ne sont pas l’équipe réelle) : à remplacer par de vraies photos avant une mise en ligne officielle. Les fichiers gardent les mêmes noms, il suffit de les écraser.
+- `maquette/` : les visuels de la page d’accueil. Le grand visuel, les cartes et la vignette vidéo sont des **images générées par IA** (Lamborghini Temerario noire, ambiance rose), fournies pour le projet ; les plaques « TEMERARIO » ont été remplacées par une plaque Sprint Racing et le grand visuel a été agrandi ×2 (ESRGAN) pour les écrans haute définition. Les portraits de l’équipe viennent de la maquette : **ce ne sont pas les vraies personnes de Sprint Racing**, à remplacer avant une mise en ligne officielle. Les fichiers gardent les mêmes noms, il suffit de les écraser.
 
 ## Mode maquette
 
