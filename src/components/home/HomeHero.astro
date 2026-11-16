@@ -8,13 +8,13 @@ import { site } from '../../data/site';
 <section class="hero" aria-labelledby="hero-title" data-hero>
   <div class="hero__media" aria-hidden="true">
     <picture>
-      <source media="(max-width: 900px)" srcset="/images/maquette/hero-853.webp 853w, /images/maquette/hero-1706.webp 1706w" sizes="200vw" />
+      <source media="(max-width: 900px)" srcset="/images/maquette/accueil-900.webp 900w, /images/maquette/accueil-1672.webp 1672w" sizes="200vw" />
       <img
         class="hero__img"
-        src="/images/maquette/hero-1706.webp"
+        src="/images/maquette/accueil-1672.webp"
         alt=""
-        width="1706"
-        height="926"
+        width="1672"
+        height="941"
         fetchpriority="high"
         decoding="async"
         data-hero-img
@@ -48,6 +48,7 @@ import { site } from '../../data/site';
     <span>sprint</span>
     <span>racing</span>
   </p>
+
 </section>
 
 <style>
@@ -55,7 +56,7 @@ import { site } from '../../data/site';
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    /* Même rapport que la photo de la maquette (853 × 463). */
+    /* Proche du rapport de la maquette (853 × 463). */
     height: clamp(640px, 54.3vw, 900px);
     background: #12060c;
     color: #fff;
@@ -72,6 +73,11 @@ import { site } from '../../data/site';
     object-position: 60% 50%;
     transform-origin: 62% 55%;
     will-change: transform;
+  }
+  .hero__content,
+  .hero__circle,
+  .hero__video {
+    z-index: 2;
   }
   .hero__shade {
     position: absolute;
@@ -238,7 +244,7 @@ import { site } from '../../data/site';
       flex-direction: column;
     }
     .hero__img {
-      object-position: 58% 60%;
+      object-position: 64% 60%;
     }
     .hero__shade {
       background:

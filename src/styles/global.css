@@ -395,7 +395,7 @@ p {
 }
 
 /* ---------- En-tête des pages intérieures ----------
-   Même ambiance que l'accueil : fond sombre, halo rouge, texte blanc, l'en-tête flotte au-dessus. */
+   Même ambiance que l'accueil : fond sombre, halo rose, texte blanc, l'en-tête flotte au-dessus. */
 
 .page-hero {
   position: relative;
@@ -415,7 +415,7 @@ p {
   position: absolute;
   inset: -40px;
   z-index: -1;
-  background: url('/images/maquette/hero-853.webp') center / cover no-repeat;
+  background: url('/images/maquette/accueil-900.webp') center / cover no-repeat;
   filter: blur(36px) saturate(1.2);
   opacity: 0.4;
 }
