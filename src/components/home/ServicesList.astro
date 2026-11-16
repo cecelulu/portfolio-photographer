@@ -27,7 +27,7 @@ const featured = 'multi';
   <div class="container container--wide">
     <div class="svc__panel">
       <div class="svc__top" aria-hidden="true">
-        <p class="svc__giant" data-giant>p<span class="svc__i">ı<i></i></span>lotage</p>
+        <p class="svc__giant" data-giant>pilotage</p>
         {
           floating.map((f) => (
             <span
@@ -108,25 +108,6 @@ const featured = 'multi';
     background-clip: text;
     color: transparent;
     user-select: none;
-  }
-  /* Le « i » est positionné (pour son point carré) : il doit reprendre lui-même le dégradé,
-     sinon il reste transparent. */
-  .svc__i {
-    position: relative;
-    display: inline-block;
-    background: inherit;
-    -webkit-background-clip: text;
-    background-clip: text;
-  }
-  /* Le point du « i » est un carré rouge, comme sur la maquette. */
-  .svc__i i {
-    position: absolute;
-    left: 50%;
-    top: 0.2em;
-    width: 0.11em;
-    height: 0.11em;
-    translate: -50% 0;
-    background: var(--accent-bright);
   }
   .svc__float {
     position: absolute;
