@@ -5,13 +5,13 @@
    ========================================================================== */
 
 :root {
-  /* Rouge de la maquette : boutons, icônes, pastilles. Pour revenir au rose de la marque,
-     remplacer ces trois valeurs par #cd398a / #b52c77 / #e0479b. */
-  --accent: #800d0a;
-  --accent-600: #5f0806;
-  --accent-bright: #c8231e;
-  --accent-50: #f6e9e9;
-  --accent-soft: #e9d3d3;
+  /* Rose de Sprint Racing : boutons, icônes, pastilles. Pour passer au rouge de la maquette,
+     remplacer par #800d0a / #5f0806 / #c8231e / #f6e9e9 / #e9d3d3. */
+  --accent: #b52c77;
+  --accent-600: #96215f;
+  --accent-bright: #cd398a;
+  --accent-50: #fbeef5;
+  --accent-soft: #f4d6e6;
 
   /* Anciens noms, conservés pour les pages qui les utilisent encore. */
   --magenta: var(--accent);
@@ -405,9 +405,9 @@ p {
   padding-block: calc(var(--header-h) + var(--header-gap) + clamp(36px, 5vw, 64px)) clamp(40px, 5vw, 72px);
   border-radius: 0 0 clamp(16px, 2vw, 26px) clamp(16px, 2vw, 26px);
   background:
-    radial-gradient(ellipse 55% 70% at 78% 62%, rgba(190, 26, 24, 0.42), transparent 70%),
-    radial-gradient(ellipse 40% 60% at 8% 20%, rgba(130, 14, 14, 0.35), transparent 70%),
-    linear-gradient(180deg, #1a0809 0%, #0f0606 100%);
+    radial-gradient(ellipse 55% 70% at 78% 62%, rgba(205, 57, 138, 0.4), transparent 70%),
+    radial-gradient(ellipse 40% 60% at 8% 20%, rgba(140, 30, 90, 0.35), transparent 70%),
+    linear-gradient(180deg, #1a0812 0%, #0f060b 100%);
   color: rgba(255, 255, 255, 0.78);
 }
 .page-hero::before {
@@ -481,7 +481,7 @@ p {
   z-index: -1;
   height: 18%;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(220, 40, 34, 0.55), transparent);
+  background: radial-gradient(closest-side, rgba(225, 70, 155, 0.55), transparent);
   filter: blur(10px);
 }
 .page-hero__media.is-cutout .page-hero__img {
