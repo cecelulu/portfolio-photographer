@@ -106,8 +106,8 @@ function servicesMotion() {
   if (giant) {
     gsap.fromTo(
       giant,
-      { xPercent: -5 },
-      { xPercent: 5, ease: 'none', scrollTrigger: { trigger: giant, start: 'top bottom', end: 'bottom top', scrub: 0.6 } }
+      { xPercent: -3 },
+      { xPercent: 3, ease: 'none', scrollTrigger: { trigger: giant, start: 'top bottom', end: 'bottom top', scrub: 0.6 } }
     );
   }
   const badges = gsap.utils.toArray<HTMLElement>('[data-float-badge]');
