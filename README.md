@@ -108,6 +108,19 @@ Les prix affichés sont les prix **« à partir de », hors promotion**, relevé
 
 ## Mise en ligne
 
+**Lien de démonstration actuel (GitHub Pages)** : https://cecelulu.github.io/portfolio-photographer/
+
+GitHub Pages sert le site sous `/portfolio-photographer/` : la branche `gh-pages` contient le site déjà construit, avec tous les chemins préfixés. Pour la mettre à jour :
+
+```bash
+npm run build
+cp -r dist/. /chemin/vers/copie/          # copie de travail de la branche gh-pages
+python3 scripts/github-pages-base.py /chemin/vers/copie   # ajoute /portfolio-photographer devant les chemins
+touch /chemin/vers/copie/.nojekyll         # indispensable pour le dossier _astro
+```
+puis publier le contenu sur la branche `gh-pages`.
+
+
 Le dossier `dist/` produit par `npm run build` peut être déposé sur n’importe quel hébergeur statique (Netlify, Vercel, Cloudflare Pages, OVH…).
 
 Sur **Netlify**, le fichier `netlify.toml` contient déjà les réglages (commande `npm run build`, dossier `dist`, Node 22). Il suffit d’importer le dépôt depuis GitHub et de choisir la branche à publier. L’adresse finale du site se règle dans `astro.config.mjs` (`site`).
