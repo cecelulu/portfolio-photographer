@@ -17,7 +17,7 @@ npm run preview   # prévisualise la version finale
 
 | Page | Adresse | Contenu |
 | --- | --- | --- |
-| Accueil | `/` | Grand visuel, prestations, liste des stages, cartes « Offrir » et « Entreprises », avis clients |
+| Accueil | `/` | Grand visuel, garanties, prestations, liste des formules, collection de voitures, chiffres clés, cartes « Offrir » et « Entreprises », déroulement, circuits, avis clients, questions fréquentes |
 | Nos stages | `/stages/` | Les 17 voitures (filtre par marque / « dès 16 ans ») et les autres expériences |
 | Fiche voiture | `/stages/<voiture>/` | Description, caractéristiques, ce qui est inclus, conditions, circuits, prix « à partir de » |
 | Stages spéciaux | `/stages/multi-gt/`, `/stages/drift/`, `/stages/jeunes/`, `/stages/coaching/` | Présentation et formules |
@@ -70,7 +70,7 @@ Les formulaires comprennent une validation des champs, un champ anti-spam invisi
 Le site reproduit la maquette fournie : fond blanc, grandes photos sombres, cartes gris très clair aux coins arrondis, pastilles, rose de Sprint Racing pour les boutons et les icônes (à la place du rouge de la maquette), typographie Inter fine, grands mots décoratifs (« sprint racing », « pilotage »). L’en-tête est une « pilule » blanche qui flotte au-dessus des grands visuels.
 
 - Les couleurs se règlent en haut de `src/styles/global.css` (`--accent`, `--accent-bright`…). Pour passer au rouge de la maquette, les valeurs à mettre sont indiquées en commentaire.
-- Les sections de l’accueil sont des composants indépendants dans `src/components/home/` (`HomeHero`, `Prestations`, `ServicesList`, `FeatureCards`, `Testimonials`).
+- Les sections de l’accueil sont des composants indépendants dans `src/components/home/` (`HomeHero`, `Guarantees`, `Prestations`, `ServicesList`, `Collection`, `KeyFigures`, `FeatureCards`, `HowItWorks`, `CircuitsTeaser`, `Testimonials`, `FaqPreview`).
 - Les icônes viennent de [Lucide](https://lucide.dev) (`src/components/Lucide.astro`), insérées en SVG à la génération : aucun script envoyé au navigateur.
 - Les pages intérieures reprennent l’ambiance de l’accueil : en-tête sombre avec halo rose (`.page-hero`).
 

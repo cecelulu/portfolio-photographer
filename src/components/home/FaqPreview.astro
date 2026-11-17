@@ -1,0 +1,111 @@
+---
+// Aperçu des questions fréquentes (content.ts), avec lien vers la FAQ complète.
+import Badge from './Badge.astro';
+import Lucide from '../Lucide.astro';
+import { faq } from '../../data/content';
+const items = faq.flatMap((g) => g.items).slice(0, 5);
+---
+
+<section class="fq" aria-labelledby="fq-title">
+  <div class="container container--wide fq__grid">
+    <header class="fq__head" data-reveal>
+      <Badge label="Questions fréquentes" />
+      <h2 id="fq-title">Vous avez<br />des questions ?</h2>
+      <p>Les réponses aux questions les plus posées par nos stagiaires. Notre service client répond aussi du lundi au samedi.</p>
+      <a class="btn btn--dark" href="/faq/">Toutes les questions <Lucide name="ArrowRight" size={17} stroke={2} /></a>
+    </header>
+    <div class="fq__list" data-stagger>
+      {
+        items.map((it, i) => (
+          <details class="fq__item" open={i === 0}>
+            <summary>
+              {it.q}
+              <span class="fq__plus" aria-hidden="true"><Lucide name="Plus" size={18} stroke={2} /></span>
+            </summary>
+            <p>{it.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .fq {
+    padding-block: clamp(30px, 4vw, 60px) clamp(30px, 3vw, 44px);
+  }
+  .fq__grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: clamp(28px, 5vw, 80px);
+    align-items: start;
+  }
+  .fq__head h2 {
+    margin: 0 0 14px;
+    font-size: clamp(1.7rem, 3vw, 2.7rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+  .fq__head p {
+    max-width: 40ch;
+    margin: 0 0 24px;
+    color: var(--muted);
+  }
+  .fq__list {
+    display: grid;
+    gap: 10px;
+  }
+  .fq__item {
+    border: 1px solid #e2e1e3;
+    border-radius: 14px;
+    background: #f7f7f7;
+    transition: background 0.3s var(--ease-out);
+  }
+  .fq__item[open] {
+    background: #fff;
+    box-shadow: 0 16px 36px rgba(30, 10, 20, 0.08);
+  }
+  .fq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+    list-style: none;
+  }
+  .fq__item summary::-webkit-details-marker {
+    display: none;
+  }
+  .fq__plus {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-50);
+    color: var(--accent);
+    transition: transform 0.3s var(--ease-out), background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+  }
+  .fq__item[open] .fq__plus {
+    transform: rotate(45deg);
+    background: var(--accent);
+    color: #fff;
+  }
+  .fq__item p {
+    margin: 0;
+    padding: 0 22px 20px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #55555a;
+  }
+  @media (max-width: 900px) {
+    .fq__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

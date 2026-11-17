@@ -1,0 +1,106 @@
+---
+// Bande de garanties sous le grand visuel (informations réelles du site).
+import Lucide from '../Lucide.astro';
+
+const items = [
+  { icon: 'CreditCard', title: 'Paiement en 3× sans frais', text: 'Carte bancaire ou PayPal' },
+  { icon: 'MailCheck', title: 'Bon cadeau en 5 minutes', text: 'Envoyé par e-mail, prêt à offrir' },
+  { icon: 'IdCard', title: 'Dès 16 ans', text: 'En conduite accompagnée' },
+  { icon: 'ShieldCheck', title: 'Aucune caution', text: 'Sur tous les stages GT' },
+] as const;
+---
+
+<section class="guar" aria-label="Nos garanties">
+  <div class="container container--wide">
+    <ul class="guar__list" data-stagger>
+      {
+        items.map((i) => (
+          <li class="guar__item">
+            <span class="guar__icon"><Lucide name={i.icon} size={22} stroke={1.7} /></span>
+            <span>
+              <strong>{i.title}</strong>
+              <small>{i.text}</small>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .guar {
+    position: relative;
+    z-index: 3;
+    margin-top: -46px;
+    padding-bottom: clamp(26px, 3vw, 44px);
+  }
+  .guar__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 0 clamp(0px, 1.6vw, 26px);
+    padding: 0;
+    list-style: none;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 24px 60px rgba(20, 8, 16, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  }
+  .guar__item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 22px clamp(16px, 2vw, 28px);
+  }
+  .guar__item + .guar__item {
+    border-left: 1px solid var(--line);
+  }
+  .guar__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--accent-50);
+    color: var(--accent);
+  }
+  .guar__item strong {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .guar__item small {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  @media (max-width: 980px) {
+    .guar__list {
+      grid-template-columns: 1fr 1fr;
+    }
+    .guar__item:nth-child(3) {
+      border-left: 0;
+    }
+    .guar__item:nth-child(n + 3) {
+      border-top: 1px solid var(--line);
+    }
+  }
+  @media (max-width: 900px) {
+    .guar {
+      margin-top: 0;
+      padding-top: 20px;
+    }
+  }
+  @media (max-width: 520px) {
+    .guar__list {
+      grid-template-columns: 1fr;
+    }
+    .guar__item + .guar__item {
+      border-left: 0;
+      border-top: 1px solid var(--line);
+    }
+    .guar__item {
+      padding: 16px 18px;
+    }
+  }
+</style>

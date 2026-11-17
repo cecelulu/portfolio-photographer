@@ -1,13 +1,18 @@
 ---
-// Page d'accueil, dans l'ordre exact de la maquette :
-// 1. en-tête (Base) · 2. grand visuel · 3. prestations · 4. liste des stages
-// 5. deux cartes photo · 6. avis clients · 7. pied de page (Base)
+// Page d'accueil : grand visuel, garanties, prestations, formules, collection, chiffres clés,
+// cadeaux et entreprises, déroulement, circuits, avis clients et questions fréquentes.
 import Base from '../layouts/Base.astro';
 import HomeHero from '../components/home/HomeHero.astro';
+import Guarantees from '../components/home/Guarantees.astro';
 import Prestations from '../components/home/Prestations.astro';
 import ServicesList from '../components/home/ServicesList.astro';
+import Collection from '../components/home/Collection.astro';
+import KeyFigures from '../components/home/KeyFigures.astro';
 import FeatureCards from '../components/home/FeatureCards.astro';
+import HowItWorks from '../components/home/HowItWorks.astro';
+import CircuitsTeaser from '../components/home/CircuitsTeaser.astro';
 import Testimonials from '../components/home/Testimonials.astro';
+import FaqPreview from '../components/home/FaqPreview.astro';
 ---
 
 <Base
@@ -18,8 +23,14 @@ import Testimonials from '../components/home/Testimonials.astro';
 >
   <link slot="head" rel="preload" as="image" href="/images/maquette/accueil-1672.webp" imagesrcset="/images/maquette/accueil-1672.webp 1672w, /images/maquette/accueil-2800.webp 2800w" imagesizes="100vw" media="(min-width: 901px)" />
   <HomeHero />
+  <Guarantees />
   <Prestations />
   <ServicesList />
+  <Collection />
+  <KeyFigures />
   <FeatureCards />
+  <HowItWorks />
+  <CircuitsTeaser />
   <Testimonials />
+  <FaqPreview />
 </Base>

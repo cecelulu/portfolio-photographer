@@ -1,0 +1,244 @@
+---
+// Collection : toutes les voitures, à faire défiler (photos détourées du site Sprint Racing).
+import Badge from './Badge.astro';
+import Lucide from '../Lucide.astro';
+import cars from '../../data/cars.json';
+import { formatPrice } from '../../data/site';
+
+const gt = cars.filter((c) => c.category === 'gt').sort((a, b) => b.power - a.power);
+const mono = cars.filter((c) => c.category === 'monoplace');
+const list = [...gt, ...mono];
+---
+
+<section class="coll" aria-labelledby="coll-title">
+  <div class="container container--wide">
+    <header class="coll__head" data-reveal>
+      <div>
+        <Badge label="Notre collection" />
+        <h2 id="coll-title">{list.length} voitures d’exception<br />à piloter sur circuit</h2>
+      </div>
+      <div class="coll__nav">
+        <a class="coll__all" href="/stages/">Voir toutes les voitures <Lucide name="ArrowRight" size={16} stroke={2} /></a>
+        <button class="coll__btn" type="button" data-coll-prev aria-label="Voitures précédentes"><Lucide name="ArrowLeft" size={18} stroke={2} /></button>
+        <button class="coll__btn coll__btn--dark" type="button" data-coll-next aria-label="Voitures suivantes"><Lucide name="ArrowRight" size={18} stroke={2} /></button>
+      </div>
+    </header>
+
+    <ul class="coll__track" data-coll-track>
+      {
+        list.map((c) => (
+          <li class="ccard">
+            <div class="ccard__media">
+              <img src={c.cutout} alt={c.name} width={c.cutoutW} height={c.cutoutH} loading="lazy" decoding="async" />
+              {c.youngDrivers && <span class="ccard__badge">Dès 16 ans</span>}
+            </div>
+            <div class="ccard__body">
+              <div>
+                <p class="ccard__meta">{c.brand} · {c.power} ch</p>
+                <h3 class="ccard__name"><a href={`/stages/${c.slug}/`}>{c.category === 'gt' ? c.model : c.name}</a></h3>
+                <p class="ccard__price">dès {formatPrice(c.priceFrom)}</p>
+              </div>
+              <span class="ccard__go" aria-hidden="true"><Lucide name="ArrowRight" size={15} stroke={2} /></span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .coll {
+    padding-block: clamp(40px, 5vw, 76px) clamp(30px, 3vw, 44px);
+  }
+  .coll__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: clamp(22px, 2.4vw, 34px);
+  }
+  .coll__head h2 {
+    margin: 0;
+    font-size: clamp(1.7rem, 3vw, 2.7rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+  .coll__nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .coll__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 10px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .coll__all :global(svg) {
+    transition: transform 0.3s var(--ease-out);
+  }
+  .coll__all:hover :global(svg) {
+    transform: translateX(4px);
+  }
+  .coll__btn {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.25s var(--ease-out), color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+  }
+  .coll__btn:hover {
+    transform: scale(1.06);
+  }
+  .coll__btn--dark {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+  }
+  .coll__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 3 * 16px) / 4);
+    gap: 16px;
+    margin: 0;
+    padding: 4px 2px 18px;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .coll__track::-webkit-scrollbar {
+    display: none;
+  }
+  .ccard {
+    position: relative;
+    scroll-snap-align: start;
+    border: 1px solid #e2e1e3;
+    border-radius: 14px;
+    background: #fff;
+    overflow: hidden;
+    transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+  }
+  .ccard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 24px 50px rgba(30, 10, 20, 0.12);
+  }
+  .ccard__media {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    padding: 18px;
+    background: radial-gradient(ellipse 80% 70% at 50% 40%, #fbfbfb 0%, #ececed 100%);
+  }
+  .ccard__media img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 16px 14px rgba(0, 0, 0, 0.2));
+    transition: transform 0.6s var(--ease-out);
+  }
+  .ccard:hover .ccard__media img {
+    transform: scale(1.06) translateX(-2%);
+  }
+  .ccard__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 11px;
+    border: 1px solid var(--accent-bright);
+    border-radius: 999px;
+    background: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .ccard__body {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 16px 18px 18px;
+  }
+  .ccard__meta {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .ccard__name {
+    margin: 2px 0 4px;
+    font-size: 1.15rem;
+    font-weight: 500;
+  }
+  .ccard__name a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .ccard__name a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .ccard__price {
+    margin: 0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .ccard__go {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--accent-bright);
+    border-radius: 50%;
+    color: var(--accent);
+    transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+  }
+  .ccard:hover .ccard__go {
+    background: var(--accent);
+    color: #fff;
+    transform: rotate(-45deg);
+  }
+
+  @media (max-width: 1100px) {
+    .coll__track {
+      grid-auto-columns: calc((100% - 2 * 16px) / 3);
+    }
+  }
+  @media (max-width: 760px) {
+    .coll__head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .coll__btn {
+      display: none;
+    }
+    .coll__track {
+      grid-auto-columns: 72%;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-coll-track]').forEach((track) => {
+    const root = track.closest('section');
+    const step = () => (track.querySelector('li')?.getBoundingClientRect().width ?? 300) + 16;
+    root?.querySelector('[data-coll-prev]')?.addEventListener('click', () => track.scrollBy({ left: -step() * 2, behavior: 'smooth' }));
+    root?.querySelector('[data-coll-next]')?.addEventListener('click', () => {
+      const end = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      track.scrollTo({ left: end ? 0 : track.scrollLeft + step() * 2, behavior: 'smooth' });
+    });
+  });
+</script>

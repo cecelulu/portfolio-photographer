@@ -1,0 +1,116 @@
+---
+// Déroulement d'un stage en 4 étapes (content.ts).
+import Badge from './Badge.astro';
+import Lucide from '../Lucide.astro';
+import { steps } from '../../data/content';
+const icons = ['CarFront', 'CalendarCheck', 'MailCheck', 'Flag'] as const;
+---
+
+<section class="how" aria-labelledby="how-title">
+  <div class="container container--wide">
+    <header class="how__head" data-reveal>
+      <Badge label="Le déroulement" />
+      <h2 id="how-title">Votre stage en<br />quatre étapes</h2>
+    </header>
+    <ol class="how__list" data-stagger>
+      {
+        steps.map((s, i) => (
+          <li class="how__item">
+            <span class="how__num">0{i + 1}</span>
+            <span class="how__icon"><Lucide name={icons[i]} size={22} stroke={1.7} /></span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="how__more" data-reveal>
+      <a class="btn btn--dark" href="/le-stage/">Tout savoir sur la journée <Lucide name="ArrowRight" size={17} stroke={2} /></a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .how {
+    padding-block: clamp(40px, 5vw, 76px) clamp(30px, 3vw, 44px);
+  }
+  .how__head {
+    text-align: center;
+    margin-bottom: clamp(26px, 3vw, 42px);
+  }
+  .how__head h2 {
+    margin: 0;
+    font-size: clamp(1.7rem, 3vw, 2.7rem);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+  .how__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(10px, 1.2vw, 18px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: none;
+  }
+  .how__item {
+    position: relative;
+    padding: clamp(22px, 2.2vw, 32px);
+    border: 1px solid #e2e1e3;
+    border-radius: 14px;
+    background: #f7f7f7;
+    transition: background 0.35s var(--ease-out), transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+  }
+  .how__item:hover {
+    background: #fff;
+    transform: translateY(-4px);
+    box-shadow: 0 20px 44px rgba(30, 10, 20, 0.1);
+  }
+  .how__num {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-size: 2.6rem;
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.2px rgba(205, 57, 138, 0.45);
+  }
+  .how__icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+  }
+  .how__item h3 {
+    margin: 0 0 8px;
+    font-size: 1.15rem;
+    font-weight: 500;
+  }
+  .how__item p {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .how__more {
+    margin: clamp(22px, 2.4vw, 32px) 0 0;
+    text-align: center;
+  }
+  @media (max-width: 980px) {
+    .how__list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .how__list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,117 @@
+---
+// Chiffres clés de Sprint Racing (site.ts), sur un panneau sombre avec la photo studio en fond.
+import { stats } from '../../data/site';
+---
+
+<section class="figs" aria-label="Sprint Racing en chiffres">
+  <div class="container container--wide">
+    <div class="figs__panel">
+      <img class="figs__bg" src="/images/maquette/accueil-1672.webp" alt="" width="1672" height="941" loading="lazy" decoding="async" />
+      <div class="figs__intro" data-reveal>
+        <p class="figs__kicker">Depuis 2002</p>
+        <h2>L’école leader du stage de pilotage en France et en Belgique</h2>
+      </div>
+      <ul class="figs__list" data-stagger>
+        {
+          stats.map((s) => (
+            <li>
+              <strong class="stat__value">{s.value}</strong>
+              <span>{s.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .figs {
+    padding-bottom: clamp(30px, 3vw, 44px);
+  }
+  .figs__panel {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: clamp(28px, 4vw, 64px);
+    align-items: center;
+    padding: clamp(36px, 4.4vw, 64px);
+    border-radius: 16px;
+    background: #0d0c0f;
+    color: #fff;
+  }
+  .figs__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 70% 55%;
+    opacity: 0.32;
+  }
+  .figs__panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(90deg, #0d0c0f 0%, rgba(13, 12, 15, 0.75) 50%, rgba(13, 12, 15, 0.6) 100%);
+  }
+  .figs__kicker {
+    margin: 0 0 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+  }
+  .figs h2 {
+    margin: 0;
+    font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: #fff;
+  }
+  .figs__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .figs__list li {
+    display: grid;
+    gap: 4px;
+    padding: clamp(18px, 2vw, 28px);
+    background: rgba(13, 12, 15, 0.82);
+    backdrop-filter: blur(6px);
+  }
+  .figs__list strong {
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: #fff;
+  }
+  .figs__list span {
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.66);
+  }
+  @media (max-width: 900px) {
+    .figs__panel {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .figs__list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

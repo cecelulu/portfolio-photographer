@@ -1,0 +1,179 @@
+---
+// Circuits : carte de France et de Belgique, régions et quelques circuits phares (circuits.json).
+import Badge from './Badge.astro';
+import Lucide from '../Lucide.astro';
+import data from '../../data/circuits.json';
+
+const regions = Object.entries(data.regions).map(([key, label]) => ({
+  key,
+  label,
+  count: data.circuits.filter((c) => c.regionKey === key).length,
+}));
+const featured = ['trappes', 'montlhery', 'magnyclub', 'nogaro', 'mettet', 'fertegaucher1']
+  .map((s) => data.circuits.find((c) => c.slug === s))
+  .filter(Boolean) as typeof data.circuits;
+---
+
+<section class="circ" aria-labelledby="circ-title">
+  <div class="container container--wide">
+    <div class="circ__panel">
+      <div class="circ__text" data-reveal>
+        <Badge label="Nos circuits" />
+        <h2 id="circ-title">25 circuits en France<br />et en Belgique</h2>
+        <p class="circ__lead">
+          De février à début décembre, nos équipes sillonnent la France avec leurs camions porte-voitures : il y a forcément un
+          circuit près de chez vous.
+        </p>
+        <ul class="circ__regions">
+          {regions.map((r) => (<li>{r.label}</li>))}
+        </ul>
+        <a class="btn" href="/circuits/">Trouver un circuit <Lucide name="ArrowRight" size={17} stroke={2} /></a>
+      </div>
+      <div class="circ__map" data-reveal>
+        <img src="/images/circuits/carte-france-belgique.png" alt="Carte des circuits Sprint Racing en France et en Belgique" width="480" height="390" loading="lazy" />
+        <ul class="circ__featured">
+          {
+            featured.map((c) => (
+              <li>
+                <a href={`/circuits/${c.slug}/`}>
+                  <span class="circ__pin"><Lucide name="MapPin" size={14} stroke={2} /></span>
+                  <span>
+                    <strong>{c.city}</strong>
+                    <small>{c.department} · {c.length}</small>
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .circ {
+    padding-bottom: clamp(30px, 3vw, 44px);
+  }
+  .circ__panel {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: clamp(28px, 4vw, 64px);
+    align-items: center;
+    padding: clamp(30px, 4vw, 60px);
+    border-radius: 16px;
+    background:
+      radial-gradient(ellipse 50% 60% at 80% 50%, rgba(255, 255, 255, 0.7), transparent 70%),
+      linear-gradient(180deg, #ecebec 0%, #e6e5e7 100%);
+  }
+  .circ h2 {
+    margin: 0 0 14px;
+    font-size: clamp(1.7rem, 3vw, 2.7rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+  .circ__lead {
+    max-width: 46ch;
+    margin: 0 0 20px;
+    color: #55555a;
+  }
+  .circ__regions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 26px;
+    padding: 0;
+    list-style: none;
+  }
+  .circ__regions li {
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink);
+    box-shadow: 0 4px 12px rgba(30, 10, 20, 0.06);
+  }
+  .circ__map {
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+  .circ__map img {
+    width: min(100%, 460px);
+    height: auto;
+    filter: drop-shadow(0 20px 30px rgba(30, 10, 20, 0.14));
+  }
+  .circ__featured {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    pointer-events: none;
+  }
+  .circ__featured li {
+    position: absolute;
+    pointer-events: auto;
+  }
+  /* Quelques circuits phares posés autour de la carte. */
+  .circ__featured li:nth-child(1) { left: 0; top: 18%; }
+  .circ__featured li:nth-child(2) { left: 2%; top: 46%; }
+  .circ__featured li:nth-child(3) { right: 0; top: 52%; }
+  .circ__featured li:nth-child(4) { left: 6%; bottom: 6%; }
+  .circ__featured li:nth-child(5) { right: 2%; top: 8%; }
+  .circ__featured li:nth-child(6) { right: 6%; bottom: 14%; }
+  .circ__featured a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px 7px 8px;
+    border-radius: 999px;
+    background: #fff;
+    text-decoration: none;
+    box-shadow: 0 12px 26px rgba(30, 10, 20, 0.14);
+    transition: transform 0.3s var(--ease-out);
+  }
+  .circ__featured a:hover {
+    transform: translateY(-3px);
+  }
+  .circ__pin {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+  }
+  .circ__featured strong {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .circ__featured small {
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+  @media (max-width: 900px) {
+    .circ__panel {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .circ__featured {
+      position: static;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      width: 100%;
+      margin-top: 16px;
+    }
+    .circ__featured li {
+      position: static;
+    }
+  }
+</style>
