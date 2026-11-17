@@ -1,12 +1,13 @@
 # Préfixe tous les chemins absolus du site par /portfolio-photographer (hébergement GitHub Pages).
 import os, re, sys
 root, base = sys.argv[1], '/portfolio-photographer'
-top = sorted({n for n in os.listdir(root)})
+top = sorted(n for n in os.listdir(root) if not n.startswith('.'))
 names = '|'.join(re.escape(n) for n in top)
 pat = re.compile(r'(?<=[\"\'`(,\s=])/(?=(?:' + names + r')(?:[/\"\'`)?#\s,]|$))')
 home = re.compile(r'(?<=href=)(["\'])/\1')
 count = 0
-for d, _, files in os.walk(root):
+for d, dirs, files in os.walk(root):
+    dirs[:] = [x for x in dirs if not x.startswith('.')]
     for f in files:
         if not f.endswith(('.html', '.css', '.js', '.txt', '.xml', '.json', '.webmanifest', '.svg')): continue
         p = os.path.join(d, f); s = open(p, encoding='utf-8').read()
